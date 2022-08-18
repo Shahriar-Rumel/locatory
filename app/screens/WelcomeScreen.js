@@ -28,6 +28,12 @@ export default function WelcomeScreen() {
           <Text style={styles.text}>Sign up with Email</Text>
         </Pressable>
       </View>
+      <View style={styles.alreadyHaveAccountSection}>
+        <Text style={styles.alreadyHaveAccount}>Already have an account ?</Text>
+        <Pressable style={styles.secondaryButton}>
+          <Text style={styles.secondaryButtonText}>Signin</Text>
+        </Pressable>
+      </View>
     </Screen>
   );
 }
@@ -41,7 +47,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 180,
     height: 180,
-    marginTop: 100,
+    marginTop: 60,
     paddingTop: 30
   },
   headerSection: {
@@ -74,7 +80,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    color: 'white',
+    color: colors.white,
+    fontFamily: 'SFPD-semiBold'
+  },
+  alreadyHaveAccountSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 80
+  },
+  alreadyHaveAccount: {
+    color: colors.black,
+    fontFamily: 'SFPD-regular'
+  },
+  secondaryButton: {
+    marginLeft: 4
+  },
+  secondaryButtonText: {
+    color: colors.primary,
     fontFamily: 'SFPD-semiBold'
   }
 });
