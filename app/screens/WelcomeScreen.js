@@ -51,15 +51,16 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    fontFamily: 'SFPD-bold',
+    textAlign: 'center',
+    width: '90%'
   },
   subHeader: {
     fontSize: 14,
     textAlign: 'center',
-    letterSpacing: -0.6,
-    width: '90%',
-    marginTop: 10
+    width: '85%',
+    marginTop: 10,
+    fontFamily: 'SFPD-regular'
   },
   buttonSection: {
     alignItems: 'center'
@@ -74,6 +75,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontWeight: 'bold'
+    fontFamily: 'SFPD-semiBold'
   }
 });
