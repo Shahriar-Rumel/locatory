@@ -1,4 +1,5 @@
 export default Object.freeze({
   LOGIN: 'Login',
-  REGISTER: 'Register'
+  REGISTER: 'Register',
+  FEED: 'Feed'
 });

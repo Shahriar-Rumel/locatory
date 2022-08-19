@@ -1,11 +1,11 @@
-import { StyleSheet, Text, Pressable, Image, View, Button } from 'react-native';
-// import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, Text, Pressable, Image, View } from 'react-native';
 import React from 'react';
 import Screen from '../components/Screen';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// onPress={() => navigation.navigate('Login')}
+
+import Button from '../components/Button';
+import constants from '../config/constants';
 
 export default function WelcomeScreen({ navigation }) {
   return (
@@ -24,16 +24,12 @@ export default function WelcomeScreen({ navigation }) {
           proin proin nunc. Vel t.
         </Text>
       </View>
-      <View style={styles.buttonSection}>
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.navigate(routes.LOGIN)}
-        >
-          <Text style={styles.text}>Sign up with Email</Text>
-        </Pressable>
-      </View>
+      <Button
+        text={'Sign in with Email'}
+        onPress={() => navigation.navigate(routes.LOGIN)}
+      />
       <View style={styles.alreadyHaveAccountSection}>
-        <Text style={styles.alreadyHaveAccount}>Already have an account ?</Text>
+        <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
         <Pressable style={styles.secondaryButton}>
           <Text style={styles.secondaryButtonText}>Signin</Text>
         </Pressable>
@@ -45,7 +41,8 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50
+    paddingTop: 50,
+    paddingHorizontal: constants.CONTAINER_PADDING
   },
   logoContainer: { flexDirection: 'row', justifyContent: 'center' },
   logo: {
@@ -57,36 +54,23 @@ const styles = StyleSheet.create({
   headerSection: {
     marginTop: 60,
     marginBottom: 30,
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   header: {
     fontSize: 32,
     fontFamily: 'SFPD-bold',
     textAlign: 'center',
-    width: '90%'
+    width: '100%'
   },
   subHeader: {
     fontSize: 14,
     textAlign: 'center',
-    width: '85%',
+    width: '93%',
     marginTop: 10,
     fontFamily: 'SFPD-regular'
   },
-  buttonSection: {
-    alignItems: 'center'
-  },
-  button: {
-    width: '90%',
-    height: 50,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    borderRadius: 14,
-    justifyContent: 'center'
-  },
-  text: {
-    color: colors.white,
-    fontFamily: 'SFPD-semiBold'
-  },
+
   alreadyHaveAccountSection: {
     flexDirection: 'row',
     justifyContent: 'center',
