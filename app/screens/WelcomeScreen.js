@@ -3,10 +3,11 @@ import { StyleSheet, Text, Pressable, Image, View, Button } from 'react-native';
 import React from 'react';
 import Screen from '../components/Screen';
 import colors from '../config/colors';
+import routes from '../navigation/routes';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // onPress={() => navigation.navigate('Login')}
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
   return (
     <Screen style={styles.container}>
       <View style={styles.logoContainer}>
@@ -24,7 +25,10 @@ export default function WelcomeScreen() {
         </Text>
       </View>
       <View style={styles.buttonSection}>
-        <Pressable style={styles.button}>
+        <Pressable
+          style={styles.button}
+          onPress={() => navigation.navigate(routes.LOGIN)}
+        >
           <Text style={styles.text}>Sign up with Email</Text>
         </Pressable>
       </View>

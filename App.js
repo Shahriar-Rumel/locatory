@@ -1,7 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import WelcomeScreen from './app/screens/WelcomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
+
+import AuthNavigator from '../locatory/app/navigation/AuthNavigator';
+import { navigationRef } from './app/navigation/rootNavigation';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -13,7 +15,11 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  return <WelcomeScreen />;
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <AuthNavigator />
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
