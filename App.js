@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 
-import AuthNavigator from '../app/navigation/AuthNavigator';
+import AuthNavigator from './app/navigation/AuthNavigator';
 import { navigationRef } from './app/navigation/rootNavigation';
 
 export default function App() {

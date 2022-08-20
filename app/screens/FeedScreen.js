@@ -1,6 +1,13 @@
 import React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 
 import colors from '../config/colors';
@@ -37,8 +44,30 @@ const SearchBar = () => {
 };
 const FilterTag = ({ text }) => {
   return (
-    <View style={styles.filterTag}>
+    <TouchableOpacity style={styles.filterTag}>
       <Text>{text}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const FilterBar = () => {
+  return (
+    <View style={styles.filterContainer}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={styles.filterTag}>
+          <Image
+            source={require('../assets/icons/filter.png')}
+            style={styles.filterIcon}
+            resizeMode={'contain'}
+          />
+          <Text>Filter</Text>
+        </View>
+        <FilterTag text={'Trending'} />
+        <FilterTag text={'Indoors'} />
+        <FilterTag text={'Tour'} />
+        <FilterTag text={'Restaurants'} />
+        <FilterTag text={'Trending'} />
+      </ScrollView>
     </View>
   );
 };
@@ -47,15 +76,7 @@ export default function FeedScreen() {
     <Screen style={styles.container}>
       <TopBar />
       <SearchBar />
-      <View style={styles.filterContainer}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <FilterTag text={'Trending'} />
-          <FilterTag text={'Indoors'} />
-          <FilterTag text={'Tour'} />
-          <FilterTag text={'Restaurants'} />
-          <FilterTag text={'Trending'} />
-        </ScrollView>
-      </View>
+      <FilterBar />
     </Screen>
   );
 }
@@ -75,18 +96,24 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     flexDirection: 'row',
-    height: 50,
+    height: 35,
     overflow: 'scroll',
     marginTop: 10
+  },
+  filterIcon: {
+    width: 14,
+    height: 14,
+    marginRight: 5
   },
   filterTag: {
     paddingHorizontal: 10,
     backgroundColor: colors.input,
-    height: 45,
-    borderRadius: 14,
+    height: 35,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10
+    marginRight: 10,
+    flexDirection: 'row'
   },
   greetContainer: {
     flexDirection: 'row',
