@@ -1,28 +1,31 @@
-import React from 'react';
+import React from 'react'
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import * as Yup from 'yup';
-
 import colors from '../config/colors';
-import constants from '../config/constants';
 import Screen from '../components/Screen';
 import routes from '../navigation/routes';
 import Toggle from '../components/Toggle';
+import constants from '../config/constants';
 import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
-import SubmitButton from '../components/forms/SubmitButton';
-import { ScrollView } from 'react-native-gesture-handler';
+import SubmitButton from '../components/forms/SubmitButton'
+import { setStatusBarBackgroundColor } from 'expo-status-bar';
+
 
 const validationSchema = Yup.object().shape({
-  // email: Yup.string().required().email().label('Email'),
-  // password: Yup.string().required().min(4).label('Password')
+   email: Yup.string().required().email().label('Email'),
+   password: Yup.string().required().min(4).label('Password')
 });
-export default function LoginScreen({ navigation }) {
+function RegisterScreen({navigation}) {
+
   const handleSubmit = ({ email, password }) => {
     navigation.navigate(routes.FEED);
   };
+ 
+
   return (
-    <Screen style={styles.container}>
-      <Toggle active={'login'} />
+    <Screen style = {styles.container}> 
+     <Toggle active={'register'} />
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
@@ -30,17 +33,26 @@ export default function LoginScreen({ navigation }) {
           source={require('../assets/primary-pigeon.png')}
         />
       </View>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Welcome back !</Text>
-        <Text style={styles.subHeader}>Sign in to your account</Text>
+      <View style = {styles.headerContainer}>
+        <Text style = {styles.header}>Sign up</Text>
+        <Text style = {styles.subheader}>Create an account so that you can get personalized recommendations</Text>
       </View>
-
       <Form
         initialValues={{ email: '', password: '' }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormField
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="text"
+        name="Name"
+        label="Name"
+        placeholder="Shahriar Rumel"
+        textContentType="name"
+        />
+          
+       <FormField
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="email-address"
@@ -48,6 +60,15 @@ export default function LoginScreen({ navigation }) {
           label="Email"
           placeholder="Email"
           textContentType="emailAddress"
+        />
+        <FormField
+           autoCapitalize="none"
+           autoCorrect={false}
+           keyboardType="text"
+           name="Location"
+           label="Location"
+           placeholder="Dhaka,Bangladesh"
+           textContentType="Location"
         />
         <FormField
           autoCapitalize="none"
@@ -58,26 +79,21 @@ export default function LoginScreen({ navigation }) {
           secureTextEntry={true}
           textContentType="password"
         />
-        <SubmitButton text="Login" />
+        <SubmitButton text="Create account" />
       </Form>
 
-      <View style={styles.secondaryButtonContainer}>
-        <Pressable
-          style={styles.secondaryButton}
-          onPress={() => navigation.navigate(routes.LOGIN)}
-        >
-          <Text style={styles.forgotPassText}>Forgot Password</Text>
-        </Pressable>
-      </View>
+      
       <View style={styles.alreadyHaveAccountContainer}>
-        <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
-        <Pressable style={styles.secondaryButton} onPress= {() => navigation.navigate(routes.REGISTER)}>
-          <Text style={styles.secondaryButtonText}>Register</Text>
+        <Text style={styles.alreadyHaveAccount}>Already have an account?</Text>
+        <Pressable style={styles.secondaryButton} onPress= {() => navigation.navigate(routes.LOGIN)}>
+          <Text style={styles.secondaryButtonText}>Signin</Text>
         </Pressable>
       </View>
     </Screen>
-  );}
-
+    
+   
+  );
+}
 
 const styles = StyleSheet.create({
   alreadyHaveAccountContainer: {
@@ -96,13 +112,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: constants.CONTAINER_PADDING
-  },
-  forgotPassText: {
-    color: colors.primary,
-    fontFamily: 'SFPD-semiBold'
+
   },
   headerContainer: {
-    marginTop: 30,
+    marginTop: -20,
     marginBottom: 30,
     width: '100%'
   },
@@ -111,13 +124,18 @@ const styles = StyleSheet.create({
     fontFamily: 'SFPD-bold',
     width: '100%'
   },
-
-  logoContainer: { flexDirection: 'row', justifyContent: 'center' },
+  logoContainer: { 
+    marginTop:-20,
+    flexDirection: 'row', 
+    justifyContent: 'flex-end', 
+    width:"100%"
+  },
   logo: {
     width: 160,
-    height: 160,
+    height: 110,
     marginTop: 40,
-    paddingTop: 30
+    paddingTop: 30,
+    
   },
   subHeader: {
     fontSize: 14,
@@ -148,4 +166,9 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: 'SFPD-semiBold'
   }
-});
+
+
+}
+
+);
+export default RegisterScreen
