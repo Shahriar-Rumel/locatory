@@ -1,18 +1,20 @@
-import React from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
+import React from "react";
+import routes from "../navigation/routes";
+import { FontAwesome5 } from "@expo/vector-icons";
 import {
   Image,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+  View,
+  Pressable,
+} from "react-native";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 
-import colors from '../config/colors';
-import constants from '../config/constants';
-import Screen from '../components/Screen';
+import colors from "../config/colors";
+import constants from "../config/constants";
+import Screen from "../components/Screen";
 
 const TopBar = () => {
   return (
@@ -23,7 +25,7 @@ const TopBar = () => {
       </View>
       <ImageBackground
         style={styles.dp}
-        source={require('../assets/ST.jpg')}
+        source={require("../assets/ST.jpg")}
         resizeMode="cover"
       />
     </View>
@@ -56,27 +58,33 @@ const FilterBar = () => {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={styles.filterTag}>
           <Image
-            source={require('../assets/icons/filter.png')}
+            source={require("../assets/icons/filter.png")}
             style={styles.filterIcon}
-            resizeMode={'contain'}
+            resizeMode={"contain"}
           />
           <Text>Filter</Text>
         </View>
-        <FilterTag text={'Trending'} />
-        <FilterTag text={'Indoors'} />
-        <FilterTag text={'Tour'} />
-        <FilterTag text={'Restaurants'} />
-        <FilterTag text={'Trending'} />
+        <FilterTag text={"Trending"} />
+        <FilterTag text={"Indoors"} />
+        <FilterTag text={"Tour"} />
+        <FilterTag text={"Restaurants"} />
+        <FilterTag text={"Trending"} />
       </ScrollView>
     </View>
   );
 };
-export default function FeedScreen() {
+export default function FeedScreen({ navigation }) {
   return (
     <Screen style={styles.container}>
       <TopBar />
       <SearchBar />
       <FilterBar />
+      <Pressable
+        style={styles.secondaryButton}
+        onPress={() => navigation.navigate(routes.LOCATION)}
+      >
+        <Text style={styles.secondaryButtonText}>LocationPage</Text>
+      </Pressable>
     </Screen>
   );
 }
@@ -85,74 +93,74 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-    paddingHorizontal: constants.CONTAINER_PADDING
+    paddingHorizontal: constants.CONTAINER_PADDING,
   },
   dp: {
     width: 35,
     height: 35,
-    backgroundColor: 'green',
+    backgroundColor: "green",
     borderRadius: 50,
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   filterContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 35,
-    overflow: 'scroll',
-    marginTop: 10
+    overflow: "scroll",
+    marginTop: 10,
   },
   filterIcon: {
     width: 14,
     height: 14,
-    marginRight: 5
+    marginRight: 5,
   },
   filterTag: {
     paddingHorizontal: 10,
     backgroundColor: colors.input,
     height: 35,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   greetContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   greet: {
     fontSize: 14,
-    fontFamily: 'SFPD-semiBold',
-    color: colors.gray
+    fontFamily: "SFPD-semiBold",
+    color: colors.gray,
   },
   greetName: {
     marginLeft: 3,
-    color: colors.black
+    color: colors.black,
   },
   input: {
     backgroundColor: colors.input,
     height: 50,
     borderRadius: 14,
-    width: '100%',
+    width: "100%",
     paddingLeft: 50,
     marginTop: 10,
     fontSize: 14,
-    fontFamily: 'SFPD-medium'
+    fontFamily: "SFPD-medium",
   },
   searchContainer: {
-    position: 'relative'
+    position: "relative",
   },
   searchIcon: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 8,
     marginTop: 23,
     marginLeft: 15,
-    color: colors.gray
+    color: colors.gray,
   },
   topBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%'
-  }
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  },
 });

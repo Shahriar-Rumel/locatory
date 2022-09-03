@@ -1,10 +1,11 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import LoginScreen from '../screens/LoginScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import FeedScreen from '../screens/FeedScreen';
-import RegisterScreen from '../screens/RegisterScreen';
+import LoginScreen from "../screens/LoginScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import FeedScreen from "../screens/FeedScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import LocationScreen from "../screens/LocationScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,9 +27,14 @@ const AuthNavigator = () => (
       options={{ headerShown: false }}
     />
 
-<Stack.Screen
+    <Stack.Screen
       name="Register"
       component={RegisterScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Location"
+      component={LocationScreen}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>
