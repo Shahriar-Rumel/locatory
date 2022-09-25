@@ -74,7 +74,7 @@ export default function LocationScreen() {
           }}
         >
           <Callout>
-            <Text>Hello rumel</Text>
+            <Text>{region.latitude}</Text>
           </Callout>
         </Marker>
       </MapView>

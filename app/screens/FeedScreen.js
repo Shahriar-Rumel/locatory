@@ -157,6 +157,18 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     color: colors.gray,
   },
+  secondaryButtonText:{
+    padding:10,
+    backgroundColor:colors.primary,
+    color:'white',
+    width:'50%',
+    borderRadius:6,
+    marginTop:12,
+    flexDirection:"row",
+    justifyContent:'center',
+    alignContent:'center',
+    textAlign:'center'
+  },
   topBar: {
     flexDirection: "row",
     justifyContent: "space-between",
