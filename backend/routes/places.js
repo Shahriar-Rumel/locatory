@@ -8,6 +8,12 @@ const {
 } = require("../controller/places");
 const router = express.Router();
 
-router.route("/").get(getPlaces).post(createPlace);
-router.route("/:id").get(getPlace).put(updatePlace).delete(deletePlace);
+const { protect } = require("../middleware/auth");
+
+router.route("/").get(getPlaces).post(protect, createPlace);
+router
+  .route("/:id")
+  .get(getPlace)
+  .put(protect, updatePlace)
+  .delete(protect, deletePlace);
 module.exports = router;

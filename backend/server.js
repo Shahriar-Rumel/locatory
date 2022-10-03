@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
+const cookieParser = require("cookie-parser");
 
 //Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -17,6 +18,9 @@ const app = express();
 
 //Body parser
 app.use(express.json());
+
+//Cookie parser
+app.use(cookieParser());
 
 //Mount routers
 app.use("/api/places", places);
