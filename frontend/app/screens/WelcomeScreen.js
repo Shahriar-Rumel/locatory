@@ -18,7 +18,7 @@ export default function WelcomeScreen({ navigation }) {
         />
       </View>
       <View style={styles.headerSection}>
-        <Text style={styles.header}>Welcome to the world of Locatory</Text>
+        <Text style={styles.header}>Know more about the place you love</Text>
         <Text style={styles.subHeader}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Neque sit
           proin proin nunc. Vel t.
