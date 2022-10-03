@@ -28,6 +28,8 @@ exports.getPlace = asyncHandler(async (req, res, next) => {
 //@route Post /api/places
 //@access Private
 exports.createPlace = asyncHandler(async (req, res, next) => {
+  //Add user to req,body
+  req.body.user = req.user.id;
   const place = await Place.create(req.body);
 
   res.status(201).json({ success: true, data: place });
@@ -37,16 +39,27 @@ exports.createPlace = asyncHandler(async (req, res, next) => {
 //@route Put /api/places/:id
 //@access Private
 exports.updatePlace = asyncHandler(async (req, res, next) => {
-  const place = await Place.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  let place = await Place.findById(req.params.id);
   if (!place) {
     return next(
       new ErrorResponse(`Place not found with id of ${req.params.id}`, 404)
     );
   }
 
+  //Make sure user is the post creator
+  if (place.user.toString() !== req.user.id) {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to update this place`,
+        401
+      )
+    );
+  }
+
+  place = await Place.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
   res.status(200).json({ success: true, data: place });
 });
 
@@ -54,13 +67,22 @@ exports.updatePlace = asyncHandler(async (req, res, next) => {
 //@route Delete /api/places/:id
 //@access Private
 exports.deletePlace = asyncHandler(async (req, res, next) => {
-  const place = await Place.findByIdAndDelete(req.params.id);
+  const place = await Place.findById(req.params.id);
   if (!place) {
     return next(
       new ErrorResponse(`Place not found with id of ${req.params.id}`, 404)
     );
   }
-
+  //Make sure user is the post creator
+  if (place.user.toString() !== req.user.id) {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to delete this place`,
+        401
+      )
+    );
+  }
+  place.remove();
   res
     .status(200)
     .json({ success: true, data: {}, msg: `deleted successfully` });
