@@ -11,6 +11,7 @@ dotenv.config({ path: "./config/config.env" });
 connectDB();
 //Route files
 const places = require("./routes/places");
+const auth = require("./routes/auth");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 //Mount routers
 app.use("/api/places", places);
+app.use("/api/auth", auth);
 
 app.use(errorHandler);
 
