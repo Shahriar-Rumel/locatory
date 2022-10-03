@@ -88,9 +88,9 @@ export default function FeedScreen({ navigation }) {
         'https://images.unsplash.com/photo-1626964143945-b13d22dfe399?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80'
     },
     {
-      title: 'University of Dhaka',
-      location: 'Nilkhet Road,Dhaka 1000',
-      distance: '0.2Km',
+      title: 'Saint Martin Island',
+      location: "Cox's Bazar , Chittagong 1000",
+      distance: '150.2Km',
       imaguri:
         'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
     },
@@ -118,9 +118,17 @@ export default function FeedScreen({ navigation }) {
       >
         <Text style={styles.secondaryButtonText}>LocationPage</Text>
       </Pressable> */}
-        <CardSection title={'For you'} data={data} />
-        <CardSection title={'Meet with colleagues'} data={data} />
-        <CardSection title={'Most Reviewed'} data={data} />
+        <CardSection title={'For you'} data={data} navigation={navigation} />
+        <CardSection
+          title={'Meet with colleagues'}
+          data={data}
+          navigation={navigation}
+        />
+        <CardSection
+          title={'Most Reviewed'}
+          data={data}
+          navigation={navigation}
+        />
       </ScrollView>
     </Screen>
   );

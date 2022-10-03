@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  KeyboardAvoidingView
+} from 'react-native';
 import * as Yup from 'yup';
 
 import colors from '../config/colors';
@@ -22,62 +29,68 @@ export default function LoginScreen({ navigation }) {
   };
   return (
     <Screen style={styles.container}>
-      <Toggle active={'login'} />
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          resizeMode={'contain'}
-          source={require('../assets/primary-pigeon.png')}
-        />
-      </View>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Welcome back !</Text>
-        <Text style={styles.subHeader}>Sign in to your account</Text>
-      </View>
-
-      <Form
-        initialValues={{ email: '', password: '' }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
+      <KeyboardAvoidingView
+        behavior="position"
+        style={{ backgroundColor: 'white', flex: 1, width: '100%' }}
       >
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-          name="email"
-          label="Email"
-          placeholder="Email"
-          textContentType="emailAddress"
-        />
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          label="Password"
-          placeholder="Password"
-          secureTextEntry={true}
-          textContentType="password"
-        />
-        <SubmitButton text="Login" />
-      </Form>
-
-      <View style={styles.secondaryButtonContainer}>
-        <Pressable
-          style={styles.secondaryButton}
-          onPress={() => navigation.navigate(routes.LOGIN)}
+        <Toggle active={'login'} />
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            resizeMode={'contain'}
+            source={require('../assets/primary-pigeon.png')}
+          />
+        </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Welcome back !</Text>
+          <Text style={styles.subHeader}>Sign in to your account</Text>
+        </View>
+        <Form
+          initialValues={{ email: '', password: '' }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
         >
-          <Text style={styles.forgotPassText}>Forgot Password</Text>
-        </Pressable>
-      </View>
-      <View style={styles.alreadyHaveAccountContainer}>
-        <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
-        <Pressable style={styles.secondaryButton} onPress= {() => navigation.navigate(routes.REGISTER)}>
-          <Text style={styles.secondaryButtonText}>Register</Text>
-        </Pressable>
-      </View>
+          <FormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+            name="email"
+            label="Email"
+            placeholder="Email"
+            textContentType="emailAddress"
+          />
+          <FormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            label="Password"
+            placeholder="Password"
+            secureTextEntry={true}
+            textContentType="password"
+          />
+          <SubmitButton text="Login" />
+        </Form>
+        <View style={styles.secondaryButtonContainer}>
+          <Pressable
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate(routes.LOGIN)}
+          >
+            <Text style={styles.forgotPassText}>Forgot Password</Text>
+          </Pressable>
+        </View>
+        <View style={styles.alreadyHaveAccountContainer}>
+          <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
+          <Pressable
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate(routes.REGISTER)}
+          >
+            <Text style={styles.secondaryButtonText}>Register</Text>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
     </Screen>
-  );}
-
+  );
+}
 
 const styles = StyleSheet.create({
   alreadyHaveAccountContainer: {

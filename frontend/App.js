@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 
@@ -7,6 +8,8 @@ import AppNavigator from './app/navigation/AppNavigator';
 import AuthNavigator from './app/navigation/AuthNavigator';
 
 export default function App() {
+  const [user, setUser] = useState(true);
+
   const [fontsLoaded] = useFonts({
     'SFPD-bold': require('./app/assets/fonts/SFPD-Bold.otf'),
     'SFPD-semiBold': require('./app/assets/fonts/SFPD-Semibold.otf'),
@@ -18,8 +21,7 @@ export default function App() {
   }
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      {/* <AuthNavigator /> */}
-      <AppNavigator />
+      {user ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }

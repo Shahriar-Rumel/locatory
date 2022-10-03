@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from './Card';
 
-const CardSection = ({ title, data }) => {
+const CardSection = ({ title, data, navigation }) => {
   const styles = StyleSheet.create({
     cardContainer: {
       marginVertical: 0,
@@ -37,7 +37,14 @@ const CardSection = ({ title, data }) => {
           style={styles.cardContainerWrapper}
         >
           {data.map((item, index) => (
-            <Pressable key={index}>
+            <Pressable
+              key={index}
+              onPress={() =>
+                navigation.navigate('Location_Details', {
+                  data: item
+                })
+              }
+            >
               <Card
                 title={item.title}
                 distance={item.distance}

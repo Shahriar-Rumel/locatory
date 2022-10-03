@@ -3,5 +3,6 @@ export default Object.freeze({
   REGISTER: 'Register',
   FEED: 'Feed',
   LOCATION: 'Location',
+  LOCATION_DETAILS: 'Location_Details',
   REVIEW: 'review'
 });
