@@ -7,9 +7,14 @@ const {
   deletePlace,
   getPlaceByUser,
 } = require("../controller/places");
+
+//Include children routes
+const reviewRouter = require("./reviews");
 const router = express.Router();
 
 const { protect } = require("../middleware/auth");
+
+router.use("/:placeId/reviews", reviewRouter);
 
 router.route("/").get(getPlaces).post(protect, createPlace);
 router
