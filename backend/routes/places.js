@@ -5,6 +5,7 @@ const {
   createPlace,
   updatePlace,
   deletePlace,
+  getPlaceByUser,
 } = require("../controller/places");
 const router = express.Router();
 
@@ -16,4 +17,6 @@ router
   .get(getPlace)
   .put(protect, updatePlace)
   .delete(protect, deletePlace);
+
+router.route("/user/all").get(protect, getPlaceByUser);
 module.exports = router;

@@ -87,3 +87,18 @@ exports.deletePlace = asyncHandler(async (req, res, next) => {
     .status(200)
     .json({ success: true, data: {}, msg: `deleted successfully` });
 });
+
+// @desc  Get places by user
+//@route GET /api/placesbyuser/
+//@access Private
+exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
+  const places = await Place.find({
+    user: req.user.id,
+  });
+
+  if (!places) {
+    return next(new ErrorResponse(`User didn't create a place`, 404));
+  }
+
+  res.status(200).json({ success: true, data: places });
+});
