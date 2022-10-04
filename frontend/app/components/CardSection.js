@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from './Card';
+import routes from '../navigation/routes';
 
 const CardSection = ({ title, data, navigation }) => {
   const styles = StyleSheet.create({
@@ -40,7 +41,7 @@ const CardSection = ({ title, data, navigation }) => {
             <Pressable
               key={index}
               onPress={() =>
-                navigation.navigate('Location_Details', {
+                navigation.navigate(routes.LOCATION_DETAILS, {
                   data: item
                 })
               }

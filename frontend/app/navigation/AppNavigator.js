@@ -1,13 +1,7 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 
-import LoginScreen from '../screens/LoginScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import FeedScreen from '../screens/FeedScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import LocationScreen from '../screens/LocationScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import FeedNavigator from './FeedNavigator';
 import { Ionicons } from '@expo/vector-icons';

@@ -4,5 +4,6 @@ export default Object.freeze({
   FEED: 'Feed',
   LOCATION: 'Location',
   LOCATION_DETAILS: 'Location_Details',
-  REVIEW: 'review'
+  REVIEW: 'Review',
+  CREATE_REVIEW: 'Create_Review'
 });

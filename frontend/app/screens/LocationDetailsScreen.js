@@ -6,16 +6,17 @@ import {
   Text,
   View
 } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
+import MapView, { Marker } from 'react-native-maps';
 
-import Screen from '../components/Screen';
 import colors from '../config/colors';
-import constants from '../config/constants';
-import { Ionicons } from '@expo/vector-icons';
-import MapView, { Callout, Marker } from 'react-native-maps';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Screen from '../components/Screen';
+
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import routes from '../navigation/routes';
 
 const CoverSection = ({ navigation, route }) => {
   const styles = StyleSheet.create({
@@ -102,12 +103,10 @@ const OverviewSection = () => {
   const styles = StyleSheet.create({
     overviewContainer: {
       width: '100%',
-      //   height: 60,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: colors.light,
-      //   paddingHorizontal: 20,
       paddingVertical: 15
     },
     avgRatingContainer: {
@@ -180,32 +179,50 @@ const ReviewListSection = ({ navigation, route }) => {
     {
       id: 1,
       name: 'University of Dhaka',
-      desc: 'The oxford we live and breathe',
+      desc: 'The Oxford We Live and Breathe',
       date: '17 August 2022',
       likes: '12k',
       dislikes: '12k',
+      type: 'Educational Institute',
       img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      comments: '2k'
+      comments: '2k',
+      rating: 4
     },
     {
       id: 2,
       name: 'University of Dhaka',
-      desc: 'The oxford we live and breathe',
+      desc: 'The Oxford We Live and Breathe',
       date: '17 August 2022',
       likes: '12k',
       dislikes: '12k',
+      type: 'Educational Institute',
       img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      comments: '2k'
+      comments: '2k',
+      rating: 5
     },
     {
       id: 3,
       name: 'University of Dhaka',
-      desc: 'The oxford we live and breathe',
+      desc: 'The Oxford We Live and Breathe',
       date: '17 August 2022',
       likes: '12k',
+      type: 'Educational Institute',
       img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
       dislikes: '12k',
-      comments: '2k'
+      comments: '2k',
+      rating: 4
+    },
+    {
+      id: 4,
+      name: 'University of Dhaka',
+      desc: 'The Oxford We Live and Breathe',
+      date: '17 August 2022',
+      likes: '12k',
+      type: 'Educational Institute',
+      img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+      dislikes: '12k',
+      comments: '2k',
+      rating: 4
     }
   ];
 
@@ -215,9 +232,13 @@ const ReviewListSection = ({ navigation, route }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
+        width: '75%'
       },
-      img: { width: 100, height: 100 },
+      img: {
+        width: 100,
+        height: '100%'
+      },
       item: {
         backgroundColor: colors.light,
         marginVertical: 5,
@@ -230,11 +251,14 @@ const ReviewListSection = ({ navigation, route }) => {
         paddingVertical: 10,
         paddingHorizontal: 10
       },
-      likeContainer: { flexDirection: 'row' },
+      likeContainer: {
+        flexDirection: 'row'
+      },
       titleContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '75%'
       },
       title: {
         fontSize: 14,
@@ -260,7 +284,14 @@ const ReviewListSection = ({ navigation, route }) => {
       }
     });
     return (
-      <View style={styles.item}>
+      <Pressable
+        style={styles.item}
+        onPress={() =>
+          navigation.navigate(routes.REVIEW, {
+            data: item
+          })
+        }
+      >
         <ImageBackground
           style={styles.img}
           source={{
@@ -281,11 +312,7 @@ const ReviewListSection = ({ navigation, route }) => {
             </View>
             <View style={styles.likeContainer}>
               <Text style={styles.statCount}>12k</Text>
-              <MaterialCommunityIcons
-                name="comment-outline"
-                size={18}
-                color={colors.secondary}
-              />
+              <Octicons name="comment" size={18} color={colors.secondary} />
             </View>
             <View style={styles.likeContainer}>
               <Text style={styles.statCount}>12k</Text>
@@ -293,7 +320,7 @@ const ReviewListSection = ({ navigation, route }) => {
             </View>
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   };
   const FlatListTop = <FlatListHeaders route={route} navigation={navigation} />;
@@ -329,12 +356,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 0,
     width: '100%',
-
     backgroundColor: 'white'
   },
   scrollContainer: {
     width: '100%',
-
     right: 0
   },
   reviews: {

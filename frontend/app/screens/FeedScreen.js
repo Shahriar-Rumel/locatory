@@ -1,5 +1,4 @@
 import React from 'react';
-import routes from '../navigation/routes';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Image,
@@ -7,15 +6,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  Pressable
+  View
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 
 import colors from '../config/colors';
 import constants from '../config/constants';
 import Screen from '../components/Screen';
-import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 
 const TopBar = () => {
@@ -112,12 +109,7 @@ export default function FeedScreen({ navigation }) {
         <TopBar />
         <SearchBar />
         <FilterBar />
-        {/* <Pressable
-        style={styles.secondaryButton}
-        onPress={() => navigation.navigate(routes.LOCATION)}
-      >
-        <Text style={styles.secondaryButtonText}>LocationPage</Text>
-      </Pressable> */}
+
         <CardSection title={'For you'} data={data} navigation={navigation} />
         <CardSection
           title={'Meet with colleagues'}
