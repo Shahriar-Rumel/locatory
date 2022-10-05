@@ -23,6 +23,8 @@ const PlaceSchema = new mongoose.Schema({
       "business",
       "park",
       "educational",
+      "beach",
+      "mountain",
       "other",
     ],
   },
