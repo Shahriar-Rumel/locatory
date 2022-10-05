@@ -7,15 +7,58 @@ const ReviewSchema = new mongoose.Schema({
     required: [true, "Please add a title for the review"],
     maxlength: 100,
   },
-  text: {
+  description: {
     type: String,
-    required: [true, "Please add some text"],
+    required: [true, "Please add some description"],
+  },
+  averagebudget: {
+    type: Number,
+    required: [true, "Please add a budget"],
+  },
+
+  accessibility: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: [true, "Please add a rating between 1 and 5"],
+  },
+  decoration: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: [true, "Please add a rating between 1 and 5"],
+  },
+  service: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: [true, "Please add a rating between 1 and 5"],
+  },
+  familyfriendly: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: [true, "Please add a rating between 1 and 5"],
+  },
+  transportation: {
+    type: String,
+    required: [true, "Please add a transportation medium"],
+    enum: ["bus", "car", "rickshaw", "walk"],
+  },
+  setting: {
+    type: String,
+    required: [true, "Please add a setting"],
+    enum: ["indoor", "outdoor"],
   },
   rating: {
     type: Number,
     min: 1,
-    max: 10,
-    required: [true, "Please add a rating between 1 and 10"],
+    max: 5,
+    required: [true, "Please add a rating between 1 and 5"],
+  },
+  photo: {
+    type: String,
+    default: "no-photo.jpg",
   },
   createdAt: {
     type: Date,
