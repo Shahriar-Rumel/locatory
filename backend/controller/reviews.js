@@ -27,7 +27,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
     path: "place",
-    select: "name description",
+    select: "name",
   });
 
   if (!review) {

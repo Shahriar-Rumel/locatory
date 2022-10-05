@@ -19,7 +19,7 @@ router
   .get(
     advancedResults(Review, {
       path: "place",
-      select: "name description",
+      select: "name",
     }),
     getReviews
   )

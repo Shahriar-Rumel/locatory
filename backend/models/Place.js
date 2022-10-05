@@ -9,13 +9,23 @@ const PlaceSchema = new mongoose.Schema({
     trim: true,
     maxlength: [50, "Name can not be more than 50 characters"],
   },
-  slug: String,
-  description: {
-    type: String,
-    required: [true, "Please add a description"],
-    maxlength: [500, "Description can not be more than 500 characters"],
-  },
 
+  category: {
+    type: String,
+    required: [true, "Please add a place type"],
+    enum: [
+      "restaurant",
+      "hotel",
+      "cafe",
+      "store",
+      "theatre",
+      "hospital",
+      "business",
+      "park",
+      "educational",
+      "other",
+    ],
+  },
   address: {
     type: String,
     required: [true, "Please add an address"],
@@ -43,7 +53,7 @@ const PlaceSchema = new mongoose.Schema({
     min: [1, "Rating must be at least 1"],
     max: [10, "Rating must can not be more than 10"],
   },
-  averageCost: Number,
+
   photo: {
     type: String,
     default: "no-photo.jpg",
