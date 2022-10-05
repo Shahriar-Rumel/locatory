@@ -33,4 +33,37 @@ const ReviewSchema = new mongoose.Schema({
   },
 });
 
+// Static method to get avg rating and save
+ReviewSchema.statics.getAverageRating = async function (placeId) {
+  const obj = await this.aggregate([
+    {
+      $match: { place: placeId },
+    },
+    {
+      $group: {
+        _id: "$place",
+        averageRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  try {
+    await this.model("Place").findByIdAndUpdate(placeId, {
+      averageRating: obj[0].averageRating,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// Call getAverageCost after save
+ReviewSchema.post("save", function () {
+  this.constructor.getAverageRating(this.place);
+});
+
+// Call getAverageCost before remove
+ReviewSchema.pre("remove", function () {
+  this.constructor.getAverageRating(this.place);
+});
+
 module.exports = mongoose.model("Review", ReviewSchema);
