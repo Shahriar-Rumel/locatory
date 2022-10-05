@@ -89,7 +89,7 @@ exports.deletePlace = asyncHandler(async (req, res, next) => {
 });
 
 // @desc  Get places by user
-//@route GET /api/placesbyuser/
+//@route GET /api/places/user/all
 //@access Private
 exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
   const places = await Place.find({
@@ -100,12 +100,12 @@ exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`User didn't create a place`, 404));
   }
 
-  res.status(200).json({ success: true, data: places });
+  res.status(200).json({ success: true, count: places.length, data: places });
 });
 
 // @desc      Get places within a radius
 // @route     GET /api/places/radius/:zipcode/:distance
-// @access    Private
+// @access    Public
 exports.getPlacesInRadius = asyncHandler(async (req, res, next) => {
   const { zipcode, distance } = req.params;
 

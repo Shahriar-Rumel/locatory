@@ -117,3 +117,18 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
     data: {},
   });
 });
+
+// @desc  Get reviews by user
+//@route GET /api/reviews/user/all
+//@access Private
+exports.getReviewByUser = asyncHandler(async (req, res, next) => {
+  const reviews = await Review.find({
+    user: req.user.id,
+  });
+
+  if (!reviews) {
+    return next(new ErrorResponse(`User didn't create a review`, 404));
+  }
+
+  res.status(200).json({ success: true, count: reviews.length, data: reviews });
+});
