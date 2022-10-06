@@ -3,7 +3,14 @@ import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../config/colors';
 
-const DropDown = ({ label, items, height, placeholder, ...otherProps }) => {
+const DropDown = ({
+  label,
+  items,
+  height,
+  setData,
+  placeholder,
+  ...otherProps
+}) => {
   const [value, setValue] = useState('');
   const [showList, setShowList] = useState(false);
   const styles = StyleSheet.create({
@@ -11,31 +18,29 @@ const DropDown = ({ label, items, height, placeholder, ...otherProps }) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingRight: 8,
-      zIndex: 12
+      paddingRight: 8
     },
     chooseItemIcon: {
       // marginTop: 8
+      zIndex: -999
     },
 
     inputContainer: {
       width: '100%',
       marginVertical: 3,
       justifyContent: 'space-between',
-      position: 'relative',
-      zIndex: 12
+      position: 'relative'
     },
     input: {
       backgroundColor: colors.input,
       height: height ? height : 45,
       borderRadius: 6,
-      paddingLeft: 120,
-      justifyContent: 'center',
-      zIndex: -12
+      paddingLeft: 140,
+      justifyContent: 'center'
     },
     item: {
       paddingVertical: 8,
-      paddingHorizontal: 10,
+      paddingHorizontal: 20,
       borderBottomWidth: 1,
       borderBottomColor: colors.white,
       fontSize: 12
@@ -46,9 +51,10 @@ const DropDown = ({ label, items, height, placeholder, ...otherProps }) => {
       left: 100,
       top: 2,
       position: 'absolute',
-      width: '111%',
+      width: '70%',
       borderRadius: 5,
-      zIndex: 99
+      zIndex: 999,
+      elevation: 2
     },
     label: {
       position: 'absolute',
@@ -61,25 +67,28 @@ const DropDown = ({ label, items, height, placeholder, ...otherProps }) => {
   });
   const DropDownBox = () => {
     return (
-      <Pressable
-        style={styles.input}
-        onPress={() => setShowList((prev) => !prev)}
-      >
-        <View style={styles.chooseItem}>
-          <Text style={styles.value}>{value ? value : placeholder}</Text>
-          <AntDesign
-            name="caretdown"
-            size={20}
-            color={colors.black}
-            style={styles.chooseItemIcon}
-          />
-        </View>
+      <>
+        <Pressable
+          style={styles.input}
+          onPress={() => setShowList((prev) => !prev)}
+        >
+          <View style={styles.chooseItem}>
+            <Text style={styles.value}>{value ? value : placeholder}</Text>
+            <AntDesign
+              name="caretdown"
+              size={20}
+              color={colors.black}
+              style={styles.chooseItemIcon}
+            />
+          </View>
+        </Pressable>
         {showList && (
           <View style={styles.itemslist}>
             {items.map((item, index) => (
               <Pressable
                 onPress={() => {
                   setValue(item.name);
+                  setData(item.value);
                   setShowList(false);
                 }}
                 key={index}
@@ -89,7 +98,7 @@ const DropDown = ({ label, items, height, placeholder, ...otherProps }) => {
             ))}
           </View>
         )}
-      </Pressable>
+      </>
     );
   };
   return (

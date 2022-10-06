@@ -19,14 +19,14 @@ export default function AppTextInput({ label, placeholder, ...otherProps }) {
 const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
-    height: 60,
+    marginVertical: 3,
     justifyContent: 'space-between',
     position: 'relative'
   },
   input: {
     backgroundColor: colors.input,
     height: 50,
-    borderRadius: 14,
+    borderRadius: 8,
     width: '100%',
     paddingLeft: 120
   },

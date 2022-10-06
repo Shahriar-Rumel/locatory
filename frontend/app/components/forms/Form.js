@@ -21,6 +21,7 @@ export default function AppForm({
 
 const styles = StyleSheet.create({
   form: {
-    width: '100%'
+    width: '100%',
+    marginVertical: 20
   }
 });

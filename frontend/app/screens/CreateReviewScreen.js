@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TextInput
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
 import colors from '../config/colors';
@@ -12,6 +19,41 @@ import AppFormField from '../components/forms/FormField';
 import Form from '../components/forms/Form';
 import SubmitButton from '../components/forms/SubmitButton';
 
+const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
+  const styles = StyleSheet.create({
+    inputContainer: {
+      width: '100%',
+      marginVertical: 3,
+      justifyContent: 'space-between',
+      position: 'relative'
+    },
+    input: {
+      backgroundColor: colors.input,
+      height: 50,
+      borderRadius: 8,
+      width: '100%',
+      paddingLeft: 140
+    },
+    label: {
+      position: 'absolute',
+      zIndex: 9,
+      marginTop: 13,
+      marginLeft: 15,
+      fontFamily: 'SFPD-semiBold'
+    }
+  });
+  return (
+    <View style={styles.inputContainer}>
+      <Text style={styles.label}>{label}</Text>
+      <TextInput
+        style={styles.input}
+        placeholderText={placeholder}
+        onChangeText={(text) => setData(text)}
+        {...otherProps}
+      />
+    </View>
+  );
+};
 const InputPlace = ({ label, placeholder, ...otherProps }) => {
   const styles = StyleSheet.create({
     inputContainer: {
@@ -150,6 +192,8 @@ const BannerSection = ({ setCreatePlace }) => {
   );
 };
 const CreatePlaceSection = ({ setCreatePlace }) => {
+  const [decoration, setDecoration] = useState(0);
+
   const styles = StyleSheet.create({
     createPlaceContainer: {
       marginHorizontal: 15,
@@ -206,6 +250,7 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
       <DropDown
         label={'Catagory'}
         items={Catagory}
+        setData={setDecoration}
         placeholder={'Choose category'}
       />
       <Button text={'Save'} width={100} height={35} borderRadius={8} />
@@ -218,59 +263,154 @@ const CreateReviewForm = () => {
     // email: Yup.string().required().email().label('Email'),
     // password: Yup.string().required().min(4).label('Password')
   });
-  const handleSubmit = ({ email, password }) => {
-    navigation.navigate(routes.FEED);
+
+  const styles = StyleSheet.create({
+    formContainer: {
+      marginHorizontal: 15
+    },
+    form: {
+      marginVertical: 20
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 20,
+      marginHorizontal: 5
+    },
+    headerText: {
+      fontSize: 12,
+      fontWeight: '500'
+    },
+    headerPlace: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: colors.primary
+    }
+  });
+  const items = [
+    { name: '1', value: 1 },
+    { name: '2', value: 2 },
+    { name: '3', value: 3 },
+    { name: '4', value: 4 },
+    { name: '5', value: 5 }
+  ];
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [averageBudget, setAverageBudget] = useState('');
+  const [accessibility, setAccessibility] = useState(0);
+  const [decoration, setDecoration] = useState(0);
+  const [service, setService] = useState(0);
+  const [familyFriendly, setFamilyFriendly] = useState(0);
+  const [transportation, setTransportation] = useState('');
+  const [setting, setSetting] = useState('');
+  const [overallRating, setOverallRating] = useState(0);
+
+  const handleSubmit = () => {
+    console.log(
+      title,
+      description,
+      accessibility,
+      decoration,
+      averageBudget,
+      service,
+      familyFriendly,
+      setting
+    );
   };
+
   return (
-    <View>
-      <Form
-        initialValues={{ email: '', password: '' }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <AppFormField
+    <View style={styles.formContainer}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>You are reviewing</Text>
+        <Text style={styles.headerPlace}>University of Dhaka</Text>
+      </View>
+      <View style={styles.form}>
+        <TextInputReview
           autoCapitalize="none"
           autoCorrect={false}
-          keyboardType="email-address"
-          name="email"
-          label="Email"
-          placeholder="Email"
-          textContentType="emailAddress"
+          keyboardType="text"
+          name="title"
+          label="Title"
+          setData={setTitle}
+          placeholder="Title"
+          textContentType="text"
         />
-        <AppFormField
+        <TextInputReview
           autoCapitalize="none"
           autoCorrect={false}
-          name="password"
-          label="Password"
-          placeholder="Password"
-          secureTextEntry={true}
-          textContentType="password"
+          name="description"
+          label="Description"
+          setData={setDescription}
+          placeholder="Description"
+          textContentType="textArea"
+        />
+        <TextInputReview
+          autoCapitalize="none"
+          autoCorrect={false}
+          name="averageBudget"
+          setData={setAverageBudget}
+          label="Avg. Budget"
+          placeholder="avergeBudget"
+          textContentType="number"
+          keyboardType="numeric"
         />
         <DropDown
-          items={[
-            { name: '1', value: 1 },
-            { name: '2', value: 2 },
-            { name: '3', value: 3 },
-            { name: '4', value: 4 },
-            { name: '5', value: 5 }
-          ]}
+          items={items}
           height={50}
+          setData={setAccessibility}
           label={'Accessibility'}
           placeholder={'Choose Rating'}
         />
         <DropDown
-          items={[
-            { name: '1', value: 1 },
-            { name: '2', value: 2 },
-            { name: '3', value: 3 },
-            { name: '4', value: 4 },
-            { name: '5', value: 5 }
-          ]}
+          items={items}
           height={50}
+          setData={setDecoration}
           label={'Decoration'}
+          placeholder={'Choose Rating'}
         />
-        <SubmitButton text="Login" />
-      </Form>
+        <DropDown
+          items={items}
+          height={50}
+          setData={setService}
+          label={'Service'}
+          placeholder={'Choose Rating'}
+        />
+        <DropDown
+          items={items}
+          height={50}
+          setData={setFamilyFriendly}
+          label={'Family Friendly'}
+          placeholder={'Choose Rating'}
+        />
+        <DropDown
+          items={items}
+          height={50}
+          setData={setTransportation}
+          label={'Transportation'}
+          placeholder={'Choose Rating'}
+        />
+        <DropDown
+          items={items}
+          height={50}
+          setData={setSetting}
+          label={'Setting'}
+          placeholder={'Choose Rating'}
+        />
+        <DropDown
+          items={items}
+          height={50}
+          setData={setOverallRating}
+          label={'Overall Rating'}
+          placeholder={'Choose Rating'}
+        />
+        <Button
+          text="Create Review"
+          width={'100%'}
+          borderRadius={8}
+          onPress={handleSubmit}
+        />
+      </View>
     </View>
   );
 };
