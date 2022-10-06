@@ -6,9 +6,14 @@ import { navigationRef } from './app/navigation/rootNavigation';
 import navigationTheme from './app/navigation/navigationTheme';
 import AppNavigator from './app/navigation/AppNavigator';
 import AuthNavigator from './app/navigation/AuthNavigator';
+import { Provider, useSelector } from 'react-redux';
+import { store, persistor } from './app/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Locatory from './app/Locatory';
 
 export default function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
   const [fontsLoaded] = useFonts({
     'SFPD-bold': require('./app/assets/fonts/SFPD-Bold.otf'),
@@ -19,9 +24,12 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      {user ? <AppNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Locatory />
+      </PersistGate>
+    </Provider>
   );
 }

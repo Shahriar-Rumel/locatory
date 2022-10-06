@@ -27,6 +27,7 @@ export default function WelcomeScreen({ navigation }) {
       <Button
         text={'Sign in with Email'}
         onPress={() => navigation.navigate(routes.LOGIN)}
+        width={'100%'}
       />
       <View style={styles.alreadyHaveAccountSection}>
         <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>

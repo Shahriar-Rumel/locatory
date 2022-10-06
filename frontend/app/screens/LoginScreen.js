@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -18,15 +19,30 @@ import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
 import SubmitButton from '../components/forms/SubmitButton';
 import { ScrollView } from 'react-native-gesture-handler';
+import { login } from '../actions/userActions';
 
 const validationSchema = Yup.object().shape({
   // email: Yup.string().required().email().label('Email'),
   // password: Yup.string().required().min(4).label('Password')
 });
 export default function LoginScreen({ navigation }) {
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, loading, error } = userLogin;
+
   const handleSubmit = ({ email, password }) => {
-    navigation.navigate(routes.FEED);
+    // navigation.navigate(routes.FEED);
+    // console.log(email, password);
+    dispatch(login(email, password));
   };
+
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     navigation.navigate('Login');
+  //     console.log(userInfo);
+  //   }
+  // }, [userInfo]);
   return (
     <Screen style={styles.container}>
       <KeyboardAvoidingView

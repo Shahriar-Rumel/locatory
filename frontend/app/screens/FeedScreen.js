@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Image,
   ImageBackground,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,21 +15,41 @@ import colors from '../config/colors';
 import constants from '../config/constants';
 import Screen from '../components/Screen';
 import CardSection from '../components/CardSection';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '../actions/userActions';
 
-const TopBar = () => {
+const TopBar = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const userLoginData = useSelector((state) => state.userLogin);
+  const { userInfo, loading, error } = userLoginData;
+
+  useEffect(() => {
+    if (!userInfo) {
+      // navigation.navigate('Login');
+      console.log(userInfo);
+    }
+  }, [userInfo]);
+
+  const logoutHandler = () => {
+    dispatch(logOut());
+    console.log('clicked');
+  };
   return (
     <View style={styles.topBar}>
       <View style={styles.greetContainer}>
         <Text style={styles.greet}>Good Evening,</Text>
         <Text style={[styles.greet, styles.greetName]}>Rumel</Text>
       </View>
-      <ImageBackground
-        style={styles.dp}
-        source={{
-          uri: 'https://images.unsplash.com/photo-1657214059212-104dac959c56?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
-        }}
-        resizeMode="cover"
-      />
+      <Pressable onPress={logoutHandler}>
+        <ImageBackground
+          style={styles.dp}
+          source={{
+            uri: 'https://images.unsplash.com/photo-1657214059212-104dac959c56?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
+          }}
+          resizeMode="cover"
+        />
+      </Pressable>
     </View>
   );
 };
@@ -106,7 +127,7 @@ export default function FeedScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
       >
-        <TopBar />
+        <TopBar navigation={navigation} />
         <SearchBar />
         <FilterBar />
 
