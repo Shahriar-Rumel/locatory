@@ -23,11 +23,13 @@ router.use("/:placeId/reviews", reviewRouter);
 router.route("/radius/:zipcode/:distance").get(getPlacesInRadius);
 router
   .route("/")
-  .get(advancedResults(Place), getPlaces)
+  .get(protect, advancedResults(Place), getPlaces)
   .post(protect, createPlace);
+
+//Routes protected
 router
   .route("/:id")
-  .get(getPlace)
+  .get(protect, getPlace)
   .put(protect, updatePlace)
   .delete(protect, deletePlace);
 

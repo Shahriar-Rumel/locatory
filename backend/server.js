@@ -14,6 +14,7 @@ connectDB();
 const places = require("./routes/places");
 const auth = require("./routes/auth");
 const reviews = require("./routes/reviews");
+const likes = require("./routes/likes");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/api/places", places);
 app.use("/api/auth", auth);
 app.use("/api/reviews", reviews);
+app.use("/api/likes", likes);
 
 app.use(errorHandler);
 

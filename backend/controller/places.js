@@ -5,14 +5,14 @@ const geocoder = require("../utils/geocoder");
 
 // @desc  Get all places
 //@route GET /api/places
-//@access Public
+//@access Private
 exports.getPlaces = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
 // @desc  Get a place
 //@route GET /api/places/:id
-//@access Public
+//@access Private
 exports.getPlace = asyncHandler(async (req, res, next) => {
   const place = await Place.findById(req.params.id);
 

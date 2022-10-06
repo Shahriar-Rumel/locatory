@@ -13,11 +13,18 @@ const Review = require("../models/Review");
 const router = express.Router({ mergeParams: true });
 
 const advancedResults = require("../middleware/advancedResults");
+
+//Include children routes
+const likeRouter = require("./likes");
+
 const { protect } = require("../middleware/auth");
+
+router.use("/:reviewId/likes", likeRouter);
 
 router
   .route("/")
   .get(
+    protect,
     advancedResults(Review, {
       path: "place",
       select: "name",
@@ -28,7 +35,7 @@ router
 
 router
   .route("/:id")
-  .get(getReview)
+  .get(protect, getReview)
   .put(protect, updateReview)
   .delete(protect, deleteReview);
 

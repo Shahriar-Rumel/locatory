@@ -6,7 +6,7 @@ const Place = require("../models/Place");
 // @desc      Get reviews
 // @route     GET /api/reviews
 // @route     GET /api/places/:placeId/reviews
-// @access    Public
+// @access    Private
 exports.getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.placeId) {
     const reviews = await Review.find({ place: req.params.placeId });
@@ -23,7 +23,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 
 // @desc      Get single review
 // @route     GET /api/reviews/:id
-// @access    Public
+// @access    Private
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
     path: "place",
