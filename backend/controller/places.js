@@ -96,7 +96,7 @@ exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
     user: req.user.id,
   });
 
-  if (!places) {
+  if (Object.keys(places).length == 0) {
     return next(new ErrorResponse(`User didn't create a place`, 404));
   }
 

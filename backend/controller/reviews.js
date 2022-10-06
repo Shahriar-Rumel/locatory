@@ -126,7 +126,7 @@ exports.getReviewByUser = asyncHandler(async (req, res, next) => {
     user: req.user.id,
   });
 
-  if (!reviews) {
+  if (Object.keys(reviews).length == 0) {
     return next(new ErrorResponse(`User didn't create a review`, 404));
   }
 
