@@ -1,5 +1,5 @@
 const express = require("express");
-const { getLikes, addLike } = require("../controller/likes");
+const { getLikes, addLike, getLikeByUser } = require("../controller/likes");
 
 const Like = require("../models/Like");
 
@@ -19,5 +19,7 @@ router
     getLikes
   )
   .post(protect, addLike);
+
+router.route("/user/all").get(protect, getLikeByUser);
 
 module.exports = router;
