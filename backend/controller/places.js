@@ -1,13 +1,13 @@
 const Place = require("../models/Place");
 const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
+const geocoder = require("../utils/geocoder");
 
 // @desc  Get all places
 //@route GET /api/places
 //@access Public
 exports.getPlaces = asyncHandler(async (req, res, next) => {
-  const places = await Place.find();
-  res.status(200).json({ success: true, count: places.length, data: places });
+  res.status(200).json(res.advancedResults);
 });
 
 // @desc  Get a place
@@ -89,7 +89,7 @@ exports.deletePlace = asyncHandler(async (req, res, next) => {
 });
 
 // @desc  Get places by user
-//@route GET /api/placesbyuser/
+//@route GET /api/places/user/all
 //@access Private
 exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
   const places = await Place.find({
@@ -100,5 +100,32 @@ exports.getPlaceByUser = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`User didn't create a place`, 404));
   }
 
-  res.status(200).json({ success: true, data: places });
+  res.status(200).json({ success: true, count: places.length, data: places });
+});
+
+// @desc      Get places within a radius
+// @route     GET /api/places/radius/:zipcode/:distance
+// @access    Public
+exports.getPlacesInRadius = asyncHandler(async (req, res, next) => {
+  const { zipcode, distance } = req.params;
+
+  // Get lat/lng from geocoder
+  const loc = await geocoder.geocode(zipcode);
+  const lat = loc[0].latitude;
+  const lng = loc[0].longitude;
+
+  // Calc radius using radians
+  // Divide dist by radius of Earth
+  // Earth Radius = 3,963 mi / 6,378 km
+  const radius = distance / 3963;
+
+  const places = await Place.find({
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    success: true,
+    count: places.length,
+    data: places,
+  });
 });

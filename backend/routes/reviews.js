@@ -5,6 +5,7 @@ const {
   addReview,
   updateReview,
   deleteReview,
+  getReviewByUser,
 } = require("../controller/reviews");
 
 const Review = require("../models/Review");
@@ -30,5 +31,7 @@ router
   .get(getReview)
   .put(protect, updateReview)
   .delete(protect, deleteReview);
+
+router.route("/user/all").get(protect, getReviewByUser);
 
 module.exports = router;
