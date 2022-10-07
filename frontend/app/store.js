@@ -5,7 +5,13 @@ import { persistStore, persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userLoginReducer } from './reducers/userReducers';
+import {
+  userDetailsReducer,
+  userLoginReducer,
+  userRegisterReducer
+} from './reducers/userReducers';
+import { getAllPlacesReducer } from './reducers/placeReducers';
+import { getReviewsByPlaceReducer } from './reducers/reviewReducers';
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +20,11 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
-  userLogin: persistReducer(persistConfig, userLoginReducer)
+  userLogin: persistReducer(persistConfig, userLoginReducer),
+  userRegister: persistReducer(persistConfig, userRegisterReducer),
+  userData: persistReducer(persistConfig, userDetailsReducer),
+  allPlacesData: persistReducer(persistConfig, getAllPlacesReducer),
+  reviewsByPlaceData: persistReducer(persistConfig, getReviewsByPlaceReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')

@@ -19,7 +19,8 @@ const CoverSection = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     img: {
       width: '100%',
-      height: 300
+      height: 300,
+      backgroundColor: colors.primary
     },
     backButton: {
       backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -94,7 +95,7 @@ const CoverSection = ({ navigation, route }) => {
         </View>
       </Pressable>
       <View style={styles.bottom}>
-        <Text style={styles.title}>{data.type}</Text>
+        <Text style={styles.title}>{data.title}</Text>
         <View style={styles.ratingContainer}>
           {list.map((item, index) => (
             <MaterialCommunityIcons
@@ -176,20 +177,25 @@ const DetailsSection = ({ data }) => {
     title: {
       fontWeight: '700',
       fontSize: 20,
-      color: colors.primary
+      color: colors.primary,
+      width: '60%'
     }
   });
 
   return (
     <View style={styles.detailsSection}>
       <View style={styles.locationContainer}>
-        <Text style={styles.title}>{data.name}</Text>
-        <Text style={styles.date}>{data.date}</Text>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.date}>
+          {data.createdAt.split('T')[0] +
+            ' at ' +
+            data.createdAt.split('T')[1].split('.')[0]}
+        </Text>
       </View>
-      <Text style={styles.description}>{data.desc}</Text>
+      <Text style={styles.description}>{data.description}</Text>
       <View style={styles.actionContainer}>
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.likes}</Text>
+          <Text style={styles.statCount}>{data.totallikes}</Text>
           <Pressable
             style={styles.iconContainer}
             onPress={() => setLiked((prev) => !prev)}
@@ -235,7 +241,7 @@ const CarouselSection = ({ data }) => {
   const styles = StyleSheet.create({
     carouselImage: {
       height: 300,
-      backgroundColor: 'red',
+      backgroundColor: colors.primaryLight,
       marginHorizontal: 15,
       borderRadius: 5,
       marginTop: 20,
@@ -255,7 +261,7 @@ const CarouselSection = ({ data }) => {
     </View>
   );
 };
-const Banner = () => {
+const Banner = ({ data }) => {
   const styles = StyleSheet.create({
     bannerContainer: {
       height: 80,
@@ -289,7 +295,7 @@ const Banner = () => {
         resizeMode={'contain'}
         source={require('../assets/budget.png')}
       />
-      <Text style={styles.amount}>2000 ৳</Text>
+      <Text style={styles.amount}>{data.averagebudget} ৳</Text>
     </View>
   );
 };
@@ -329,7 +335,8 @@ const Rating = ({ data, title, src, text }) => {
       fontSize: 10,
       fontWeight: '600',
       textAlign: 'center',
-      color: colors.secondary
+      color: colors.secondary,
+      textTransform: 'capitalize'
     }
   });
   const list = [1, 2, 3, 4, 5];
@@ -342,7 +349,7 @@ const Rating = ({ data, title, src, text }) => {
         <View style={styles.ratingContainer}>
           {list.map((item, index) => (
             <MaterialCommunityIcons
-              name={data.rating > index ? 'star' : 'star-outline'}
+              name={data > index ? 'star' : 'star-outline'}
               size={14}
               color={colors.secondary}
               key={index}
@@ -374,27 +381,36 @@ const RatingBox = ({ data }) => {
 
   return (
     <View style={styles.ratingBoxContainer}>
-      <Rating data={data} title={'Accessibility'} src={accessibility} />
-      <Rating data={data} title={'Decoration'} src={decoration} />
-      <Rating data={data} title={'Service'} src={service} />
-      <Rating data={data} title={'Family Friendly'} src={family} />
       <Rating
-        data={data}
-        title={'Transportation'}
-        src={transportation}
-        text={'Bus'}
+        data={data.accessibility}
+        title={'Accessibility'}
+        src={accessibility}
+      />
+      <Rating data={data.decoration} title={'Decoration'} src={decoration} />
+      <Rating data={data.service} title={'Service'} src={service} />
+      <Rating
+        data={data.familyfriendly}
+        title={'Family Friendly'}
+        src={family}
       />
       <Rating
-        data={data}
+        data={data.transportation}
+        title={'Transportation'}
+        src={transportation}
+        text={data.transportation}
+      />
+      <Rating
+        data={data.setting}
         title={'Location Type'}
         src={location}
-        text={'Indoor'}
+        text={data.setting}
       />
     </View>
   );
 };
 export default function ReviewScreen({ navigation, route }) {
   const { data } = route.params;
+  console.log(data);
   return (
     <ScrollView style={styles.container}>
       <CoverSection navigation={navigation} route={route} />

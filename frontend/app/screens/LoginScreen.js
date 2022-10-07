@@ -18,7 +18,6 @@ import Toggle from '../components/Toggle';
 import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
 import SubmitButton from '../components/forms/SubmitButton';
-import { ScrollView } from 'react-native-gesture-handler';
 import { login } from '../actions/userActions';
 
 const validationSchema = Yup.object().shape({
@@ -84,7 +83,7 @@ export default function LoginScreen({ navigation }) {
             secureTextEntry={true}
             textContentType="password"
           />
-          <SubmitButton text="Login" />
+          <SubmitButton text="Login" loading={loading} width={'100%'} />
         </Form>
         <View style={styles.secondaryButtonContainer}>
           <Pressable

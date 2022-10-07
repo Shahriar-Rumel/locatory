@@ -17,14 +17,18 @@ import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
 import SubmitButton from '../components/forms/SubmitButton';
 import { setStatusBarBackgroundColor } from 'expo-status-bar';
+import { useDispatch } from 'react-redux';
+import { register } from '../actions/userActions';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
-  password: Yup.string().required().min(4).label('Password')
+  password: Yup.string().required().min(8).label('Password')
 });
 function RegisterScreen({ navigation }) {
-  const handleSubmit = ({ email, password }) => {
-    navigation.navigate(routes.FEED);
+  const dispatch = useDispatch();
+
+  const handleSubmit = ({ name, email, password }) => {
+    dispatch(register(name, email, password));
   };
 
   return (
@@ -48,7 +52,7 @@ function RegisterScreen({ navigation }) {
           </Text>
         </View>
         <Form
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ name: '', email: '', password: '' }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
@@ -56,7 +60,7 @@ function RegisterScreen({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="text"
-            name="Name"
+            name="name"
             label="Name"
             placeholder="Shahriar Rumel"
             textContentType="name"
@@ -71,15 +75,15 @@ function RegisterScreen({ navigation }) {
             placeholder="Email"
             textContentType="emailAddress"
           />
-          <FormField
+          {/* <FormField
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="text"
-            name="Location"
+            name="location"
             label="Location"
             placeholder="Dhaka,Bangladesh"
             textContentType="Location"
-          />
+          /> */}
           <FormField
             autoCapitalize="none"
             autoCorrect={false}
@@ -89,7 +93,7 @@ function RegisterScreen({ navigation }) {
             secureTextEntry={true}
             textContentType="password"
           />
-          <SubmitButton text="Create account" />
+          <SubmitButton text="Create account" width={'100%'} />
         </Form>
 
         <View style={styles.alreadyHaveAccountContainer}>

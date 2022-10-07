@@ -9,7 +9,6 @@ import AuthNavigator from './app/navigation/AuthNavigator';
 import { Provider, useSelector } from 'react-redux';
 import { store, persistor } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Locatory from './app/Locatory';
 
 export default function App() {

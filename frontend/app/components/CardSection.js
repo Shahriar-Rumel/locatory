@@ -28,6 +28,15 @@ const CardSection = ({ title, data, navigation }) => {
     }
   });
 
+  const getFirstTenChars = (data) => {
+    const array = data?.split('') ? data?.split('') : 'loading';
+    let ans = '';
+    for (let i = 0; i <= 20; i++) ans += array[i];
+    for (let i = 1; i <= 3; i++) ans += ' .';
+
+    return ans;
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.forYou}>{title}</Text>
@@ -47,10 +56,10 @@ const CardSection = ({ title, data, navigation }) => {
               }
             >
               <Card
-                title={item.title}
-                distance={item.distance}
-                location={item.location}
-                imguri={item.imaguri}
+                title={item.name}
+                distance={'0.2 Km'}
+                location={getFirstTenChars(item?.location?.formattedAddress)}
+                imguri={item.name}
               />
             </Pressable>
           ))}

@@ -20,7 +20,7 @@ export default function Locatory() {
   useEffect(() => {
     if (!userInfo) {
       // navigation.navigate('Login');
-      console.log(userInfo);
+      // console.log(userInfo);
     }
   }, [userInfo]);
 

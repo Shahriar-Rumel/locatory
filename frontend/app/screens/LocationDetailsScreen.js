@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ImageBackground,
   Pressable,
@@ -17,12 +17,15 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import routes from '../navigation/routes';
+import { useDispatch, useSelector } from 'react-redux';
+import { getReviewsByPlace } from '../actions/reviewActions';
 
 const CoverSection = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     img: {
       width: '100%',
-      height: 300
+      height: 300,
+      backgroundColor: colors.primary
     },
     backButton: {
       backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -51,7 +54,8 @@ const CoverSection = ({ navigation, route }) => {
     title: {
       fontWeight: '700',
       fontSize: 26,
-      color: colors.white
+      color: colors.white,
+      textTransform: 'capitalize'
     },
     locationContainer: {
       flexDirection: 'row',
@@ -62,7 +66,8 @@ const CoverSection = ({ navigation, route }) => {
     location: {
       fontWeight: '500',
       fontSize: 11,
-      color: colors.white
+      color: colors.white,
+      width: '80%'
     },
     distance: {
       fontWeight: '500',
@@ -73,11 +78,13 @@ const CoverSection = ({ navigation, route }) => {
 
   const { data } = route.params;
 
+  // console.log(data);
+
   return (
     <ImageBackground
       style={styles.img}
       source={{
-        uri: `${data.imaguri}`
+        uri: `${data?.imaguri}`
       }}
       resizeMode="cover"
     >
@@ -90,16 +97,16 @@ const CoverSection = ({ navigation, route }) => {
         </View>
       </Pressable>
       <View style={styles.bottom}>
-        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.title}>{data?.name}</Text>
         <View style={styles.locationContainer}>
-          <Text style={styles.location}>{data.location}</Text>
-          <Text style={styles.distance}>{data.distance}</Text>
+          <Text style={styles.location}>{data?.location.formattedAddress}</Text>
+          <Text style={styles.distance}>10 Km</Text>
         </View>
       </View>
     </ImageBackground>
   );
 };
-const OverviewSection = () => {
+const OverviewSection = ({ route }) => {
   const styles = StyleSheet.create({
     overviewContainer: {
       width: '100%',
@@ -116,7 +123,8 @@ const OverviewSection = () => {
     },
     number: {
       fontWeight: '700',
-      textAlign: 'center'
+      textAlign: 'center',
+      textTransform: 'capitalize'
     },
     attribute: {
       fontWeight: '700',
@@ -134,15 +142,18 @@ const OverviewSection = () => {
       width: '33%'
     }
   });
+  const { data } = route.params;
   return (
     <View style={styles.overviewContainer}>
       <View style={styles.avgRatingContainer}>
-        <Text style={styles.number}>8.9</Text>
+        <Text style={styles.number}>
+          {data?.averageRating ? data?.averageRating : 0}
+        </Text>
         <Text style={styles.attribute}>Avg. Rating</Text>
       </View>
       <View style={styles.totalLikesContainer}>
-        <Text style={styles.number}>124.7k</Text>
-        <Text style={styles.attribute}>Total Likes</Text>
+        <Text style={styles.number}>{data?.category}</Text>
+        <Text style={styles.attribute}>Category</Text>
       </View>
       <View style={styles.totalReviewsContainer}>
         <Text style={styles.number}>4.7k</Text>
@@ -175,7 +186,7 @@ const MapSection = () => {
   );
 };
 const ReviewListSection = ({ navigation, route }) => {
-  const data = [
+  const dummydata = [
     {
       id: 1,
       name: 'University of Dhaka',
@@ -267,7 +278,7 @@ const ReviewListSection = ({ navigation, route }) => {
       date: {
         fontSize: 10,
         fontWeight: '600',
-        marginLeft: 18,
+        marginLeft: 78,
         marginTop: 3,
         color: colors.gray
       },
@@ -283,6 +294,15 @@ const ReviewListSection = ({ navigation, route }) => {
         fontWeight: '500'
       }
     });
+
+    const getFirstHundredChars = (data) => {
+      const array = data?.split('') ? data?.split('') : 'loading';
+      let ans = '';
+      for (let i = 0; i <= 40; i++) ans += array[i];
+      for (let i = 1; i <= 3; i++) ans += ' .';
+
+      return ans;
+    };
     return (
       <Pressable
         style={styles.item}
@@ -301,10 +321,12 @@ const ReviewListSection = ({ navigation, route }) => {
         />
         <View style={styles.leftContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.date}>{item.date}</Text>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.date}>{item.createdAt?.split('T')[0]}</Text>
           </View>
-          <Text style={styles.desc}>{item.desc}</Text>
+          <Text style={styles.desc}>
+            {getFirstHundredChars(item.description)}
+          </Text>
           <View style={styles.actionContainer}>
             <View style={styles.likeContainer}>
               <Text style={styles.statCount}>12k</Text>
@@ -324,9 +346,27 @@ const ReviewListSection = ({ navigation, route }) => {
     );
   };
   const FlatListTop = <FlatListHeaders route={route} navigation={navigation} />;
+
+  const dispatch = useDispatch();
+
+  const reviewsByPlaceData = useSelector((state) => state.reviewsByPlaceData);
+
+  const { reviewsByPlace, loading, error } = reviewsByPlaceData;
+
+  // console.log(reviewsByPlace);
+
+  const { data } = route.params;
+
+  // console.log(data._id);
+  useEffect(() => {
+    dispatch(getReviewsByPlace(data?._id));
+  }, [data?._id]);
+
+  // const dataWrapper = [reviewsByPlace];
+  // console.log(reviewsByPlace);
   return (
     <FlatList
-      data={data}
+      data={reviewsByPlace?.data}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={FlatListTop}
@@ -337,7 +377,7 @@ const FlatListHeaders = ({ navigation, route }) => {
   return (
     <>
       <CoverSection navigation={navigation} route={route} />
-      <OverviewSection />
+      <OverviewSection route={route} />
       <MapSection />
       <Text style={styles.reviews}> Reviews </Text>
     </>

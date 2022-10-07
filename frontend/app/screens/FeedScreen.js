@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
+  ActivityIndicator,
   Image,
   ImageBackground,
   Pressable,
@@ -16,7 +17,8 @@ import constants from '../config/constants';
 import Screen from '../components/Screen';
 import CardSection from '../components/CardSection';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../actions/userActions';
+import { getCurrentUser, logOut } from '../actions/userActions';
+import { getAllPlacesAction } from '../actions/placeActions';
 
 const TopBar = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -24,31 +26,54 @@ const TopBar = ({ navigation }) => {
   const userLoginData = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLoginData;
 
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     // navigation.navigate('Login');
+  //     console.log(userInfo);
+  //   }
+  // }, [userInfo]);
+
   useEffect(() => {
-    if (!userInfo) {
-      // navigation.navigate('Login');
-      console.log(userInfo);
+    if (userInfo) {
+      dispatch(getCurrentUser());
+      dispatch(getAllPlacesAction());
     }
   }, [userInfo]);
 
+  const userData = useSelector((state) => state.userData);
+  const {
+    userDetails,
+    loading: userDataLoading,
+    error: userDataError
+  } = userData;
+
   const logoutHandler = () => {
     dispatch(logOut());
-    console.log('clicked');
   };
   return (
     <View style={styles.topBar}>
       <View style={styles.greetContainer}>
         <Text style={styles.greet}>Good Evening,</Text>
-        <Text style={[styles.greet, styles.greetName]}>Rumel</Text>
+        <Text style={[styles.greet, styles.greetName]}>
+          {userDetails?.data?.name?.split(' ')[0]}
+        </Text>
       </View>
       <Pressable onPress={logoutHandler}>
-        <ImageBackground
-          style={styles.dp}
-          source={{
-            uri: 'https://images.unsplash.com/photo-1657214059212-104dac959c56?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
-          }}
-          resizeMode="cover"
-        />
+        {userData?.dp ? (
+          <ImageBackground
+            style={styles.dp}
+            source={{
+              uri: 'https://images.unsplash.com/photo-1657214059212-104dac959c56?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
+            }}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.dp}>
+            <Text style={styles.dpText}>
+              {userDetails?.data?.name?.split('')[0]}
+            </Text>
+          </View>
+        )}
       </Pressable>
     </View>
   );
@@ -120,6 +145,17 @@ export default function FeedScreen({ navigation }) {
         'https://images.unsplash.com/photo-1611175522050-9e702da5b464?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1746&q=80'
     }
   ];
+  const dispatch = useDispatch();
+
+  const allPlacesData = useSelector((state) => state.allPlacesData);
+  const {
+    allPlaces,
+    loading: allPlacesLoading,
+    error: allPlacesError
+  } = allPlacesData;
+
+  console.log(allPlaces?.data[0].name);
+
   return (
     <Screen style={styles.container}>
       <ScrollView
@@ -130,18 +166,34 @@ export default function FeedScreen({ navigation }) {
         <TopBar navigation={navigation} />
         <SearchBar />
         <FilterBar />
-
-        <CardSection title={'For you'} data={data} navigation={navigation} />
-        <CardSection
-          title={'Meet with colleagues'}
-          data={data}
-          navigation={navigation}
-        />
-        <CardSection
-          title={'Most Reviewed'}
-          data={data}
-          navigation={navigation}
-        />
+        {/* <View>
+          <ActivityIndicator size="large" color={colors.primaryLight} />
+        </View> */}
+        {allPlacesLoading ? (
+          <ActivityIndicator
+            size="large"
+            color={colors.primary}
+            style={styles.loader}
+          />
+        ) : (
+          <>
+            <CardSection
+              title={'For you'}
+              data={allPlaces ? allPlaces.data : data}
+              navigation={navigation}
+            />
+            <CardSection
+              title={'Meet with colleagues'}
+              data={allPlaces ? allPlaces.data : data}
+              navigation={navigation}
+            />
+            <CardSection
+              title={'Most Reviewed'}
+              data={allPlaces ? allPlaces.data : data}
+              navigation={navigation}
+            />
+          </>
+        )}
       </ScrollView>
     </Screen>
   );
@@ -157,9 +209,16 @@ const styles = StyleSheet.create({
   dp: {
     width: 35,
     height: 35,
-    backgroundColor: 'red',
+    backgroundColor: colors.secondary,
     borderRadius: 50,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  dpText: {
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    color: colors.white
   },
   filterContainer: {
     flexDirection: 'row',
@@ -194,7 +253,8 @@ const styles = StyleSheet.create({
   },
   greetName: {
     marginLeft: 3,
-    color: colors.black
+    color: colors.black,
+    textTransform: 'capitalize'
   },
   input: {
     backgroundColor: colors.input,
@@ -205,6 +265,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 14,
     fontFamily: 'SFPD-medium'
+  },
+  loader: {
+    marginVertical: 40
   },
   scrollContainer: {
     width: '100%',

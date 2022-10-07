@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator
+} from 'react-native';
 import React from 'react';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import colors from '../config/colors';
@@ -10,7 +16,8 @@ export default function Button({
   borderRadius,
   height,
   color,
-  mv
+  mv,
+  loading
 }) {
   const styles = StyleSheet.create({
     button: {
@@ -20,15 +27,26 @@ export default function Button({
       alignItems: 'center',
       borderRadius: borderRadius ? borderRadius : 14,
       justifyContent: 'center',
-      marginVertical: mv ? mv : 8
+      marginVertical: mv ? mv : 8,
+      flexDirection: 'row'
     },
     text: {
       color: color ? color : colors.white,
       fontFamily: 'SFPD-semiBold'
+    },
+    loader: {
+      marginRight: 10
     }
   });
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
+      {loading && (
+        <ActivityIndicator
+          size={24}
+          color={colors.secondary}
+          style={styles.loader}
+        />
+      )}
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
