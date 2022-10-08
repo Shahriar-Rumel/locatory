@@ -17,7 +17,8 @@ export default function Button({
   height,
   color,
   mv,
-  loading
+  loading,
+  opacity
 }) {
   const styles = StyleSheet.create({
     button: {
@@ -28,7 +29,8 @@ export default function Button({
       borderRadius: borderRadius ? borderRadius : 14,
       justifyContent: 'center',
       marginVertical: mv ? mv : 8,
-      flexDirection: 'row'
+      flexDirection: 'row',
+      opacity: !opacity ? opacity : 1
     },
     text: {
       color: color ? color : colors.white,

@@ -18,6 +18,7 @@ import DropDown from '../components/DropDown';
 import AppFormField from '../components/forms/FormField';
 import Form from '../components/forms/Form';
 import SubmitButton from '../components/forms/SubmitButton';
+import ImageInput from '../components/ImageInput';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -271,6 +272,11 @@ const CreateReviewForm = () => {
     form: {
       marginVertical: 20
     },
+    imageContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-between'
+    },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -305,6 +311,7 @@ const CreateReviewForm = () => {
   const [transportation, setTransportation] = useState('');
   const [setting, setSetting] = useState('');
   const [overallRating, setOverallRating] = useState(0);
+  const [firstImage, setFirstImage] = useState('');
 
   const handleSubmit = () => {
     console.log(
@@ -318,6 +325,7 @@ const CreateReviewForm = () => {
       setting
     );
   };
+  console.log(firstImage);
 
   return (
     <View style={styles.formContainer}>
@@ -326,6 +334,11 @@ const CreateReviewForm = () => {
         <Text style={styles.headerPlace}>University of Dhaka</Text>
       </View>
       <View style={styles.form}>
+        <View style={styles.imageContainer}>
+          <ImageInput data={firstImage} setData={setFirstImage} />
+          <ImageInput data={firstImage} setData={setFirstImage} />
+          <ImageInput data={firstImage} setData={setFirstImage} />
+        </View>
         <TextInputReview
           autoCapitalize="none"
           autoCorrect={false}
@@ -404,6 +417,7 @@ const CreateReviewForm = () => {
           label={'Overall Rating'}
           placeholder={'Choose Rating'}
         />
+
         <Button
           text="Create Review"
           width={'100%'}

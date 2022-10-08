@@ -11,9 +11,10 @@ import {
 
 const BASE_URL = PRODUCTION_URL;
 
-const storeData = async () => {
+const storeData = async (value) => {
   try {
-    await AsyncStorage.setItem('userLogin', jsonValue);
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('reviewsByPlaceData', jsonValue);
   } catch (e) {
     console.log(e);
   }
@@ -37,7 +38,6 @@ export const getReviewsByPlace =
         }
       };
 
-      console.log(id);
       const { data } = await axios.get(
         `${BASE_URL}/api/places/${id}/reviews`,
         config

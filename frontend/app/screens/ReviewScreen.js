@@ -410,7 +410,7 @@ const RatingBox = ({ data }) => {
 };
 export default function ReviewScreen({ navigation, route }) {
   const { data } = route.params;
-  console.log(data);
+
   return (
     <ScrollView style={styles.container}>
       <CoverSection navigation={navigation} route={route} />

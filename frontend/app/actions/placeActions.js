@@ -10,9 +10,10 @@ import {
 
 const BASE_URL = PRODUCTION_URL;
 
-const storeData = async () => {
+const storeData = async (value) => {
   try {
-    await AsyncStorage.setItem('userLogin', jsonValue);
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('allPlacesData', jsonValue);
   } catch (e) {
     console.log(e);
   }
@@ -52,6 +53,6 @@ export const getAllPlacesAction =
             ? error.response.data.message
             : error.message
       });
-      console.log(error);
+      console.log(error.response.data.message);
     }
   };

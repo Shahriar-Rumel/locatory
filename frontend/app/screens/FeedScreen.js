@@ -26,13 +26,6 @@ const TopBar = ({ navigation }) => {
   const userLoginData = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLoginData;
 
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     // navigation.navigate('Login');
-  //     console.log(userInfo);
-  //   }
-  // }, [userInfo]);
-
   useEffect(() => {
     if (userInfo) {
       dispatch(getCurrentUser());
@@ -50,10 +43,31 @@ const TopBar = ({ navigation }) => {
   const logoutHandler = () => {
     dispatch(logOut());
   };
+
+  let partsofDay = '';
+
+  const partsofDayList = [
+    'Good Morning',
+    'Good Noon',
+    'Good Afternoon',
+    'Good Evening'
+  ];
+  const getPartsofTheDay = () => {
+    let localTime = new Date().toLocaleString();
+
+    const time = localTime.split(' ')[4].split(':')[0];
+
+    if (time < 11) return partsofDayList[0];
+    if (time < 14) return partsofDayList[1];
+    if (time < 18) return partsofDayList[2];
+    if (time < 24) return partsofDayList[3];
+  };
+
+  partsofDay = getPartsofTheDay();
   return (
     <View style={styles.topBar}>
       <View style={styles.greetContainer}>
-        <Text style={styles.greet}>Good Evening,</Text>
+        <Text style={styles.greet}>{partsofDay} ,</Text>
         <Text style={[styles.greet, styles.greetName]}>
           {userDetails?.data?.name?.split(' ')[0]}
         </Text>
@@ -166,9 +180,7 @@ export default function FeedScreen({ navigation }) {
         <TopBar navigation={navigation} />
         <SearchBar />
         <FilterBar />
-        {/* <View>
-          <ActivityIndicator size="large" color={colors.primaryLight} />
-        </View> */}
+
         {allPlacesLoading ? (
           <ActivityIndicator
             size="large"

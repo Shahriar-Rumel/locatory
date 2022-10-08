@@ -78,8 +78,6 @@ const CoverSection = ({ navigation, route }) => {
 
   const { data } = route.params;
 
-  // console.log(data);
-
   return (
     <ImageBackground
       style={styles.img}
@@ -186,57 +184,6 @@ const MapSection = () => {
   );
 };
 const ReviewListSection = ({ navigation, route }) => {
-  const dummydata = [
-    {
-      id: 1,
-      name: 'University of Dhaka',
-      desc: 'The Oxford We Live and Breathe',
-      date: '17 August 2022',
-      likes: '12k',
-      dislikes: '12k',
-      type: 'Educational Institute',
-      img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      comments: '2k',
-      rating: 4
-    },
-    {
-      id: 2,
-      name: 'University of Dhaka',
-      desc: 'The Oxford We Live and Breathe',
-      date: '17 August 2022',
-      likes: '12k',
-      dislikes: '12k',
-      type: 'Educational Institute',
-      img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      comments: '2k',
-      rating: 5
-    },
-    {
-      id: 3,
-      name: 'University of Dhaka',
-      desc: 'The Oxford We Live and Breathe',
-      date: '17 August 2022',
-      likes: '12k',
-      type: 'Educational Institute',
-      img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      dislikes: '12k',
-      comments: '2k',
-      rating: 4
-    },
-    {
-      id: 4,
-      name: 'University of Dhaka',
-      desc: 'The Oxford We Live and Breathe',
-      date: '17 August 2022',
-      likes: '12k',
-      type: 'Educational Institute',
-      img: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      dislikes: '12k',
-      comments: '2k',
-      rating: 4
-    }
-  ];
-
   const renderItem = ({ item }) => {
     const styles = StyleSheet.create({
       actionContainer: {
@@ -244,7 +191,7 @@ const ReviewListSection = ({ navigation, route }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 20,
-        width: '75%'
+        width: '35%'
       },
       img: {
         width: 100,
@@ -303,6 +250,8 @@ const ReviewListSection = ({ navigation, route }) => {
 
       return ans;
     };
+
+    console.log(item);
     return (
       <Pressable
         style={styles.item}
@@ -311,6 +260,7 @@ const ReviewListSection = ({ navigation, route }) => {
             data: item
           })
         }
+        key={item.name}
       >
         <ImageBackground
           style={styles.img}
@@ -329,13 +279,15 @@ const ReviewListSection = ({ navigation, route }) => {
           </Text>
           <View style={styles.actionContainer}>
             <View style={styles.likeContainer}>
-              <Text style={styles.statCount}>12k</Text>
+              <Text style={styles.statCount}>
+                {item.totallikes} {item.totallikes >= 1000 && k}
+              </Text>
               <FontAwesome5 name="heart" size={18} color={colors.primary} />
             </View>
-            <View style={styles.likeContainer}>
+            {/* <View style={styles.likeContainer}>
               <Text style={styles.statCount}>12k</Text>
               <Octicons name="comment" size={18} color={colors.secondary} />
-            </View>
+            </View> */}
             <View style={styles.likeContainer}>
               <Text style={styles.statCount}>12k</Text>
               <AntDesign name="dislike2" size={18} color={colors.gray} />
@@ -351,19 +303,14 @@ const ReviewListSection = ({ navigation, route }) => {
 
   const reviewsByPlaceData = useSelector((state) => state.reviewsByPlaceData);
 
-  const { reviewsByPlace, loading, error } = reviewsByPlaceData;
-
-  // console.log(reviewsByPlace);
+  const { reviewsByPlace } = reviewsByPlaceData;
 
   const { data } = route.params;
 
-  // console.log(data._id);
   useEffect(() => {
     dispatch(getReviewsByPlace(data?._id));
   }, [data?._id]);
 
-  // const dataWrapper = [reviewsByPlace];
-  // console.log(reviewsByPlace);
   return (
     <FlatList
       data={reviewsByPlace?.data}
