@@ -8,7 +8,7 @@ const Like = require("../models/Like");
 // @route     GET /api/reviews/:reviewId/likes
 // @access    Private
 exports.getLikes = asyncHandler(async (req, res, next) => {
-  if (req.params.placeId) {
+  if (req.params.reviewId) {
     const likes = await Like.find({ review: req.params.reviewId });
 
     return res.status(200).json({

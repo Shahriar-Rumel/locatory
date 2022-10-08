@@ -16,10 +16,12 @@ const advancedResults = require("../middleware/advancedResults");
 
 //Include children routes
 const likeRouter = require("./likes");
+const dislikeRouter = require("./dislikes");
 
 const { protect } = require("../middleware/auth");
 
 router.use("/:reviewId/likes", likeRouter);
+router.use("/:reviewId/dislikes", dislikeRouter);
 
 router
   .route("/")

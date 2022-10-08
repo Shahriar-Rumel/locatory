@@ -78,6 +78,10 @@ const ReviewSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  totaldislikes: {
+    type: Number,
+    default: 1,
+  },
 });
 
 // Static method to get avg rating and save
