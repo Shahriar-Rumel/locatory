@@ -10,8 +10,14 @@ import {
   userLoginReducer,
   userRegisterReducer
 } from './reducers/userReducers';
-import { getAllPlacesReducer } from './reducers/placeReducers';
-import { getReviewsByPlaceReducer } from './reducers/reviewReducers';
+import {
+  createPlaceReducer,
+  getAllPlacesReducer
+} from './reducers/placeReducers';
+import {
+  createReviewForPlaceReducer,
+  getReviewsByPlaceReducer
+} from './reducers/reviewReducers';
 
 const persistConfig = {
   key: 'root',
@@ -24,7 +30,12 @@ const reducer = combineReducers({
   userRegister: persistReducer(persistConfig, userRegisterReducer),
   userData: persistReducer(persistConfig, userDetailsReducer),
   allPlacesData: persistReducer(persistConfig, getAllPlacesReducer),
-  reviewsByPlaceData: persistReducer(persistConfig, getReviewsByPlaceReducer)
+  reviewsByPlaceData: persistReducer(persistConfig, getReviewsByPlaceReducer),
+  createReviewForPlaceData: persistReducer(
+    persistConfig,
+    createReviewForPlaceReducer
+  ),
+  createPlaceData: persistReducer(persistConfig, createPlaceReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')

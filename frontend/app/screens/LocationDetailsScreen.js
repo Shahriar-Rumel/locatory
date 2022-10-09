@@ -82,7 +82,7 @@ const CoverSection = ({ navigation, route }) => {
     <ImageBackground
       style={styles.img}
       source={{
-        uri: `${data?.imaguri}`
+        uri: `${data?.photo}`
       }}
       resizeMode="cover"
     >
@@ -220,14 +220,15 @@ const ReviewListSection = ({ navigation, route }) => {
       },
       title: {
         fontSize: 14,
-        fontWeight: '600'
+        fontWeight: '600',
+        width: '100%'
       },
       date: {
         fontSize: 10,
         fontWeight: '600',
-        marginLeft: 78,
-        marginTop: 3,
-        color: colors.gray
+        color: colors.gray,
+        position: 'absolute',
+        right: -55
       },
       desc: {
         fontSize: 12,
@@ -265,7 +266,7 @@ const ReviewListSection = ({ navigation, route }) => {
         <ImageBackground
           style={styles.img}
           source={{
-            uri: `${item.img}`
+            uri: `${item.photo}`
           }}
           resizeMode="cover"
         />
@@ -275,7 +276,9 @@ const ReviewListSection = ({ navigation, route }) => {
             <Text style={styles.date}>{item.createdAt?.split('T')[0]}</Text>
           </View>
           <Text style={styles.desc}>
-            {getFirstHundredChars(item.description)}
+            {item.description.length > 40
+              ? getFirstHundredChars(item.description)
+              : item.description}
           </Text>
           <View style={styles.actionContainer}>
             <View style={styles.likeContainer}>

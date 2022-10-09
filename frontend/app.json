@@ -37,6 +37,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Locatory is a recommendation based mobile app that helps user finds details about places around Bangladesh"
+    "description": "Locatory is a recommendation based mobile app that helps user finds details about places around Bangladesh",
+    "extra": {
+      "eas": {
+        "projectId": "a3c945b5-ddd5-43b0-a9f2-48428843b6c6"
+      }
+    }
   }
 }

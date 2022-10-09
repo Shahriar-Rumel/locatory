@@ -78,7 +78,7 @@ const CoverSection = ({ navigation, route }) => {
     <ImageBackground
       style={styles.img}
       source={{
-        uri: `${data.img}`
+        uri: `${data.photo}`
       }}
       resizeMode="cover"
     >
@@ -253,7 +253,7 @@ const CarouselSection = ({ data }) => {
     <View>
       <ImageBackground
         source={{
-          uri: `${data.img}`
+          uri: `${data.photo}`
         }}
         resizeMode="cover"
         style={styles.carouselImage}

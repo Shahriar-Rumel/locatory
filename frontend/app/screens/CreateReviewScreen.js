@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -19,6 +19,9 @@ import AppFormField from '../components/forms/FormField';
 import Form from '../components/forms/Form';
 import SubmitButton from '../components/forms/SubmitButton';
 import ImageInput from '../components/ImageInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { createReviewByPlace } from '../actions/reviewActions';
+import { createPlace, createPlaceAction } from '../actions/placeActions';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -55,7 +58,7 @@ const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
     </View>
   );
 };
-const InputPlace = ({ label, placeholder, ...otherProps }) => {
+const InputPlace = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
     inputContainer: {
       width: '100%',
@@ -83,6 +86,7 @@ const InputPlace = ({ label, placeholder, ...otherProps }) => {
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={styles.input}
+        onChangeText={(text) => setData(text)}
         placeholderText={placeholder}
         {...otherProps}
       />
@@ -114,7 +118,9 @@ const Cover = () => {
     </View>
   );
 };
-const SearchSection = () => {
+const SearchSection = ({ setItem }) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
   const styles = StyleSheet.create({
     container: {
       paddingHorizontal: 15,
@@ -128,7 +134,27 @@ const SearchSection = () => {
       paddingLeft: 50,
       marginTop: 10,
       fontSize: 14,
-      fontFamily: 'SFPD-medium'
+      color: value === '' ? colors.input : colors.black,
+      fontWeight: '400'
+    },
+    itemContainer: {
+      paddingVertical: 10,
+      elevation: 5,
+      marginVertical: 5,
+      backgroundColor: colors.input,
+      borderRadius: 5,
+      height: 300,
+      paddingBottom: 20
+    },
+    item: {
+      paddingVertical: 15,
+      paddingHorizontal: 20,
+      // backgroundColor: colors.primaryLight,
+      borderBottomColor: colors.primary,
+      borderBottomWidth: 0.5,
+      fontSize: 12,
+      fontWeight: '400',
+      color: colors.dark
     },
     smallTitle: {
       fontWeight: '600'
@@ -144,19 +170,57 @@ const SearchSection = () => {
       color: colors.gray
     }
   });
+
+  const allPlacesData = useSelector((state) => state.allPlacesData);
+  const {
+    allPlaces,
+    loading: allPlacesLoading,
+    error: allPlacesError
+  } = allPlacesData;
+
   return (
     <View style={styles.container}>
       <Text style={styles.smallTitle}>Search the place you want to review</Text>
 
-      <View style={styles.searchContainer}>
+      <Pressable
+        style={styles.searchContainer}
+        onPress={() => {
+          console.log('clicked');
+          setOpen((prev) => !prev);
+        }}
+      >
         <FontAwesome5
           name="search"
           size={22}
           color="black"
           style={styles.searchIcon}
         />
-        <TextInput style={styles.input} placeholder="Search location" />
-      </View>
+        <TextInput
+          style={styles.input}
+          value={value}
+          placeholder={'Search Location'}
+          onPressIn={() => {
+            setOpen((prev) => !prev);
+          }}
+        />
+      </Pressable>
+      {open && allPlaces && (
+        <ScrollView style={styles.itemContainer}>
+          {allPlaces.data?.map((item) => (
+            <Text
+              style={styles.item}
+              key={item.id}
+              onPress={() => {
+                setItem(item.id);
+                setValue(item.name);
+                setOpen(false);
+              }}
+            >
+              {item.name}
+            </Text>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -193,16 +257,20 @@ const BannerSection = ({ setCreatePlace }) => {
   );
 };
 const CreatePlaceSection = ({ setCreatePlace }) => {
-  const [decoration, setDecoration] = useState(0);
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [category, setCategory] = useState('');
+  const [photo, setPhoto] = useState('0');
 
   const styles = StyleSheet.create({
     createPlaceContainer: {
       marginHorizontal: 15,
       paddingHorizontal: 15,
       paddingVertical: 10,
-      backgroundColor: colors.primaryLight,
+      backgroundColor: colors.white,
       borderRadius: 5,
-      marginVertical: 20
+      marginVertical: 20,
+      elevation: 2
     },
     title: {
       fontSize: 16,
@@ -221,21 +289,37 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
   const Catagory = [
     {
       name: 'Educational',
-      value: 'Educational'
+      value: 'educational'
     },
     {
-      name: 'Health',
-      value: 'Health'
+      name: 'Hospital',
+      value: 'hospital'
     },
     {
-      name: 'Entertainment',
-      value: 'Entertainment'
+      name: 'Theatre',
+      value: 'theatre'
     },
     {
-      name: 'Tourist',
-      value: 'Tourist'
+      name: 'Beach',
+      value: 'beach'
     }
   ];
+  const dispatch = useDispatch();
+
+  const createPlaceData = useSelector((state) => state.createPlaceData);
+
+  const { createPlace, loading, error } = createPlaceData;
+
+  const createPlaceHandler = () => {
+    const data = {
+      name: name,
+      category: category,
+      address: address,
+      photo: photo
+    };
+    console.log(data);
+    dispatch(createPlaceAction(data));
+  };
 
   return (
     <View style={styles.createPlaceContainer}>
@@ -246,20 +330,47 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
       >
         <Entypo name="circle-with-cross" size={24} color={colors.red} />
       </Pressable>
-      <InputPlace label={'Name'} />
-      <InputPlace label={'Address'} />
+      <InputPlace
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="text"
+        name="name"
+        label="Name"
+        setData={setName}
+        placeholder="Name"
+        textContentType="text"
+      />
+      <InputPlace
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="text"
+        name="name"
+        label="Address"
+        setData={setAddress}
+        placeholder="Name"
+        textContentType="text"
+      />
+
       <DropDown
         label={'Catagory'}
         items={Catagory}
-        setData={setDecoration}
+        setData={setCategory}
         placeholder={'Choose category'}
       />
-      <Button text={'Save'} width={100} height={35} borderRadius={8} />
+      <ImageInput data={photo} setData={setPhoto} />
+      <Button
+        text={'Save'}
+        width={100}
+        height={35}
+        borderRadius={8}
+        onPress={createPlaceHandler}
+        loading={loading}
+      />
     </View>
   );
 };
 
-const CreateReviewForm = () => {
+const CreateReviewForm = ({ selectedPlace }) => {
   const validationSchema = Yup.object().shape({
     // email: Yup.string().required().email().label('Email'),
     // password: Yup.string().required().min(4).label('Password')
@@ -275,7 +386,8 @@ const CreateReviewForm = () => {
     imageContainer: {
       flexDirection: 'row',
       width: '100%',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      marginVertical: 5
     },
     header: {
       flexDirection: 'row',
@@ -301,44 +413,66 @@ const CreateReviewForm = () => {
     { name: '4', value: 4 },
     { name: '5', value: 5 }
   ];
+
+  const tranportationList = [
+    { name: 'Bus', value: 'bus' },
+    { name: 'car', value: 'car' },
+    { name: 'rickshaw', value: 'rickshaw' },
+    { name: 'walk', value: 'walk' }
+  ];
+
+  const settingList = [
+    { name: 'indoor', value: 'indoor' },
+    { name: 'outdoor', value: 'outdoor' }
+  ];
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [averageBudget, setAverageBudget] = useState('');
+  const [averageBudget, setAverageBudget] = useState(0);
   const [accessibility, setAccessibility] = useState(0);
   const [decoration, setDecoration] = useState(0);
   const [service, setService] = useState(0);
   const [familyFriendly, setFamilyFriendly] = useState(0);
-  const [transportation, setTransportation] = useState('');
-  const [setting, setSetting] = useState('');
+  const [transportation, setTransportation] = useState(0);
+  const [setting, setSetting] = useState(0);
   const [overallRating, setOverallRating] = useState(0);
   const [firstImage, setFirstImage] = useState('');
 
-  const handleSubmit = () => {
-    console.log(
-      title,
-      description,
-      accessibility,
-      decoration,
-      averageBudget,
-      service,
-      familyFriendly,
-      setting
-    );
+  const dispatch = useDispatch();
+  const createReviewForPlaceData = useSelector(
+    (state) => state.createReviewForPlaceData
+  );
+
+  const { createReviewForPlace, loading, error } = createReviewForPlaceData;
+
+  const handleReviewSubmit = () => {
+    const data = {
+      title: title,
+      description: description,
+      averagebudget: parseInt(averageBudget),
+      accessibility: parseInt(accessibility),
+      decoration: parseInt(decoration),
+      service: parseInt(service),
+      familyfriendly: parseInt(familyFriendly),
+      transportation: transportation,
+      setting: setting,
+      rating: parseInt(overallRating),
+      photo: firstImage
+    };
+
+    console.log(data);
+
+    dispatch(createReviewByPlace(selectedPlace._id, data));
   };
-  console.log(firstImage);
+
+  console.log(createReviewForPlace);
 
   return (
     <View style={styles.formContainer}>
       <View style={styles.header}>
         <Text style={styles.headerText}>You are reviewing</Text>
-        <Text style={styles.headerPlace}>University of Dhaka</Text>
+        <Text style={styles.headerPlace}>{selectedPlace?.name}</Text>
       </View>
       <View style={styles.form}>
-        <View style={styles.imageContainer}>
-          <ImageInput data={firstImage} setData={setFirstImage} />
-          <ImageInput data={firstImage} setData={setFirstImage} />
-          <ImageInput data={firstImage} setData={setFirstImage} />
-        </View>
         <TextInputReview
           autoCapitalize="none"
           autoCorrect={false}
@@ -397,14 +531,14 @@ const CreateReviewForm = () => {
           placeholder={'Choose Rating'}
         />
         <DropDown
-          items={items}
+          items={tranportationList}
           height={50}
           setData={setTransportation}
           label={'Transportation'}
           placeholder={'Choose Rating'}
         />
         <DropDown
-          items={items}
+          items={settingList}
           height={50}
           setData={setSetting}
           label={'Setting'}
@@ -418,11 +552,18 @@ const CreateReviewForm = () => {
           placeholder={'Choose Rating'}
         />
 
+        <View style={styles.imageContainer}>
+          {/* <ImageInput data={firstImage} setData={setFirstImage} />
+          <ImageInput data={firstImage} setData={setFirstImage} /> */}
+          <ImageInput data={firstImage} setData={setFirstImage} />
+        </View>
+
         <Button
           text="Create Review"
           width={'100%'}
           borderRadius={8}
-          onPress={handleSubmit}
+          onPress={handleReviewSubmit}
+          loading={loading}
         />
       </View>
     </View>
@@ -430,8 +571,129 @@ const CreateReviewForm = () => {
 };
 export default function CreateReviewScreen({ navigation }) {
   const [createPlace, setCreatePlace] = useState(false);
+  const [item, setItem] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+
   const handleSubmit = ({ email, password }) => {
     navigation.navigate(routes.FEED);
+  };
+
+  const allPlacesData = useSelector((state) => state.allPlacesData);
+  const {
+    allPlaces,
+    loading: allPlacesLoading,
+    error: allPlacesError
+  } = allPlacesData;
+
+  const SearchSectionNested = () => {
+    // const [open, setOpen] = useState(false);
+    // const [value, setValue] = useState('');
+    const styles = StyleSheet.create({
+      container: {
+        paddingHorizontal: 15,
+        marginVertical: 20
+      },
+      input: {
+        backgroundColor: colors.input,
+        height: 50,
+        borderRadius: 14,
+        width: '100%',
+        paddingLeft: 50,
+        marginTop: 10,
+        fontSize: 14,
+        color: value === '' ? colors.input : colors.black,
+        fontWeight: '400'
+      },
+      itemContainer: {
+        paddingVertical: 10,
+        elevation: 5,
+        marginVertical: 5,
+        backgroundColor: colors.input,
+        borderRadius: 5,
+        height: 300,
+        paddingBottom: 20
+      },
+      item: {
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        // backgroundColor: colors.primaryLight,
+        borderBottomColor: colors.primary,
+        borderBottomWidth: 0.5,
+        fontSize: 12,
+        fontWeight: '400',
+        color: colors.dark
+      },
+      smallTitle: {
+        fontWeight: '600'
+      },
+      searchContainer: {
+        position: 'relative'
+      },
+      searchIcon: {
+        position: 'absolute',
+        zIndex: 8,
+        marginTop: 23,
+        marginLeft: 15,
+        color: colors.gray
+      }
+    });
+
+    // const allPlacesData = useSelector((state) => state.allPlacesData);
+    // const {
+    //   allPlaces,
+    //   loading: allPlacesLoading,
+    //   error: allPlacesError
+    // } = allPlacesData;
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.smallTitle}>
+          Search the place you want to review
+        </Text>
+
+        <Pressable
+          style={styles.searchContainer}
+          onPress={() => {
+            console.log('clicked');
+            setOpen((prev) => !prev);
+          }}
+        >
+          <FontAwesome5
+            name="search"
+            size={22}
+            color="black"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.input}
+            value={value}
+            placeholder={'Search Location'}
+            onPressIn={() => {
+              setOpen((prev) => !prev);
+            }}
+          />
+        </Pressable>
+        {open && allPlaces && (
+          <ScrollView style={styles.itemContainer}>
+            {allPlaces.data?.map((item) => (
+              <Text
+                style={styles.item}
+                key={item._id}
+                onPress={() => {
+                  setValue(item.name);
+                  setItem(item);
+                  setOpen(false);
+                }}
+              >
+                {item.name}
+              </Text>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    );
   };
 
   return (
@@ -441,10 +703,10 @@ export default function CreateReviewScreen({ navigation }) {
       contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
     >
       <Cover />
-      <SearchSection />
+      <SearchSectionNested />
       <BannerSection setCreatePlace={setCreatePlace} />
       {createPlace && <CreatePlaceSection setCreatePlace={setCreatePlace} />}
-      <CreateReviewForm />
+      <CreateReviewForm selectedPlace={item} />
     </ScrollView>
   );
 }

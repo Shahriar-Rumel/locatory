@@ -43,7 +43,8 @@ const DropDown = ({
       paddingHorizontal: 20,
       borderBottomWidth: 1,
       borderBottomColor: colors.white,
-      fontSize: 12
+      fontSize: 12,
+      textTransform: 'capitalize'
     },
     itemslist: {
       backgroundColor: colors.input,

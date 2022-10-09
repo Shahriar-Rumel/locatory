@@ -58,8 +58,12 @@ const CardSection = ({ title, data, navigation }) => {
               <Card
                 title={item.name}
                 distance={'0.2 Km'}
-                location={getFirstTenChars(item?.location?.formattedAddress)}
-                imguri={item.name}
+                location={
+                  item?.location?.formattedAddress.length > 20
+                    ? getFirstTenChars(item?.location?.formattedAddress)
+                    : item?.location?.formattedAddress
+                }
+                imguri={item.photo}
               />
             </Pressable>
           ))}
