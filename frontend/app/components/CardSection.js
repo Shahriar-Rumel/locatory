@@ -59,7 +59,7 @@ const CardSection = ({ title, data, navigation }) => {
                 title={item.name}
                 distance={'0.2 Km'}
                 location={
-                  item?.location?.formattedAddress.length > 20
+                  item?.location?.formattedAddress?.length > 20
                     ? getFirstTenChars(item?.location?.formattedAddress)
                     : item?.location?.formattedAddress
                 }
