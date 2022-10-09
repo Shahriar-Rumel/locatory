@@ -21,13 +21,12 @@ const BASE_URL = PRODUCTION_URL;
 
 export default function ImageInput({ data, setData }) {
   // const [image, setImage] = useState();
-  const [uploading, setUploading] = useState();
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 
   const userLoginData = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLoginData;
-
 
   const uploadFileHandler1 = async (result) => {
     let localUri = result.uri;
@@ -39,7 +38,7 @@ export default function ImageInput({ data, setData }) {
     let formData = new FormData();
 
     formData.append('image', { uri: localUri, name: filename, type });
-
+    setUploading(true);
     try {
       const config = {
         headers: {
@@ -77,6 +76,11 @@ export default function ImageInput({ data, setData }) {
     },
     button: {
       opacity: 0
+    },
+    loader: {
+      position: 'absolute',
+      top: 50,
+      left: 50
     }
   });
 
@@ -138,16 +142,20 @@ export default function ImageInput({ data, setData }) {
             style={{ width: width, height: height }}
           />
         )}
-        {!data &&
-          (uploading ? (
-            <ActivityIndicator />
-          ) : (
-            <MaterialIcons
-              name="add-circle-outline"
-              size={34}
-              color={colors.white}
-            />
-          ))}
+        {!data && !uploading && (
+          <MaterialIcons
+            name="add-circle-outline"
+            size={34}
+            color={colors.white}
+          />
+        )}
+        {uploading && (
+          <ActivityIndicator
+            size={24}
+            color={colors.primary}
+            style={styles.loader}
+          />
+        )}
       </Pressable>
     </View>
   );

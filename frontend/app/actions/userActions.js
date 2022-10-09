@@ -65,6 +65,7 @@ export const login = (email, password) => async (dispatch) => {
           ? error.response.data
           : error.message
     });
+    console.log(error);
   }
 };
 

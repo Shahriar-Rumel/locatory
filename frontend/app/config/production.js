@@ -1,1 +1,1 @@
-export const PRODUCTION_URL = 'http://10.0.2.2:5000';
+export const PRODUCTION_URL = 'https://locatoryapp.herokuapp.com';
