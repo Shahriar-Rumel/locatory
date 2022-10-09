@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { useSelector } from 'react-redux';
@@ -17,30 +17,54 @@ export default function Locatory() {
   const userLoginData = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLoginData;
 
-  useEffect(() => {
-    if (!userInfo) {
-      // navigation.navigate('Login');
-      // console.log(userInfo);
-    }
-  }, [userInfo]);
-
   const getUser = async () => {
     const user = await AsyncStorage.getItem('userLogin');
     setUser(user);
   };
 
-  if (!isReady)
-    return (
-      <AppLoading
-        startAsync={getUser}
-        onFinish={() => setIsReady(true)}
-        onError={() => console.log('Could not load')}
-      />
-    );
+  // if (!isReady)
+  //   return (
+  //     <AppLoading
+  //       startAsync={getUser}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={() => console.log('Could not load')}
+  //     />
+  //   );
+
+  console.log(userInfo);
+  console.log(user);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      {user && userInfo ? <AppNavigator /> : <AuthNavigator />}
+    <NavigationContainer
+      ref={navigationRef}
+      theme={navigationTheme}
+      onLayout={onLayoutRootView}
+    >
+      {userInfo ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }
