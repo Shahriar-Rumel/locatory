@@ -168,8 +168,6 @@ export default function FeedScreen({ navigation }) {
     error: allPlacesError
   } = allPlacesData;
 
-  console.log(allPlaces?.data[0].name);
-
   return (
     <Screen style={styles.container}>
       <ScrollView
