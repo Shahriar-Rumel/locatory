@@ -55,7 +55,9 @@ const TopBar = ({ navigation }) => {
   const getPartsofTheDay = () => {
     let localTime = new Date().toLocaleString();
 
-    const time = localTime.split(' ')[4].split(':')[0];
+    const time = localTime.split(' ')[3].split(':')[0];
+
+    console.log(time);
 
     if (time < 11) return partsofDayList[0];
     if (time < 14) return partsofDayList[1];
@@ -67,7 +69,9 @@ const TopBar = ({ navigation }) => {
   return (
     <View style={styles.topBar}>
       <View style={styles.greetContainer}>
-        <Text style={styles.greet}>{partsofDay} ,</Text>
+        <Text style={styles.greet}>
+          {partsofDay ? partsofDay : 'Good Morning'} ,
+        </Text>
         <Text style={[styles.greet, styles.greetName]}>
           {userDetails?.data?.name?.split(' ')[0]}
         </Text>
@@ -212,7 +216,7 @@ export default function FeedScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 0,
     // paddingHorizontal: constants.CONTAINER_PADDING,
     backgroundColor: 'white'
   },

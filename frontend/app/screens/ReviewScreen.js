@@ -113,6 +113,7 @@ const CoverSection = ({ navigation, route }) => {
 
 const DetailsSection = ({ data }) => {
   const [like, setLiked] = useState(false);
+  const [likeCounter, setLikeCounter] = useState(data?.totallikes);
   const [comment, setComment] = useState(false);
   const [dislike, setDislike] = useState(false);
 
@@ -195,10 +196,14 @@ const DetailsSection = ({ data }) => {
       <Text style={styles.description}>{data.description}</Text>
       <View style={styles.actionContainer}>
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.totallikes}</Text>
+          <Text style={styles.statCount}>{likeCounter}</Text>
           <Pressable
             style={styles.iconContainer}
-            onPress={() => setLiked((prev) => !prev)}
+            onPress={() => {
+              if (like) setLikeCounter((prev) => prev - 1);
+              else setLikeCounter((prev) => prev + 1);
+              setLiked((prev) => !prev);
+            }}
           >
             <MaterialCommunityIcons
               name={like ? 'heart' : 'heart-outline'}

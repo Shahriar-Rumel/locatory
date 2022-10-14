@@ -78,6 +78,8 @@ const CoverSection = ({ navigation, route }) => {
 
   const { data } = route.params;
 
+  // console.log(data);
+
   return (
     <ImageBackground
       style={styles.img}
@@ -160,26 +162,43 @@ const OverviewSection = ({ route }) => {
     </View>
   );
 };
-const MapSection = () => {
+const MapSection = ({ route }) => {
   const styles = StyleSheet.create({
     map: {
       width: '100%',
       height: 200
     }
   });
+
+  const { data } = route.params;
+
+  // console.log(data?.location.coordinates);
   return (
     <MapView
       style={styles.map}
       initialRegion={{
-        latitude: 23.7338,
-        longitude: 90.3929,
-        latitudeDelta: 0.0222,
-        longitudeDelta: 0.0221
+        latitude: data?.location.coordinates
+          ? data?.location.coordinates[1]
+          : 25.0141875,
+        longitude: data?.location.coordinates
+          ? data?.location.coordinates[0]
+          : 91.9187031,
+        latitudeDelta: 0.0042,
+        longitudeDelta: 0.0041
       }}
       provider="google"
       //   scrollEnabled={false}
     >
-      <Marker coordinate={{ latitude: 23.7338, longitude: 90.3929 }} />
+      <Marker
+        coordinate={{
+          latitude: data?.location.coordinates
+            ? data?.location.coordinates[1]
+            : 25.0141875,
+          longitude: data?.location.coordinates
+            ? data?.location.coordinates[0]
+            : 91.9187031
+        }}
+      />
     </MapView>
   );
 };
@@ -252,7 +271,6 @@ const ReviewListSection = ({ navigation, route }) => {
       return ans;
     };
 
-    console.log(item);
     return (
       <Pressable
         style={styles.item}
@@ -328,7 +346,7 @@ const FlatListHeaders = ({ navigation, route }) => {
     <>
       <CoverSection navigation={navigation} route={route} />
       <OverviewSection route={route} />
-      <MapSection />
+      <MapSection route={route} />
       <Text style={styles.reviews}> Reviews </Text>
     </>
   );

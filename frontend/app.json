@@ -24,6 +24,11 @@
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [],
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
       "package": "com.locatory.app"
     },
     "plugins": [
