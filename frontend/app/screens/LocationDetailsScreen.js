@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import {
+  ActivityIndicator,
   ImageBackground,
   Pressable,
   StyleSheet,
@@ -318,15 +319,18 @@ const ReviewListSection = ({ navigation, route }) => {
       </Pressable>
     );
   };
-  const FlatListTop = <FlatListHeaders route={route} navigation={navigation} />;
 
   const dispatch = useDispatch();
 
   const reviewsByPlaceData = useSelector((state) => state.reviewsByPlaceData);
 
-  const { reviewsByPlace } = reviewsByPlaceData;
+  const { reviewsByPlace, loading } = reviewsByPlaceData;
 
   const { data } = route.params;
+
+  const FlatListTop = (
+    <FlatListHeaders route={route} navigation={navigation} loading={loading} />
+  );
 
   useEffect(() => {
     dispatch(getReviewsByPlace(data?._id));
@@ -336,18 +340,25 @@ const ReviewListSection = ({ navigation, route }) => {
     <FlatList
       data={reviewsByPlace?.data}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
     />
   );
 };
-const FlatListHeaders = ({ navigation, route }) => {
+const FlatListHeaders = ({ navigation, route, loading }) => {
   return (
     <>
       <CoverSection navigation={navigation} route={route} />
       <OverviewSection route={route} />
       <MapSection route={route} />
       <Text style={styles.reviews}> Reviews </Text>
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={styles.loader}
+        />
+      )}
     </>
   );
 };

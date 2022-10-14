@@ -1,7 +1,6 @@
 import React from 'react';
 import Constants from 'expo-constants';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Screen({ children, style }) {
   return (

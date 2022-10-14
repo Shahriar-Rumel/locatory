@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 0,
     // paddingHorizontal: constants.CONTAINER_PADDING,
-    backgroundColor: 'white'
+    backgroundColor: colors.white
   },
   dp: {
     width: 35,

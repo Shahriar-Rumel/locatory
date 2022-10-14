@@ -20,8 +20,7 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.headerSection}>
         <Text style={styles.header}>Know more about the place you love</Text>
         <Text style={styles.subHeader}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Neque sit
-          proin proin nunc. Vel t.
+          Share your insights about the place that you visited.
         </Text>
       </View>
       <Button
@@ -31,7 +30,10 @@ export default function WelcomeScreen({ navigation }) {
       />
       <View style={styles.alreadyHaveAccountSection}>
         <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
-        <Pressable style={styles.secondaryButton}>
+        <Pressable
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate(routes.REGISTER)}
+        >
           <Text style={styles.secondaryButtonText}>Signin</Text>
         </Pressable>
       </View>
