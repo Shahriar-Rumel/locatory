@@ -19,7 +19,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/me", protect, getMe);
 router.post("/forgotpassword", forgotPassword);
-router.put("/resetpassword/:resettoken", resetPassword);
+router.put("/resetpassword/:resettoken", protect, resetPassword);
 router.put("/updatedetails", protect, updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.get("/notifications", protect, getNotifications);

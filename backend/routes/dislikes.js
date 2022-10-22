@@ -12,6 +12,7 @@ const { protect } = require("../middleware/auth");
 router
   .route("/")
   .get(
+    protect,
     advancedResults(Dislike, {
       path: "review",
       select: "title",
