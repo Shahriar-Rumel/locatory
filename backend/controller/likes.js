@@ -38,7 +38,7 @@ exports.addLike = asyncHandler(async (req, res, next) => {
 
     const review = await Review.findById(req.params.reviewId);
     //incrementing the total likes of the review
-    const a = review.totallikes;
+    let a = review.totallikes;
     if (a >= 1) review.totallikes = a + 1;
     review.save();
 
@@ -59,7 +59,7 @@ exports.addLike = asyncHandler(async (req, res, next) => {
   else {
     await Like.findByIdAndDelete(like_temp[0].id);
     const review = await Review.findById(req.params.reviewId);
-    const a = review.totallikes;
+    let a = review.totallikes;
     if (a >= 1) review.totallikes = a - 1;
     review.save();
     return res.status(201).json({
