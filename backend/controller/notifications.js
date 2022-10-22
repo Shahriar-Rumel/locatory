@@ -35,3 +35,21 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     data: reviewcreator,
   });
 });
+
+// @route     GET /api/auth/notificationId/markasread
+// @access    Private
+exports.readNotifications = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  for (let i = 0; i < user.notification.length; i++) {
+    if (user.notification[i].id === req.params.id) {
+      user.notification[i].read = true;
+      user.save();
+      res.status(201).json({
+        success: true,
+        data: user,
+      });
+    } else {
+      new ErrorResponse(`No notification with the id of ${req.params.id}`, 404);
+    }
+  }
+});

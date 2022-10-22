@@ -8,7 +8,10 @@ const {
   updateDetails,
   updatePassword,
 } = require("../controller/auth");
-const { getNotifications } = require("../controller/notifications");
+const {
+  getNotifications,
+  readNotifications,
+} = require("../controller/notifications");
 const router = express.Router();
 const { protect } = require("../middleware/auth");
 
@@ -20,5 +23,6 @@ router.put("/resetpassword/:resettoken", resetPassword);
 router.put("/updatedetails", protect, updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.get("/notifications", protect, getNotifications);
+router.post("/:id/markasread", protect, readNotifications);
 
 module.exports = router;
