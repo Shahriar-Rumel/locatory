@@ -56,7 +56,9 @@ exports.addReview = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`No place with the id of ${req.params.placeId}`, 404)
     );
   }
-
+  const a = place.totalreviews;
+  place.totalreviews = a + 1;
+  place.save();
   const review = await Review.create(req.body);
 
   res.status(201).json({

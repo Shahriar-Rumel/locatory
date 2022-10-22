@@ -56,6 +56,10 @@ const PlaceSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  totalreviews: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // Geocode & create location field
