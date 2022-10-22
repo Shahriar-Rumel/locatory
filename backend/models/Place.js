@@ -13,20 +13,6 @@ const PlaceSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, "Please add a place type"],
-    enum: [
-      "restaurant",
-      "hotel",
-      "cafe",
-      "store",
-      "theatre",
-      "hospital",
-      "business",
-      "park",
-      "educational",
-      "beach",
-      "mountain",
-      "other",
-    ],
   },
   address: {
     type: String,
