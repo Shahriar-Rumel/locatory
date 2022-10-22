@@ -32,6 +32,26 @@ const UserSchema = new mongoose.Schema({
   photo: {
     type: String,
   },
+
+  notification: [
+    {
+      username: String,
+      place: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Place",
+        required: true,
+      },
+
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+      read: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {

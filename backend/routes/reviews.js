@@ -8,6 +8,7 @@ const {
   getReviewByUser,
 } = require("../controller/reviews");
 
+const { createNotification } = require("../controller/notifications");
 const Review = require("../models/Review");
 
 const router = express.Router({ mergeParams: true });
@@ -42,5 +43,6 @@ router
   .delete(protect, deleteReview);
 
 router.route("/user/all").get(protect, getReviewByUser);
+router.route("/:id/notifications").post(protect, createNotification);
 
 module.exports = router;
