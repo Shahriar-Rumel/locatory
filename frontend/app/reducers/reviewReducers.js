@@ -6,7 +6,11 @@ import {
   GET_REVIEWS_BY_PLACE_FAIL,
   GET_REVIEWS_BY_PLACE_REQUEST,
   GET_REVIEWS_BY_PLACE_RESET,
-  GET_REVIEWS_BY_PLACE_SUCCESS
+  GET_REVIEWS_BY_PLACE_SUCCESS,
+  LIKE_FAIL,
+  LIKE_REQUEST,
+  LIKE_RESET,
+  LIKE_SUCCESS
 } from '../constants/reviewConstants';
 
 export const getReviewsByPlaceReducer = (state = {}, action) => {
@@ -36,6 +40,25 @@ export const createReviewForPlaceReducer = (state = {}, action) => {
     case CREATE_REVIEW_FOR_PLACE_FAIL:
       return { loading: false, error: action.payload };
     case CREATE_REVIEW_FOR_PLACE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const likeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LIKE_REQUEST:
+      return { loading: true, success: false };
+    case LIKE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        like: action.payload
+      };
+    case LIKE_FAIL:
+      return { loading: false, error: action.payload };
+    case LIKE_RESET:
       return {};
     default:
       return state;

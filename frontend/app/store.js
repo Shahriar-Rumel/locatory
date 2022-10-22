@@ -16,8 +16,11 @@ import {
 } from './reducers/placeReducers';
 import {
   createReviewForPlaceReducer,
-  getReviewsByPlaceReducer
+  getReviewsByPlaceReducer,
+  likeReducer
 } from './reducers/reviewReducers';
+import { getTopRatedPlaceReducer } from './reducers/filterReducers';
+import { getNotificationsForUserReducer } from './reducers/notificationReducers';
 
 const persistConfig = {
   key: 'root',
@@ -35,7 +38,13 @@ const reducer = combineReducers({
     persistConfig,
     createReviewForPlaceReducer
   ),
-  createPlaceData: persistReducer(persistConfig, createPlaceReducer)
+  createPlaceData: persistReducer(persistConfig, createPlaceReducer),
+  topRatedPlaceData: persistReducer(persistConfig, getTopRatedPlaceReducer),
+  notificationsForUserData: persistReducer(
+    persistConfig,
+    getNotificationsForUserReducer
+  ),
+  likeData: persistReducer(persistConfig, likeReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')

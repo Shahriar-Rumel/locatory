@@ -107,7 +107,7 @@ const CoverSection = ({ navigation, route }) => {
     </ImageBackground>
   );
 };
-const OverviewSection = ({ route }) => {
+const OverviewSection = ({ route, tor }) => {
   const styles = StyleSheet.create({
     overviewContainer: {
       width: '100%',
@@ -157,7 +157,10 @@ const OverviewSection = ({ route }) => {
         <Text style={styles.attribute}>Category</Text>
       </View>
       <View style={styles.totalReviewsContainer}>
-        <Text style={styles.number}>4.7k</Text>
+        <Text style={styles.number}>
+          {tor > 1000 ? tor / 1000 : tor}
+          {tor > 1000 && 'k'}
+        </Text>
         <Text style={styles.attribute}>Total Reviews</Text>
       </View>
     </View>
@@ -292,7 +295,7 @@ const ReviewListSection = ({ navigation, route }) => {
         <View style={styles.leftContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.date}>{item.createdAt?.split('T')[0]}</Text>
+            <Text style={styles.date}>{item?.createdAt?.split('T')[0]}</Text>
           </View>
           <Text style={styles.desc}>
             {item.description.length > 40
@@ -329,7 +332,12 @@ const ReviewListSection = ({ navigation, route }) => {
   const { data } = route.params;
 
   const FlatListTop = (
-    <FlatListHeaders route={route} navigation={navigation} loading={loading} />
+    <FlatListHeaders
+      route={route}
+      navigation={navigation}
+      loading={loading}
+      reviewsByPlace={reviewsByPlace}
+    />
   );
 
   useEffect(() => {
@@ -345,11 +353,11 @@ const ReviewListSection = ({ navigation, route }) => {
     />
   );
 };
-const FlatListHeaders = ({ navigation, route, loading }) => {
+const FlatListHeaders = ({ navigation, route, loading, reviewsByPlace }) => {
   return (
     <>
       <CoverSection navigation={navigation} route={route} />
-      <OverviewSection route={route} />
+      <OverviewSection route={route} tor={reviewsByPlace?.data?.length} />
       <MapSection route={route} />
       <Text style={styles.reviews}> Reviews </Text>
       {loading && (

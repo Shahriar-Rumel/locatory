@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Image,
   ImageBackground,
@@ -14,6 +15,7 @@ import routes from '../navigation/routes';
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { likeforReview } from '../actions/reviewActions';
 
 const CoverSection = ({ navigation, route }) => {
   const styles = StyleSheet.create({
@@ -97,7 +99,7 @@ const CoverSection = ({ navigation, route }) => {
       <View style={styles.bottom}>
         <Text style={styles.title}>{data.title}</Text>
         <View style={styles.ratingContainer}>
-          {list.map((item, index) => (
+          {list.map((_item, index) => (
             <MaterialCommunityIcons
               name={data.rating > index ? 'star' : 'star-outline'}
               size={20}
@@ -116,6 +118,12 @@ const DetailsSection = ({ data }) => {
   const [likeCounter, setLikeCounter] = useState(data?.totallikes);
   const [comment, setComment] = useState(false);
   const [dislike, setDislike] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const likesData = useSelector((state) => state.likesData);
+
+  // console.log(likesData);
 
   const styles = StyleSheet.create({
     actionContainer: {
@@ -196,13 +204,14 @@ const DetailsSection = ({ data }) => {
       <Text style={styles.description}>{data.description}</Text>
       <View style={styles.actionContainer}>
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{likeCounter}</Text>
+          <Text style={styles.statCount}>{data.totallikes}</Text>
           <Pressable
             style={styles.iconContainer}
             onPress={() => {
-              if (like) setLikeCounter((prev) => prev - 1);
-              else setLikeCounter((prev) => prev + 1);
+              // if (like) setLikeCounter((prev) => prev - 1);
+              // else setLikeCounter((prev) => prev + 1);
               setLiked((prev) => !prev);
+              dispatch(likeforReview(data._id));
             }}
           >
             <MaterialCommunityIcons
@@ -266,6 +275,7 @@ const CarouselSection = ({ data }) => {
     </View>
   );
 };
+
 const Banner = ({ data }) => {
   const styles = StyleSheet.create({
     bannerContainer: {
@@ -352,7 +362,7 @@ const Rating = ({ data, title, src, text }) => {
       <Image style={styles.logo} resizeMode={'contain'} source={src} />
       {!text ? (
         <View style={styles.ratingContainer}>
-          {list.map((item, index) => (
+          {list.map((_item, index) => (
             <MaterialCommunityIcons
               name={data > index ? 'star' : 'star-outline'}
               size={14}

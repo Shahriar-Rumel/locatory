@@ -6,7 +6,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import React from 'react';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import colors from '../config/colors';
 
 export default function Button({

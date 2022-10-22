@@ -10,5 +10,6 @@ export default {
   light: '#EEEEEF',
   dark: '#0c0c0c',
   red: '#FF0202',
-  danger: '#ff5252'
+  danger: '#ff5252',
+  redLight: '#FFE3E3'
 };

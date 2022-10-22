@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import FeedNavigator from './FeedNavigator';
 import { Ionicons } from '@expo/vector-icons';
 import ReviewNavigator from './ReviewNavigator';
+import NotificationNavigator from './NotificationNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +58,7 @@ const AppNavigator = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={FeedNavigator}
+      component={NotificationNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
           <Ionicons

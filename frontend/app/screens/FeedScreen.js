@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   ActivityIndicator,
@@ -19,6 +19,10 @@ import CardSection from '../components/CardSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser, logOut } from '../actions/userActions';
 import { getAllPlacesAction } from '../actions/placeActions';
+import LargeCard from '../components/LargeCard';
+import { getTopRatedPlaceAction } from '../actions/filterActions';
+import Button from '../components/Button';
+import routes from '../navigation/routes';
 
 const TopBar = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -96,28 +100,169 @@ const TopBar = ({ navigation }) => {
     </View>
   );
 };
-const SearchBar = () => {
+const SearchBar = ({ allPlaces, navigation }) => {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [item, setItem] = useState();
+  const [filteredPlaces, setFilteredPlaces] = useState(allPlaces?.data);
+
+  const searchStyles = StyleSheet.create({
+    itemContainer: {
+      paddingVertical: 10,
+      elevation: 5,
+      marginVertical: 5,
+      backgroundColor: colors.input,
+      borderRadius: 5,
+      height: 300,
+      paddingBottom: 20
+    },
+    item: {
+      paddingVertical: 15,
+      paddingHorizontal: 20,
+      // backgroundColor: colors.primaryLight,
+      borderBottomColor: colors.primary,
+      borderBottomWidth: 0.5,
+      fontSize: 12,
+      fontWeight: '400',
+      color: colors.dark
+    }
+  });
+
+  const searchList = (allPlaces, property, value) => {
+    let name = property;
+    return allPlaces.data.filter((Object) =>
+      Object.name.toString().toLowerCase().includes(value.toLowerCase())
+    );
+  };
+
+  const handleSearch = (text) => {
+    setName(text);
+
+    setFilteredPlaces(searchList(allPlaces, 'name', text));
+  };
+
   return (
-    <View style={styles.searchContainer}>
-      <FontAwesome5
-        name="search"
-        size={22}
-        color="black"
-        style={styles.searchIcon}
-      />
-      <TextInput style={styles.input} placeholder="Search location" />
-    </View>
+    <>
+      <View style={styles.searchContainer}>
+        <FontAwesome5
+          name="search"
+          size={22}
+          color="black"
+          style={styles.searchIcon}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Search location"
+          value={name}
+          onChangeText={(text) => {
+            handleSearch(text);
+          }}
+          onPressIn={() => {
+            setOpen((prev) => !prev);
+          }}
+          // onBlur={() => name && setOpen(false)}
+        />
+      </View>
+      {open && filteredPlaces && (
+        <ScrollView style={searchStyles.itemContainer}>
+          {filteredPlaces?.map((item) => (
+            <Text
+              style={searchStyles.item}
+              key={item._id}
+              onPress={() => {
+                setName(item.name);
+                // setItem(item);
+                setOpen(false);
+                // console.log(item.name);
+
+                navigation.navigate(routes.LOCATION_DETAILS, {
+                  data: item
+                });
+              }}
+            >
+              {item.name}
+            </Text>
+          ))}
+        </ScrollView>
+      )}
+    </>
   );
 };
-const FilterTag = ({ text }) => {
+const FilterTag = ({ text, onPress }) => {
+  const styles = StyleSheet.create({
+    filterTag: {
+      paddingHorizontal: 10,
+      backgroundColor: colors.input,
+      height: 35,
+      borderRadius: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 10,
+      flexDirection: 'row'
+    }
+  });
   return (
-    <TouchableOpacity style={styles.filterTag}>
+    <TouchableOpacity style={styles.filterTag} onPress={onPress}>
       <Text>{text}</Text>
     </TouchableOpacity>
   );
 };
 
-const FilterBar = () => {
+const FilterBar = ({ filtered, setFiltered }) => {
+  const styles = StyleSheet.create({
+    clearFilterContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginVertical: 10
+    },
+    filterContainer: {
+      flexDirection: 'column',
+      overflow: 'scroll',
+      marginTop: 10
+    },
+    filterIcon: {
+      width: 14,
+      height: 14,
+      marginRight: 5
+    },
+    filterTag: {
+      paddingHorizontal: 10,
+      backgroundColor: colors.input,
+      height: 35,
+      borderRadius: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 10,
+      flexDirection: 'row'
+    },
+    topRatedPlace: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: colors.primary
+    }
+  });
+
+  const dispatch = useDispatch();
+
+  const topRatedPlaceData = useSelector((state) => state.topRatedPlaceData);
+  const {
+    topRatedPlace,
+    loading: topRatedPlaceLoading,
+    error: topRatedPlaceError
+  } = topRatedPlaceData;
+
+  console.log(topRatedPlace?.data);
+
+  const getFirstTenChars = (data) => {
+    const array = data?.split('') ? data?.split('') : 'loading';
+    let ans = '';
+    for (let i = 0; i <= 40; i++) ans += array[i] ? array[i] : '';
+    for (let i = 1; i <= 3; i++) ans += ' .';
+
+    return ans;
+  };
+
   return (
     <View style={styles.filterContainer}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -129,17 +274,68 @@ const FilterBar = () => {
           />
           <Text>Filter</Text>
         </View>
-        <FilterTag text={'Trending'} />
+        <FilterTag
+          text={'Top Rated'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getTopRatedPlaceAction(3));
+          }}
+        />
         <FilterTag text={'Indoors'} />
         <FilterTag text={'Tour'} />
         <FilterTag text={'Restaurants'} />
-        <FilterTag text={'Trending'} />
       </ScrollView>
+
+      {filtered && (
+        <>
+          {topRatedPlaceLoading ? (
+            <ActivityIndicator
+              size="large"
+              color={colors.primary}
+              style={styles.loader}
+            />
+          ) : (
+            <>
+              <View style={styles.clearFilterContainer}>
+                <Text style={styles.topRatedPlace}>Top Rated Places</Text>
+                <Button
+                  text={'Clear Filter'}
+                  height={40}
+                  width={100}
+                  onPress={() => setFiltered(false)}
+                />
+              </View>
+              {topRatedPlace?.data?.map((item) => (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate(routes.LOCATION_DETAILS, {
+                      data: item
+                    })
+                  }
+                >
+                  <LargeCard
+                    title={item.name}
+                    distance={'0.2 Km'}
+                    location={
+                      item.location?.formattedAddress?.length > 30
+                        ? getFirstTenChars(item.location?.formattedAddress)
+                        : item.location?.formattedAddress
+                    }
+                    imguri={item.photo}
+                    rating={item.averageRating}
+                  />
+                </Pressable>
+              ))}
+            </>
+          )}
+        </>
+      )}
     </View>
   );
 };
 
 export default function FeedScreen({ navigation }) {
+  const [filtered, setFiltered] = useState(false);
   const data = [
     {
       title: 'University of Dhaka',
@@ -180,32 +376,36 @@ export default function FeedScreen({ navigation }) {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
       >
         <TopBar navigation={navigation} />
-        <SearchBar />
-        <FilterBar />
+        <SearchBar allPlaces={allPlaces} navigation={navigation} />
+        <FilterBar filtered={filtered} setFiltered={setFiltered} />
 
-        {allPlacesLoading ? (
-          <ActivityIndicator
-            size="large"
-            color={colors.primary}
-            style={styles.loader}
-          />
-        ) : (
+        {!filtered && (
           <>
-            <CardSection
-              title={'For you'}
-              data={allPlaces ? allPlaces.data : data}
-              navigation={navigation}
-            />
-            <CardSection
-              title={'Meet with colleagues'}
-              data={allPlaces ? allPlaces.data : data}
-              navigation={navigation}
-            />
-            <CardSection
-              title={'Most Reviewed'}
-              data={allPlaces ? allPlaces.data : data}
-              navigation={navigation}
-            />
+            {allPlacesLoading ? (
+              <ActivityIndicator
+                size="large"
+                color={colors.primary}
+                style={styles.loader}
+              />
+            ) : (
+              <>
+                <CardSection
+                  title={'For you'}
+                  data={allPlaces ? allPlaces.data : data}
+                  navigation={navigation}
+                />
+                <CardSection
+                  title={'Meet with colleagues'}
+                  data={allPlaces ? allPlaces.data : data}
+                  navigation={navigation}
+                />
+                <CardSection
+                  title={'Most Reviewed'}
+                  data={allPlaces ? allPlaces.data : data}
+                  navigation={navigation}
+                />
+              </>
+            )}
           </>
         )}
       </ScrollView>
@@ -234,27 +434,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.white
   },
-  filterContainer: {
-    flexDirection: 'row',
-    height: 35,
-    overflow: 'scroll',
-    marginTop: 10
-  },
-  filterIcon: {
-    width: 14,
-    height: 14,
-    marginRight: 5
-  },
-  filterTag: {
-    paddingHorizontal: 10,
-    backgroundColor: colors.input,
-    height: 35,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-    flexDirection: 'row'
-  },
+
   greetContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

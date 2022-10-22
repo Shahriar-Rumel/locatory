@@ -317,7 +317,7 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
       address: address,
       photo: photo
     };
-    console.log(data);
+
     dispatch(createPlaceAction(data));
   };
 

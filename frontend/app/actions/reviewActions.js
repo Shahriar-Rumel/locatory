@@ -9,7 +9,10 @@ import {
   CREATE_REVIEW_FOR_PLACE_SUCCESS,
   GET_REVIEWS_BY_PLACE_FAIL,
   GET_REVIEWS_BY_PLACE_REQUEST,
-  GET_REVIEWS_BY_PLACE_SUCCESS
+  GET_REVIEWS_BY_PLACE_SUCCESS,
+  LIKE_FAIL,
+  LIKE_REQUEST,
+  LIKE_SUCCESS
 } from '../constants/reviewConstants';
 
 const BASE_URL = PRODUCTION_URL;
@@ -107,3 +110,46 @@ export const createReviewByPlace =
       });
     }
   };
+
+export const likeforReview = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: LIKE_REQUEST
+    });
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    };
+
+    const { data } = await axios.post(
+      `${BASE_URL}/api/reviews/${id}/likes`,
+      config
+    );
+
+    dispatch({
+      type: LIKE_SUCCESS,
+      payload: data
+    });
+
+    console.log(data);
+
+    storeData('like', data);
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: LIKE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    });
+    // console.log(error);
+  }
+};
