@@ -6,5 +6,6 @@ export default Object.freeze({
   LOCATION_DETAILS: 'Location_Details',
   REVIEW: 'Review',
   CREATE_REVIEW: 'Create_Review',
-  NOTIFICATION: 'notification'
+  NOTIFICATION: 'notification',
+  PROFILE: 'profile'
 });
