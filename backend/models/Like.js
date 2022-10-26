@@ -16,6 +16,13 @@ const LikeSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  reviewtitle: String,
+  reviewdescription: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  reviewImage: String,
 });
 
 // // Static method to get avg rating and save

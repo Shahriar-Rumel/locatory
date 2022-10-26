@@ -41,7 +41,9 @@ exports.addLike = asyncHandler(async (req, res, next) => {
     let a = review.totallikes;
     if (a >= 1) review.totallikes = a + 1;
     review.save();
-
+    req.body.reviewtitle = review.title;
+    req.body.reviewdescription = review.description;
+    req.body.reviewImage = review.photo;
     if (!review) {
       return next(
         new ErrorResponse(`No review with the id of ${req.params.placeId}`, 404)
