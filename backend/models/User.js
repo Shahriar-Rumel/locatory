@@ -41,7 +41,9 @@ const UserSchema = new mongoose.Schema({
         ref: "Place",
         required: true,
       },
-
+      placename: {
+        type: String,
+      },
       createdAt: {
         type: Date,
         default: Date.now,

@@ -3,6 +3,7 @@ const asyncHandler = require("../middleware/async");
 const Review = require("../models/Review");
 const User = require("../models/User");
 const { findById } = require("../models/User");
+const Place = require("../models/Place");
 
 // @route     GET /api/auth/notifications
 // @access    Private
@@ -24,9 +25,10 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     );
   }
   const reviewcreator = await User.findById(review.user.toString());
-
+  const place_temp = await Place.findById(review.place.toString());
   reviewcreator.notification.push({
     place: review.place.toString(),
+    placename: place_temp.name,
     username: req.user.name,
   });
   reviewcreator.save();
