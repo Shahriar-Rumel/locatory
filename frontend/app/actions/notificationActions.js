@@ -4,6 +4,9 @@ import { PRODUCTION_URL } from '../config/production';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
+  CREATE_NOTIFICATION_FAIL,
+  CREATE_NOTIFICATION_REQUEST,
+  CREATE_NOTIFICATION_SUCCESS,
   GET_NOTIFICATIONS_FOR_USER_FAIL,
   GET_NOTIFICATIONS_FOR_USER_REQUEST,
   GET_NOTIFICATIONS_FOR_USER_SUCCESS
@@ -59,3 +62,47 @@ export const getNotificationsForUserAction =
       });
     }
   };
+
+export const createNotificationAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: CREATE_NOTIFICATION_REQUEST
+    });
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    };
+
+    console.log(`${BASE_URL}/api/reviews/${id}/notification`);
+    const { data } = await axios.post(
+      `${BASE_URL}/api/reviews/${id}/notifications`,
+      { withCredentials: true },
+      config
+    );
+
+    dispatch({
+      type: CREATE_NOTIFICATION_SUCCESS,
+      payload: data
+    });
+
+    console.log(data);
+    storeData('createNotificationData', data);
+  } catch (error) {
+    dispatch({
+      type: CREATE_NOTIFICATION_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    });
+
+    console.log(error);
+  }
+};

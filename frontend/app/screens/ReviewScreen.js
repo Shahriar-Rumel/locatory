@@ -16,6 +16,7 @@ import routes from '../navigation/routes';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { likeforReview } from '../actions/reviewActions';
+import { createNotificationAction } from '../actions/notificationActions';
 
 const CoverSection = ({ navigation, route }) => {
   const styles = StyleSheet.create({
@@ -209,7 +210,9 @@ const DetailsSection = ({ data }) => {
               // if (like) setLikeCounter((prev) => prev - 1);
               // else setLikeCounter((prev) => prev + 1);
               setLiked((prev) => !prev);
+              dispatch(createNotificationAction(data._id));
               dispatch(likeforReview(data._id));
+              console.log('called');
             }}
           >
             <MaterialCommunityIcons

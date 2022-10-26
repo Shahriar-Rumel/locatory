@@ -15,12 +15,14 @@ import Screen from '../components/Screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotificationsForUserAction } from '../actions/notificationActions';
 import Message from '../components/Message';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ReviewListSection = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     const styles = StyleSheet.create({
       createdAt: {
-        color: item.read ? colors.gray : colors.primary
+        color: item.read ? colors.gray : colors.primary,
+        fontSize: 12
       },
       img: {
         width: 60,
@@ -42,8 +44,8 @@ const ReviewListSection = ({ navigation, route }) => {
       },
       header: {
         flexWrap: 'wrap',
-        width: '85%',
-        fontSize: 14,
+        width: '80%',
+        fontSize: 12,
         color: item.read ? colors.black : colors.black,
         lineHeight: 18,
         marginBottom: 10,
@@ -85,7 +87,7 @@ const ReviewListSection = ({ navigation, route }) => {
       if (s) second = s;
     };
 
-    getElapsedTime(new Date('2022-10-22T11:30:33'));
+    getElapsedTime(new Date(item?.createdAt?.split('.')[0]));
 
     return (
       <Pressable
@@ -105,7 +107,7 @@ const ReviewListSection = ({ navigation, route }) => {
             <Text style={styles.header}>
               <Text style={styles.name}>{item.username}</Text> liked your review
               for {''}
-              {item.place}
+              {item.placename}
             </Text>
             {day ? (
               <Text style={styles.createdAt}>{day} days ago</Text>
@@ -136,6 +138,7 @@ const ReviewListSection = ({ navigation, route }) => {
       navigation={navigation}
       loading={loading}
       notificationsForUser={notificationsForUser}
+      dispatch={dispatch}
     />
   );
 
@@ -180,7 +183,13 @@ const ReviewListSection = ({ navigation, route }) => {
 
   return (
     <FlatList
-      data={notificationsForUser ? notificationsForUser.data : []}
+      data={
+        notificationsForUser
+          ? notificationsForUser.data
+              .sort((a, b) => parseFloat(a.createdAt) - parseFloat(b.createdAt))
+              .reverse()
+          : []
+      }
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
@@ -191,7 +200,8 @@ const FlatListHeaders = ({
   navigation,
   route,
   loading,
-  notificationsForUser
+  notificationsForUser,
+  dispatch
 }) => {
   const styles = StyleSheet.create({
     notificationHeader: {
@@ -212,6 +222,12 @@ const FlatListHeaders = ({
         <Ionicons name="notifications" size={24} color={colors.primary} />
         <Text style={styles.notifications}>Notifications </Text>
       </View>
+      <MaterialCommunityIcons
+        name="reload"
+        size={24}
+        color="black"
+        onPress={() => dispatch(getNotificationsForUserAction())}
+      />
       {notificationsForUser?.data?.length < 1 && (
         <Message message={'No notifications yet !'} />
       )}

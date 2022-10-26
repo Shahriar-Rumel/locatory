@@ -228,7 +228,7 @@ export const likeforReview = (id) => async (dispatch, getState) => {
       payload: data
     });
 
-    // console.log(data);
+    console.log(data);
 
     storeData('like', data);
   } catch (error) {
