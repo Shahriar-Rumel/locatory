@@ -7,5 +7,6 @@ export default Object.freeze({
   REVIEW: 'Review',
   CREATE_REVIEW: 'Create_Review',
   NOTIFICATION: 'notification',
-  PROFILE: 'profile'
+  PROFILE: 'profile',
+  USER_REVIEWS: 'user_reviews'
 });

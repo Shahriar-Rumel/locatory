@@ -121,9 +121,7 @@ const DetailsSection = ({ data }) => {
 
   const dispatch = useDispatch();
 
-  const likesData = useSelector((state) => state.likesData);
-
-  // console.log(likesData);
+  const likeData = useSelector((state) => state.likeData);
 
   const styles = StyleSheet.create({
     actionContainer: {
@@ -138,8 +136,8 @@ const DetailsSection = ({ data }) => {
       color: colors.black
     },
     description: {
-      fontWeight: '500',
-      fontSize: 11,
+      fontWeight: '400',
+      fontSize: 12,
       color: colors.gray,
       marginTop: 10
     },

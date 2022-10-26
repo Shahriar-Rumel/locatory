@@ -18,7 +18,11 @@ import Screen from '../components/Screen';
 import CardSection from '../components/CardSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser, logOut } from '../actions/userActions';
-import { getAllPlacesAction } from '../actions/placeActions';
+import {
+  getAllPlacesAction,
+  getNearbyPlacesAction,
+  getPlacesByCatagoryAction
+} from '../actions/placeActions';
 import LargeCard from '../components/LargeCard';
 import { getTopRatedPlaceAction } from '../actions/filterActions';
 import Button from '../components/Button';
@@ -252,8 +256,6 @@ const FilterBar = ({ filtered, setFiltered }) => {
     error: topRatedPlaceError
   } = topRatedPlaceData;
 
-  console.log(topRatedPlace?.data);
-
   const getFirstTenChars = (data) => {
     const array = data?.split('') ? data?.split('') : 'loading';
     let ans = '';
@@ -368,6 +370,32 @@ export default function FeedScreen({ navigation }) {
     error: allPlacesError
   } = allPlacesData;
 
+  const nearbyPlacesData = useSelector((state) => state.nearbyPlacesData);
+  const {
+    nearbyPlaces,
+    loading: nearbyPlacesLoading,
+    error: nearbyPlacesError
+  } = nearbyPlacesData;
+
+  const placesbyCatagoryData = useSelector(
+    (state) => state.placesbyCatagoryData
+  );
+  const {
+    placesbyCatagory,
+    loading: placesbyCatagoryLoading,
+    error: placesbyCatagoryError
+  } = placesbyCatagoryData;
+
+  useEffect(() => {
+    dispatch(getNearbyPlacesAction());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getPlacesByCatagoryAction('theatre'));
+  }, []);
+
+  // console.log(placesbyCatagory);
+
   return (
     <Screen style={styles.container}>
       <ScrollView
@@ -381,7 +409,7 @@ export default function FeedScreen({ navigation }) {
 
         {!filtered && (
           <>
-            {allPlacesLoading ? (
+            {nearbyPlacesLoading ? (
               <ActivityIndicator
                 size="large"
                 color={colors.primary}
@@ -391,14 +419,35 @@ export default function FeedScreen({ navigation }) {
               <>
                 <CardSection
                   title={'For you'}
-                  data={allPlaces ? allPlaces.data : data}
+                  data={nearbyPlaces ? nearbyPlaces.data : data}
                   navigation={navigation}
                 />
+              </>
+            )}
+            {placesbyCatagoryLoading ? (
+              <ActivityIndicator
+                size="large"
+                color={colors.primary}
+                style={styles.loader}
+              />
+            ) : (
+              <>
                 <CardSection
-                  title={'Meet with colleagues'}
-                  data={allPlaces ? allPlaces.data : data}
+                  title={'Meet with friends'}
+                  data={placesbyCatagory ? placesbyCatagory.data : data}
                   navigation={navigation}
                 />
+              </>
+            )}
+
+            {allPlacesLoading ? (
+              <ActivityIndicator
+                size="large"
+                color={colors.primary}
+                style={styles.loader}
+              />
+            ) : (
+              <>
                 <CardSection
                   title={'Most Reviewed'}
                   data={allPlaces ? allPlaces.data : data}

@@ -16,12 +16,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BASE_URL = PRODUCTION_URL;
 
-const storeData = async (value) => {
+const storeData = async (key, value) => {
   try {
-    // const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem('userLogin', jsonValue);
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
-    // saving error
+    console.log(e);
   }
 };
 const removeItemValue = async (key) => {
@@ -56,7 +56,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data
     });
 
-    storeData(data);
+    storeData('userLogin', data);
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -130,7 +130,7 @@ export const getCurrentUser = () => async (dispatch, getState) => {
       payload: data
     });
 
-    storeData(data);
+    storeData('userData', data);
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
@@ -142,6 +142,6 @@ export const getCurrentUser = () => async (dispatch, getState) => {
   }
 };
 export const logOut = () => (dispatch) => {
-  const data = removeItemValue('userInfo');
+  const data = removeItemValue('userLogin');
   dispatch({ type: USER_LOGIN_LOGOUT });
 };

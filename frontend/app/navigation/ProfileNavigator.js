@@ -3,12 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import routes from './routes';
 import ProfileScreen from '../screens/ProfileScreen';
+import UserReviewScreen from '../screens/UserReviewsScreen';
 
 const Stack = createStackNavigator();
 
 const ProfileNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name={routes.PROFILE} component={ProfileScreen} />
+    <Stack.Screen name={routes.USER_REVIEWS} component={UserReviewScreen} />
     {/* <Stack.Screen name="Location" component={LocationScreen} />
     <Stack.Screen name="Location_Details" component={LocationDetailsScreen} />
     <Stack.Screen name="Review" component={ReviewScreen} /> */}

@@ -7,9 +7,15 @@ import {
   CREATE_REVIEW_FOR_PLACE_FAIL,
   CREATE_REVIEW_FOR_PLACE_REQUEST,
   CREATE_REVIEW_FOR_PLACE_SUCCESS,
+  DELETE_REVIEW_FAIL,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
   GET_REVIEWS_BY_PLACE_FAIL,
   GET_REVIEWS_BY_PLACE_REQUEST,
   GET_REVIEWS_BY_PLACE_SUCCESS,
+  GET_REVIEWS_BY_USER_FAIL,
+  GET_REVIEWS_BY_USER_REQUEST,
+  GET_REVIEWS_BY_USER_SUCCESS,
   LIKE_FAIL,
   LIKE_REQUEST,
   LIKE_SUCCESS
@@ -67,6 +73,47 @@ export const getReviewsByPlace =
     }
   };
 
+export const getReviewsByUser =
+  (pageNo, pageSize) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_REVIEWS_BY_USER_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      const { data } = await axios.get(
+        `${BASE_URL}/api/reviews/user/all`,
+        config
+      );
+
+      dispatch({
+        type: GET_REVIEWS_BY_USER_SUCCESS,
+        payload: data
+      });
+
+      storeData('reviewsByUserData', data);
+    } catch (error) {
+      dispatch({
+        type: GET_REVIEWS_BY_USER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+      console.log(error);
+    }
+  };
+
 export const createReviewByPlace =
   (id, reviewdata) => async (dispatch, getState) => {
     try {
@@ -111,6 +158,48 @@ export const createReviewByPlace =
     }
   };
 
+export const deleteReview = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: DELETE_REVIEW_REQUEST
+    });
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    };
+
+    const { data } = await axios.delete(
+      `${BASE_URL}/api/reviews/${id}`,
+      config
+    );
+
+    dispatch({
+      type: DELETE_REVIEW_SUCCESS,
+      payload: data
+    });
+
+    // console.log(data);
+
+    storeData('deleteReviewData', data);
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: DELETE_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    });
+  }
+};
+
 export const likeforReview = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -130,6 +219,7 @@ export const likeforReview = (id) => async (dispatch, getState) => {
 
     const { data } = await axios.post(
       `${BASE_URL}/api/reviews/${id}/likes`,
+      { withCredentials: true },
       config
     );
 
@@ -138,7 +228,7 @@ export const likeforReview = (id) => async (dispatch, getState) => {
       payload: data
     });
 
-    console.log(data);
+    // console.log(data);
 
     storeData('like', data);
   } catch (error) {

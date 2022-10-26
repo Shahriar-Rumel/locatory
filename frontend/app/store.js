@@ -12,11 +12,15 @@ import {
 } from './reducers/userReducers';
 import {
   createPlaceReducer,
-  getAllPlacesReducer
+  getAllPlacesReducer,
+  getNearbyPlacesReducer,
+  getPlacesByCatagoryReducer
 } from './reducers/placeReducers';
 import {
   createReviewForPlaceReducer,
+  deleteReviewReducer,
   getReviewsByPlaceReducer,
+  getReviewsByUserReducer,
   likeReducer
 } from './reducers/reviewReducers';
 import { getTopRatedPlaceReducer } from './reducers/filterReducers';
@@ -44,7 +48,14 @@ const reducer = combineReducers({
     persistConfig,
     getNotificationsForUserReducer
   ),
-  likeData: persistReducer(persistConfig, likeReducer)
+  likeData: persistReducer(persistConfig, likeReducer),
+  nearbyPlacesData: persistReducer(persistConfig, getNearbyPlacesReducer),
+  placesbyCatagoryData: persistReducer(
+    persistConfig,
+    getPlacesByCatagoryReducer
+  ),
+  reviewsByUserData: persistReducer(persistConfig, getReviewsByUserReducer),
+  deleteReviewData: persistReducer(persistConfig, deleteReviewReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')

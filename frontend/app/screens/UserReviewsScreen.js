@@ -4,58 +4,74 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 import Screen from '../components/Screen';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getNotificationsForUserAction } from '../actions/notificationActions';
 import Message from '../components/Message';
+import { deleteReview, getReviewsByUser } from '../actions/reviewActions';
 
 const ReviewListSection = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     const styles = StyleSheet.create({
+      bottomContainer: {
+        position: 'relative',
+        overflow: 'visible'
+      },
       createdAt: {
-        color: item.read ? colors.gray : colors.primary
+        color: colors.gray,
+        fontSize: 12
+      },
+      deleteButton: {
+        position: 'absolute',
+        left: 240,
+        marginTop: -2
       },
       img: {
         width: 60,
         height: 60,
-        backgroundColor: item.read ? colors.gray : colors.secondary,
-        borderRadius: 60,
+        backgroundColor: colors.secondary,
+        borderRadius: 5,
         marginRight: 10,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
       },
       item: {
-        backgroundColor: item.read ? colors.white : colors.primaryLight,
+        backgroundColor: colors.white,
         marginVertical: 0.5,
-        // marginHorizontal: 15,
         paddingHorizontal: 18,
         paddingVertical: 20,
         borderBottomWidth: 1,
-        borderBottomColor: colors.primaryLight
+        borderBottomColor: colors.light
       },
       header: {
-        flexWrap: 'wrap',
-        width: '85%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
         fontSize: 14,
-        color: item.read ? colors.black : colors.black,
-        lineHeight: 18,
-        marginBottom: 10,
-        fontWeight: '500'
+        color: colors.black,
+        fontWeight: '400'
       },
       notificationTop: {
         flexDirection: 'row',
         alignItems: 'center'
       },
       name: {
-        fontWeight: '700',
-        color: item.read ? colors.black : colors.primary
+        fontWeight: '600',
+        color: colors.primary
+      },
+      desc: {
+        color: colors.gray,
+        marginBottom: 10
       },
       dpLetter: {
         fontSize: 30,
@@ -72,6 +88,7 @@ const ReviewListSection = ({ navigation, route }) => {
 
     const getElapsedTime = (t2) => {
       const t1 = new Date().getTime();
+
       let ts = (t1 - t2.getTime()) / 1000;
 
       var d = Math.floor(ts / (3600 * 24));
@@ -85,8 +102,20 @@ const ReviewListSection = ({ navigation, route }) => {
       if (s) second = s;
     };
 
-    getElapsedTime(new Date('2022-10-22T11:30:33'));
+    getElapsedTime(new Date(item?.createdAt?.split('.')[0]));
 
+    const getFirstHundredChars = (data) => {
+      const array = data?.split('') ? data?.split('') : 'loading';
+      let ans = '';
+      for (let i = 0; i <= 40; i++) ans += array[i];
+      for (let i = 1; i <= 3; i++) ans += ' .';
+
+      return ans;
+    };
+    const deleteHandler = () => {
+      dispatch(deleteReview(item._id));
+      dispatch(getReviewsByUser());
+    };
     return (
       <Pressable
         style={styles.item}
@@ -98,24 +127,40 @@ const ReviewListSection = ({ navigation, route }) => {
         key={item.name}
       >
         <View style={styles.notificationTop}>
-          <View style={styles.img}>
-            <Text style={styles.dpLetter}>{item?.username?.split('')[0]}</Text>
-          </View>
+          <ImageBackground
+            style={styles.img}
+            source={{
+              uri: `${item?.photo}`
+            }}
+            resizeMode="cover"
+          />
+
           <View>
             <Text style={styles.header}>
-              <Text style={styles.name}>{item.username}</Text> liked your review
-              for {''}
-              {item.place}
+              <Text style={styles.name}>{item.title}</Text>
             </Text>
-            {day ? (
-              <Text style={styles.createdAt}>{day} days ago</Text>
-            ) : hour ? (
-              <Text style={styles.createdAt}>{hour} hours ago</Text>
-            ) : minute ? (
-              <Text style={styles.createdAt}>{minute} minutes ago </Text>
-            ) : (
-              <Text style={styles.createdAt}>{second} seconds ago </Text>
-            )}
+            <Text style={styles.desc}>
+              {item.description.length > 40
+                ? getFirstHundredChars(item.description)
+                : item.description}
+            </Text>
+            <View style={styles.bottomContainer}>
+              {day ? (
+                <Text style={styles.createdAt}>{day} days ago</Text>
+              ) : hour ? (
+                <Text style={styles.createdAt}>{hour} hours ago</Text>
+              ) : minute ? (
+                <Text style={styles.createdAt}>{minute} minutes ago </Text>
+              ) : (
+                <Text style={styles.createdAt}>{second} seconds ago </Text>
+              )}
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={deleteHandler}
+              >
+                <MaterialIcons name="delete" size={24} color={colors.red} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Pressable>
@@ -124,26 +169,22 @@ const ReviewListSection = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
 
-  const notificationsForUserData = useSelector(
-    (state) => state.notificationsForUserData
-  );
+  const reviewsByUserData = useSelector((state) => state.reviewsByUserData);
 
-  const { notificationsForUser, loading } = notificationsForUserData;
+  const { reviewsByUser, loading } = reviewsByUserData;
 
   const FlatListTop = (
     <FlatListHeaders
       route={route}
       navigation={navigation}
       loading={loading}
-      notificationsForUser={notificationsForUser}
+      reviewsByUser={reviewsByUser}
     />
   );
 
   useEffect(() => {
-    dispatch(getNotificationsForUserAction());
+    dispatch(getReviewsByUser());
   }, []);
-
-  console.log(notificationsForUser);
 
   const data = [
     {
@@ -180,27 +221,24 @@ const ReviewListSection = ({ navigation, route }) => {
 
   return (
     <FlatList
-      data={notificationsForUser ? notificationsForUser.data : []}
+      data={reviewsByUser ? reviewsByUser.data : []}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
     />
   );
 };
-const FlatListHeaders = ({
-  navigation,
-  route,
-  loading,
-  notificationsForUser
-}) => {
+const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
   const styles = StyleSheet.create({
-    notificationHeader: {
+    reviewsHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 20,
-      paddingVertical: 20
+      paddingVertical: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.light
     },
-    notifications: {
+    reviews: {
       marginLeft: 10,
       fontSize: 20,
       fontWeight: '700'
@@ -208,12 +246,12 @@ const FlatListHeaders = ({
   });
   return (
     <>
-      <View style={styles.notificationHeader}>
-        <Ionicons name="notifications" size={24} color={colors.primary} />
-        <Text style={styles.notifications}>Notifications </Text>
+      <View style={styles.reviewsHeader}>
+        <MaterialIcons name="rate-review" size={18} color={colors.primary} />
+        <Text style={styles.reviews}>Reviews </Text>
       </View>
-      {notificationsForUser?.data?.length < 1 && (
-        <Message message={'No notifications yet !'} />
+      {reviewsByUser?.data?.length < 1 && (
+        <Message message={"You haven't created any reviews yet !"} />
       )}
       {loading && (
         <ActivityIndicator
@@ -225,7 +263,7 @@ const FlatListHeaders = ({
     </>
   );
 };
-export default function NotificationScreen({ navigation, route }) {
+export default function UserReviewScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
       <ReviewListSection navigation={navigation} route={route} />

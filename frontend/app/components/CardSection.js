@@ -24,7 +24,8 @@ const CardSection = ({ title, data, navigation }) => {
 
     forYou: {
       fontWeight: '700',
-      fontSize: 18
+      fontSize: 18,
+      fontFamily: 'SFPD-bold'
     }
   });
 

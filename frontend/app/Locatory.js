@@ -31,9 +31,6 @@ export default function Locatory() {
   //     />
   //   );
 
-  console.log(userInfo);
-  console.log(user);
-
   useEffect(() => {
     async function prepare() {
       try {
