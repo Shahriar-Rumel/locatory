@@ -55,3 +55,26 @@ exports.readNotifications = asyncHandler(async (req, res, next) => {
     }
   }
 });
+
+// @route     GET /api/auth/notification/notificationalert
+// @access    Private
+exports.getNotificationAlerts = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  let a = 0;
+  for (let i = 0; i < user.notification.length; i++) {
+    if (user.notification[i].read === false) {
+      a = a + 1;
+    }
+  }
+  if (a > 0) {
+    res.status(201).json({
+      success: true,
+      data: a,
+    });
+  } else {
+    res.status(201).json({
+      success: true,
+      data: false,
+    });
+  }
+});

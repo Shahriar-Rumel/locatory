@@ -11,6 +11,7 @@ const {
 const {
   getNotifications,
   readNotifications,
+  getNotificationAlerts,
 } = require("../controller/notifications");
 const router = express.Router();
 const { protect } = require("../middleware/auth");
@@ -24,5 +25,6 @@ router.put("/updatedetails", protect, updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.get("/notifications", protect, getNotifications);
 router.post("/:id/markasread", protect, readNotifications);
+router.get("/notifications/notificationalert", protect, getNotificationAlerts);
 
 module.exports = router;
