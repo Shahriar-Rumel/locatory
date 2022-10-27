@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const geocoder = require("../utils/geocoder");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -32,7 +33,37 @@ const UserSchema = new mongoose.Schema({
   photo: {
     type: String,
   },
-
+  address: {
+    type: String,
+    default: "none",
+  },
+  location: {
+    // GeoJSON Point
+    type: {
+      type: String,
+      enum: ["Point"],
+    },
+    coordinates: {
+      type: [Number],
+      index: "2dsphere",
+    },
+    formattedAddress: String,
+    street: String,
+    city: String,
+    state: String,
+    zipcode: {
+      type: String,
+      default: 1205,
+    },
+    country: String,
+  },
+  preferredCategory: [
+    {
+      Category: {
+        type: String,
+      },
+    },
+  ],
   notification: [
     {
       username: String,
@@ -99,4 +130,23 @@ UserSchema.methods.getResetPasswordToken = function () {
 
   return resetToken;
 };
+
+// // Geocode & create location field
+// UserSchema.pre("save", async function (next) {
+//   const loc = await geocoder.geocode(this.address);
+//   this.location = {
+//     type: "Point",
+//     coordinates: [loc[0].longitude, loc[0].latitude],
+//     formattedAddress: loc[0].formattedAddress,
+//     street: loc[0].streetName,
+//     city: loc[0].city,
+//     state: loc[0].stateCode,
+//     zipcode: loc[0].zipcode,
+//     country: loc[0].countryCode,
+//   };
+
+//   //   // // Do not save address in DB
+//   //   // this.address = undefined;
+//   next();
+// });
 module.exports = mongoose.model("User", UserSchema);

@@ -3,6 +3,7 @@ const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const geocoder = require("../utils/geocoder");
 // @desc  Register user
 //@route POST /api/auth/register
 //@access Public
@@ -81,7 +82,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Update user details
-// @route     PUT /api/v1/auth/updatedetails
+// @route     PUT /api/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
@@ -184,4 +185,21 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   await user.save();
 
   sendTokenResponse(user, 200, res);
+});
+
+// @desc      Provide user location
+// @route     POST /api/auth/addlocation
+// @access    Private
+exports.addLocation = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  //const loc = await geocoder.geocode(req.body);
+  user.address = req.body.address;
+  const loc = await geocoder.geocode(req.body.address);
+  user.location.formattedAddress = loc[0].formattedAddress;
+  user.location.zipcode = loc[0].zipcode;
+  user.save();
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
 });
