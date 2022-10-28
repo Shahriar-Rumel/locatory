@@ -9,6 +9,8 @@ import { navigationRef } from './navigation/rootNavigation';
 import navigationTheme from './navigation/navigationTheme';
 import AppLoading from 'expo-app-loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StatusBar } from 'expo-status-bar';
+import colors from './config/colors';
 
 export default function Locatory() {
   const [isReady, setIsReady] = useState(false);
@@ -56,12 +58,19 @@ export default function Locatory() {
   }
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={navigationTheme}
-      onLayout={onLayoutRootView}
-    >
-      {userInfo ? <AppNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <>
+      <StatusBar
+        backgroundColor={colors.primary}
+        barStyle="light"
+        style="light"
+      />
+      <NavigationContainer
+        ref={navigationRef}
+        theme={navigationTheme}
+        onLayout={onLayoutRootView}
+      >
+        {userInfo ? <AppNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </>
   );
 }

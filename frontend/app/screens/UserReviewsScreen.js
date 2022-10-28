@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -7,7 +7,8 @@ import {
   View,
   Image,
   ImageBackground,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -219,12 +220,24 @@ const ReviewListSection = ({ navigation, route }) => {
     }
   ];
 
+
+  const onRefresh = useCallback(() => {
+    dispatch(getReviewsByUser());
+  }, []);
   return (
     <FlatList
       data={reviewsByUser ? reviewsByUser.data : []}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={onRefresh}
+          colors={[colors.primary]}
+          progressViewOffset={60}
+        />
+      }
     />
   );
 };
@@ -253,13 +266,13 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
       {reviewsByUser?.data?.length < 1 && (
         <Message message={"You haven't created any reviews yet !"} />
       )}
-      {loading && (
+      {/* {loading && (
         <ActivityIndicator
           size="large"
           color={colors.primary}
           style={styles.loader}
         />
-      )}
+      )} */}
     </>
   );
 };

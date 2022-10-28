@@ -44,7 +44,7 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    marginTop: 50,
     paddingHorizontal: constants.CONTAINER_PADDING
   },
   logoContainer: { flexDirection: 'row', justifyContent: 'center' },

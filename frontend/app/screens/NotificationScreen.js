@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   View
@@ -186,6 +187,10 @@ const ReviewListSection = ({ navigation, route }) => {
     }
   ];
 
+  const onRefresh = useCallback(() => {
+    dispatch(getNotificationsForUserAction());
+  }, []);
+
   return (
     <FlatList
       data={
@@ -198,6 +203,14 @@ const ReviewListSection = ({ navigation, route }) => {
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={onRefresh}
+          colors={[colors.primary]}
+          progressViewOffset={60}
+        />
+      }
     />
   );
 };
@@ -214,7 +227,9 @@ const FlatListHeaders = ({
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: 20,
-      paddingVertical: 20
+      paddingVertical: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.primaryLight
     },
     notificationHeaderLeft: {
       flexDirection: 'row'
@@ -223,6 +238,9 @@ const FlatListHeaders = ({
       marginLeft: 10,
       fontSize: 20,
       fontWeight: '700'
+    },
+    loader: {
+      marginTop: 10
     }
   });
   return (
@@ -243,13 +261,13 @@ const FlatListHeaders = ({
       {notificationsForUser?.data?.length < 1 && (
         <Message message={'No notifications yet !'} />
       )}
-      {loading && (
+      {/* {loading && (
         <ActivityIndicator
           size="large"
           color={colors.primary}
           style={styles.loader}
         />
-      )}
+      )} */}
     </>
   );
 };
@@ -264,7 +282,6 @@ export default function NotificationScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 0,
     width: '100%',
     backgroundColor: 'white'
   },

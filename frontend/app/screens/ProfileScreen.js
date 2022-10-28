@@ -3,7 +3,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  ImageBackground
 } from 'react-native';
 import React, { useEffect } from 'react';
 import colors from '../config/colors';
@@ -16,6 +17,7 @@ import routes from '../navigation/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser, logOut } from '../actions/userActions';
 import { AntDesign } from '@expo/vector-icons';
+import Screen from '../components/Screen';
 
 const CoverSection = ({ data }) => {
   const styles = StyleSheet.create({
@@ -26,11 +28,12 @@ const CoverSection = ({ data }) => {
       marginBottom: 10
     },
     dp: {
-      backgroundColor: colors.secondary,
+      backgroundColor: colors.primaryLight,
       height: 130,
       width: 130,
       marginTop: 60,
-      borderRadius: 150
+      borderRadius: 150,
+      overflow: 'hidden'
     },
     headingcontainer: {
       justifyContent: 'center',
@@ -44,18 +47,18 @@ const CoverSection = ({ data }) => {
     username: {
       color: colors.white,
       fontSize: 28,
-      fontWeight: '500'
+      fontWeight: '700'
     },
     email: {
-      color: colors.white
+      color: colors.gray
     },
     footertext: {
-      color: colors.white,
+      color: colors.dark,
       fontSize: 16,
       fontWeight: '500'
     },
     coverBottomText: {
-      color: colors.white,
+      color: colors.gray,
       fontSize: 12
     },
     coverBottom: {
@@ -85,9 +88,18 @@ const CoverSection = ({ data }) => {
     'November',
     'December'
   ];
+
+  const url =
+    'https://images.unsplash.com/photo-1531343983535-681659059ec1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80';
   return (
     <View style={styles.cover}>
-      <View style={styles.dp}></View>
+      <ImageBackground
+        source={{
+          uri: `${url}`
+        }}
+        resizeMode="cover"
+        style={styles.dp}
+      ></ImageBackground>
       <View style={styles.headingcontainer}>
         <View style={styles.detailscontainer}>
           <Text style={styles.username}>{data?.name}</Text>
@@ -99,8 +111,10 @@ const CoverSection = ({ data }) => {
           width={90}
           height={30}
           borderRadius={8}
-          color={colors.white}
+          color={colors.secondary}
           bgColor={colors.secondary}
+          secondary={true}
+          border={colors.secondary}
         />
       </View>
       <View style={styles.coverBottom}>
@@ -228,7 +242,7 @@ const ProfileScreen = ({ navigation }) => {
     dispatch(getCurrentUser());
   }, []);
   return (
-    <>
+    <Screen style={styles.container}>
       {userDataLoading ? (
         <ActivityIndicator
           size="large"
@@ -241,7 +255,7 @@ const ProfileScreen = ({ navigation }) => {
           <ProfileActivity navigation={navigation} dispatch={dispatch} />
         </>
       )}
-    </>
+    </Screen>
   );
 };
 

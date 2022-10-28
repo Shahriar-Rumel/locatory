@@ -20,7 +20,8 @@ export default function Button({
   loading,
   opacity,
   bgColor,
-  secondary
+  secondary,
+  border
 }) {
   const styles = StyleSheet.create({
     button: {
@@ -30,7 +31,7 @@ export default function Button({
       alignItems: 'center',
       borderRadius: borderRadius ? borderRadius : 14,
       borderWidth: secondary && 1,
-      borderColor: secondary && colors.primary,
+      borderColor: secondary && (border ? border : colors.primary),
       justifyContent: 'center',
       marginVertical: mv ? mv : 8,
       flexDirection: 'row',
