@@ -8,6 +8,7 @@ const {
   updateDetails,
   updatePassword,
   addLocation,
+  addPreference,
 } = require("../controller/auth");
 const {
   getNotifications,
@@ -24,6 +25,7 @@ router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:resettoken", protect, resetPassword);
 router.put("/updatedetails", protect, updateDetails);
 router.post("/addlocation", protect, addLocation);
+router.post("/addpreference", protect, addPreference);
 router.put("/updatepassword", protect, updatePassword);
 router.get("/notifications", protect, getNotifications);
 router.post("/:id/markasread", protect, readNotifications);

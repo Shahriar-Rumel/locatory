@@ -203,3 +203,16 @@ exports.addLocation = asyncHandler(async (req, res, next) => {
     data: user,
   });
 });
+
+// @desc      Provide user preferences
+// @route     POST /api/auth/addpreference
+// @access    Private
+exports.addPreference = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  user.preferredCategory = req.body.preference;
+  user.save();
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
