@@ -15,6 +15,10 @@ import {
   GET_REVIEWS_BY_USER_REQUEST,
   GET_REVIEWS_BY_USER_RESET,
   GET_REVIEWS_BY_USER_SUCCESS,
+  GET_REVIEW_BY_ID_FAIL,
+  GET_REVIEW_BY_ID_REQUEST,
+  GET_REVIEW_BY_ID_RESET,
+  GET_REVIEW_BY_ID_SUCCESS,
   LIKE_FAIL,
   LIKE_REQUEST,
   LIKE_RESET,
@@ -45,6 +49,25 @@ export const getReviewsByUserReducer = (state = {}, action) => {
     case GET_REVIEWS_BY_USER_FAIL:
       return { loading: false, error: action.payload };
     case GET_REVIEWS_BY_USER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const getReviewsByIDReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_REVIEW_BY_ID_REQUEST:
+      return { loading: true, success: false };
+    case GET_REVIEW_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        reviewsByID: action.payload.data
+      };
+    case GET_REVIEW_BY_ID_FAIL:
+      return { loading: false, error: action.payload };
+    case GET_REVIEW_BY_ID_RESET:
       return {};
     default:
       return state;

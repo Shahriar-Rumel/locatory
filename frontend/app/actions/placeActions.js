@@ -125,7 +125,6 @@ export const getPlacesByCatagoryAction =
         }
       };
 
-      console.log(`${BASE_URL}/api/places?category=${query}`);
 
       const params = new URLSearchParams({
         category: query
@@ -135,8 +134,6 @@ export const getPlacesByCatagoryAction =
         `${BASE_URL}/api/places?` + params,
         config
       );
-
-      console.log(data);
 
       dispatch({
         type: GET_PLACES_BY_CATAGORY_SUCCESS,

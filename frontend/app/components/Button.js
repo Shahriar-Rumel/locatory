@@ -3,11 +3,11 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
-import React from "react";
+  ActivityIndicator
+} from 'react-native';
+import React from 'react';
 
-import colors from "../config/colors";
+import colors from '../config/colors';
 
 export default function Button({
   text,
@@ -20,26 +20,29 @@ export default function Button({
   loading,
   opacity,
   bgColor,
+  secondary
 }) {
   const styles = StyleSheet.create({
     button: {
       width: width ? width : 100,
       height: height ? height : 50,
-      backgroundColor: bgColor ? bgColor : colors.primary,
-      alignItems: "center",
+      backgroundColor: !secondary && (bgColor ? bgColor : colors.primary),
+      alignItems: 'center',
       borderRadius: borderRadius ? borderRadius : 14,
-      justifyContent: "center",
+      borderWidth: secondary && 1,
+      borderColor: secondary && colors.primary,
+      justifyContent: 'center',
       marginVertical: mv ? mv : 8,
-      flexDirection: "row",
-      opacity: !opacity ? opacity : 1,
+      flexDirection: 'row',
+      opacity: !opacity ? opacity : 1
     },
     text: {
       color: color ? color : colors.white,
-      fontFamily: "SFPD-semiBold",
+      fontFamily: 'SFPD-semiBold'
     },
     loader: {
-      marginRight: 10,
-    },
+      marginRight: 10
+    }
   });
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>

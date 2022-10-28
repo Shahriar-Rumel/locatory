@@ -280,7 +280,7 @@ const ReviewListSection = ({ navigation, route }) => {
         style={styles.item}
         onPress={() =>
           navigation.navigate(routes.REVIEW, {
-            data: item
+            data: item._id
           })
         }
         key={item.name}
@@ -314,7 +314,9 @@ const ReviewListSection = ({ navigation, route }) => {
               <Octicons name="comment" size={18} color={colors.secondary} />
             </View> */}
             <View style={styles.likeContainer}>
-              <Text style={styles.statCount}>12k</Text>
+              <Text style={styles.statCount}>
+                {item.totaldislikes} {item.totaldislikes >= 1000 && k}
+              </Text>
               <AntDesign name="dislike2" size={18} color={colors.gray} />
             </View>
           </View>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -13,9 +13,13 @@ import colors from '../config/colors';
 import Screen from '../components/Screen';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getNotificationsForUserAction } from '../actions/notificationActions';
+import {
+  getNotificationsForUserAction,
+  setNotificationAsReadAction
+} from '../actions/notificationActions';
 import Message from '../components/Message';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import routes from '../navigation/routes';
 
 const ReviewListSection = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
@@ -42,9 +46,11 @@ const ReviewListSection = ({ navigation, route }) => {
         borderBottomWidth: 1,
         borderBottomColor: colors.primaryLight
       },
+      itemContainer: {
+        width: '80%'
+      },
       header: {
         flexWrap: 'wrap',
-        width: '80%',
         fontSize: 12,
         color: item.read ? colors.black : colors.black,
         lineHeight: 18,
@@ -92,22 +98,23 @@ const ReviewListSection = ({ navigation, route }) => {
     return (
       <Pressable
         style={styles.item}
-        // onPress={() =>
-        //   navigation.navigate(routes.REVIEW, {
-        //     data: item
-        //   })
-        // }
+        onPress={() => {
+          dispatch(setNotificationAsReadAction(item._id));
+          dispatch(getNotificationsForUserAction());
+          navigation.navigate(routes.REVIEW, {
+            data: item._id
+          });
+        }}
         key={item.name}
       >
         <View style={styles.notificationTop}>
           <View style={styles.img}>
             <Text style={styles.dpLetter}>{item?.username?.split('')[0]}</Text>
           </View>
-          <View>
+          <View style={styles.itemContainer}>
             <Text style={styles.header}>
               <Text style={styles.name}>{item.username}</Text> liked your review
-              for {''}
-              {item.placename}
+              for {'' + item.placename}
             </Text>
             {day ? (
               <Text style={styles.createdAt}>{day} days ago</Text>
@@ -145,8 +152,6 @@ const ReviewListSection = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(getNotificationsForUserAction());
   }, []);
-
-  console.log(notificationsForUser);
 
   const data = [
     {
@@ -207,8 +212,12 @@ const FlatListHeaders = ({
     notificationHeader: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
       paddingHorizontal: 20,
       paddingVertical: 20
+    },
+    notificationHeaderLeft: {
+      flexDirection: 'row'
     },
     notifications: {
       marginLeft: 10,
@@ -219,15 +228,18 @@ const FlatListHeaders = ({
   return (
     <>
       <View style={styles.notificationHeader}>
-        <Ionicons name="notifications" size={24} color={colors.primary} />
-        <Text style={styles.notifications}>Notifications </Text>
+        <View style={styles.notificationHeaderLeft}>
+          <Ionicons name="notifications" size={24} color={colors.primary} />
+          <Text style={styles.notifications}>Notifications </Text>
+        </View>
+        <MaterialCommunityIcons
+          name="reload"
+          size={24}
+          color={colors.primary}
+          style={styles.reload}
+          onPress={() => dispatch(getNotificationsForUserAction())}
+        />
       </View>
-      <MaterialCommunityIcons
-        name="reload"
-        size={24}
-        color="black"
-        onPress={() => dispatch(getNotificationsForUserAction())}
-      />
       {notificationsForUser?.data?.length < 1 && (
         <Message message={'No notifications yet !'} />
       )}

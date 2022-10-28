@@ -16,6 +16,9 @@ import {
   GET_REVIEWS_BY_USER_FAIL,
   GET_REVIEWS_BY_USER_REQUEST,
   GET_REVIEWS_BY_USER_SUCCESS,
+  GET_REVIEW_BY_ID_FAIL,
+  GET_REVIEW_BY_ID_REQUEST,
+  GET_REVIEW_BY_ID_SUCCESS,
   LIKE_FAIL,
   LIKE_REQUEST,
   LIKE_SUCCESS
@@ -114,6 +117,44 @@ export const getReviewsByUser =
     }
   };
 
+export const getReviewsByID =
+  (id, pageNo, pageSize) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_REVIEW_BY_ID_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      console.log(`${BASE_URL}/api/reviews/${id}`);
+      const { data } = await axios.get(`${BASE_URL}/api/reviews/${id}`, config);
+
+      dispatch({
+        type: GET_REVIEW_BY_ID_SUCCESS,
+        payload: data
+      });
+
+      storeData('reviewsByIDData', data);
+    } catch (error) {
+      dispatch({
+        type: GET_REVIEW_BY_ID_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+      console.log(error);
+    }
+  };
 export const createReviewByPlace =
   (id, reviewdata) => async (dispatch, getState) => {
     try {
@@ -227,8 +268,6 @@ export const likeforReview = (id) => async (dispatch, getState) => {
       type: LIKE_SUCCESS,
       payload: data
     });
-
-    console.log(data);
 
     storeData('like', data);
   } catch (error) {

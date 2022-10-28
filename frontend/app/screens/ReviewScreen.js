@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  ActivityIndicator,
   Image,
   ImageBackground,
   Pressable,
@@ -15,15 +16,16 @@ import routes from '../navigation/routes';
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { likeforReview } from '../actions/reviewActions';
+import { getReviewsByID, likeforReview } from '../actions/reviewActions';
 import { createNotificationAction } from '../actions/notificationActions';
+import { getCurrentUser } from '../actions/userActions';
 
-const CoverSection = ({ navigation, route }) => {
+const CoverSection = ({ navigation, route, data }) => {
   const styles = StyleSheet.create({
     img: {
       width: '100%',
-      height: 300,
-      backgroundColor: colors.primary
+      height: 350,
+      backgroundColor: colors.secondary
     },
     backButton: {
       backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -46,8 +48,14 @@ const CoverSection = ({ navigation, route }) => {
       paddingHorizontal: 15,
       paddingVertical: 10,
       position: 'absolute',
-      bottom: 10,
-      width: '100%'
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      bottom: 0,
+      width: '100%',
+      backgroundColor: colors.black
+    },
+    nameContainer: {
+      width: '90%'
     },
     title: {
       fontWeight: '700',
@@ -58,8 +66,11 @@ const CoverSection = ({ navigation, route }) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      position: 'absolute',
       marginTop: 5,
-      width: 150
+      right: 20,
+      top: 30,
+      width: 120
     },
     location: {
       fontWeight: '500',
@@ -70,10 +81,14 @@ const CoverSection = ({ navigation, route }) => {
       fontWeight: '500',
       fontSize: 11,
       color: colors.secondary
+    },
+    place: {
+      color: colors.gray,
+      fontSize: 12,
+      marginLeft: -2,
+      marginBottom: 8
     }
   });
-
-  const { data } = route.params;
 
   const list = [1, 2, 3, 4, 5];
 
@@ -98,13 +113,23 @@ const CoverSection = ({ navigation, route }) => {
         </View>
       </Pressable>
       <View style={styles.bottom}>
-        <Text style={styles.title}>{data.title}</Text>
+        <View style={styles.nameContainer}>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.place}>
+            <Ionicons
+              name="md-location-sharp"
+              size={20}
+              color={colors.primaryLight}
+            />
+            {data.place.name}
+          </Text>
+        </View>
         <View style={styles.ratingContainer}>
           {list.map((_item, index) => (
             <MaterialCommunityIcons
               name={data.rating > index ? 'star' : 'star-outline'}
               size={20}
-              color={colors.secondary}
+              color={colors.primaryLight}
               key={index}
             />
           ))}
@@ -127,14 +152,14 @@ const DetailsSection = ({ data }) => {
   const styles = StyleSheet.create({
     actionContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
       alignItems: 'center',
       marginTop: 20
     },
     date: {
       fontWeight: '500',
       fontSize: 11,
-      color: colors.black
+      color: colors.gray
     },
     description: {
       fontWeight: '400',
@@ -165,7 +190,8 @@ const DetailsSection = ({ data }) => {
       paddingVertical: 4,
       borderRadius: 5,
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginRight: 10
     },
     locationContainer: {
       flexDirection: 'row',
@@ -186,19 +212,77 @@ const DetailsSection = ({ data }) => {
       fontWeight: '700',
       fontSize: 20,
       color: colors.primary,
-      width: '60%'
+      width: '100%'
+    },
+    dpContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: -2,
+      width: '100%'
+    },
+    dp: {
+      backgroundColor: colors.secondary,
+      height: 60,
+      width: 60,
+      borderRadius: 150,
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden'
+    },
+    nameContainer: {
+      marginLeft: 10
+    },
+    greetName: {
+      fontSize: 32,
+      color: colors.white,
+      fontWeight: '700',
+      textTransform: 'capitalize'
+    },
+    nameParentContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '80%'
+    },
+    verified: {
+      backgroundColor: colors.greenLight,
+      color: colors.green,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 20,
+      textTransform: 'capitalize'
     }
   });
 
   return (
     <View style={styles.detailsSection}>
       <View style={styles.locationContainer}>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.date}>
-          {data.createdAt.split('T')[0] +
-            ' at ' +
-            data.createdAt.split('T')[1].split('.')[0]}
-        </Text>
+        <View style={styles.dpContainer}>
+          <ImageBackground
+            style={styles.dp}
+            source={{
+              uri: `${data.photo}`
+            }}
+            resizeMode="cover"
+          >
+            {!data?.photo && (
+              <Text style={[styles.greet, styles.greetName]}>
+                {/* {data?.name?.split(' ')[0]} */}S
+              </Text>
+            )}
+          </ImageBackground>
+          <View style={styles.nameParentContainer}>
+            <View style={styles.nameContainer}>
+              <Text style={styles.title}>Shahriar Rumel</Text>
+              <Text style={styles.date}>
+                {data.createdAt.split('T')[0] +
+                  ' at ' +
+                  data.createdAt.split('T')[1].split('.')[0]}
+              </Text>
+            </View>
+            <Text style={styles.verified}>{data.setting}</Text>
+          </View>
+        </View>
       </View>
       <Text style={styles.description}>{data.description}</Text>
       <View style={styles.actionContainer}>
@@ -212,7 +296,6 @@ const DetailsSection = ({ data }) => {
               setLiked((prev) => !prev);
               dispatch(createNotificationAction(data._id));
               dispatch(likeforReview(data._id));
-              console.log('called');
             }}
           >
             <MaterialCommunityIcons
@@ -222,7 +305,7 @@ const DetailsSection = ({ data }) => {
             />
           </Pressable>
         </View>
-        <View style={styles.likeContainer}>
+        {/* <View style={styles.likeContainer}>
           <Text style={styles.statCount}>{data.likes}</Text>
           <Pressable
             style={styles.iconContainer}
@@ -234,9 +317,9 @@ const DetailsSection = ({ data }) => {
               color={comment ? colors.secondary : colors.gray}
             />
           </Pressable>
-        </View>
+        </View> */}
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.likes}</Text>
+          <Text style={styles.statCount}>{data.totaldislikes}</Text>
           <Pressable
             style={styles.iconContainer}
             onPress={() => setDislike((prev) => !prev)}
@@ -427,14 +510,42 @@ const RatingBox = ({ data }) => {
 export default function ReviewScreen({ navigation, route }) {
   const { data } = route.params;
 
+  const dispatch = useDispatch();
+
+  const reviewsByIDData = useSelector((state) => state.reviewsByIDData);
+
+  const { loading, reviewsByID } = reviewsByIDData;
+
+  useEffect(() => {
+    dispatch(getReviewsByID(data));
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
-      <CoverSection navigation={navigation} route={route} />
-      <DetailsSection data={data} />
-      <CarouselSection data={data} />
-      <View style={styles.divider}></View>
-      <Banner data={data} />
-      <RatingBox data={data} />
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={styles.loader}
+        />
+      ) : (
+        <>
+          {reviewsByID && (
+            <>
+              <CoverSection
+                navigation={navigation}
+                route={route}
+                data={reviewsByID}
+              />
+              <DetailsSection data={reviewsByID} />
+              <CarouselSection data={reviewsByID} />
+              <View style={styles.divider}></View>
+              <Banner data={reviewsByID} />
+              <RatingBox data={reviewsByID} />
+            </>
+          )}
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -446,5 +557,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 25,
     marginBottom: 20
+  },
+  loader: {
+    marginVertical: 40
   }
 });

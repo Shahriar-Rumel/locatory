@@ -9,7 +9,10 @@ import {
   CREATE_NOTIFICATION_SUCCESS,
   GET_NOTIFICATIONS_FOR_USER_FAIL,
   GET_NOTIFICATIONS_FOR_USER_REQUEST,
-  GET_NOTIFICATIONS_FOR_USER_SUCCESS
+  GET_NOTIFICATIONS_FOR_USER_SUCCESS,
+  SET_NOTIFICATION_AS_READ_FAIL,
+  SET_NOTIFICATION_AS_READ_REQUEST,
+  SET_NOTIFICATION_AS_READ_SUCCESS
 } from '../constants/notificationConstants';
 
 const BASE_URL = PRODUCTION_URL;
@@ -92,7 +95,6 @@ export const createNotificationAction = (id) => async (dispatch, getState) => {
       payload: data
     });
 
-    console.log(data);
     storeData('createNotificationData', data);
   } catch (error) {
     dispatch({
@@ -106,3 +108,46 @@ export const createNotificationAction = (id) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
+export const setNotificationAsReadAction =
+  (id) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SET_NOTIFICATION_AS_READ_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      const { data } = await axios.post(
+        `${BASE_URL}/api/auth/${id}/markasread`,
+        { withCredentials: true },
+        config
+      );
+
+      dispatch({
+        type: SET_NOTIFICATION_AS_READ_SUCCESS,
+        payload: data
+      });
+
+      storeData('setNotificationAsReadData', data);
+    } catch (error) {
+      dispatch({
+        type: SET_NOTIFICATION_AS_READ_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+
+      console.log(error);
+    }
+  };

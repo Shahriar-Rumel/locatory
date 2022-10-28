@@ -65,8 +65,6 @@ const TopBar = ({ navigation }) => {
 
     const time = localTime.split(' ')[3].split(':')[0];
 
-    console.log(time);
-
     if (time < 11) return partsofDayList[0];
     if (time < 14) return partsofDayList[1];
     if (time < 18) return partsofDayList[2];
@@ -212,7 +210,7 @@ const FilterTag = ({ text, onPress }) => {
   );
 };
 
-const FilterBar = ({ filtered, setFiltered }) => {
+const FilterBar = ({ filtered, setFiltered, navigation }) => {
   const styles = StyleSheet.create({
     clearFilterContainer: {
       flexDirection: 'row',
@@ -304,6 +302,8 @@ const FilterBar = ({ filtered, setFiltered }) => {
                   text={'Clear Filter'}
                   height={40}
                   width={100}
+                  secondary={true}
+                  color={colors.primary}
                   onPress={() => setFiltered(false)}
                 />
               </View>
@@ -405,7 +405,11 @@ export default function FeedScreen({ navigation }) {
       >
         <TopBar navigation={navigation} />
         <SearchBar allPlaces={allPlaces} navigation={navigation} />
-        <FilterBar filtered={filtered} setFiltered={setFiltered} />
+        <FilterBar
+          filtered={filtered}
+          setFiltered={setFiltered}
+          navigation={navigation}
+        />
 
         {!filtered && (
           <>

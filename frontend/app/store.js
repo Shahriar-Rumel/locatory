@@ -19,6 +19,7 @@ import {
 import {
   createReviewForPlaceReducer,
   deleteReviewReducer,
+  getReviewsByIDReducer,
   getReviewsByPlaceReducer,
   getReviewsByUserReducer,
   likeReducer
@@ -26,7 +27,8 @@ import {
 import { getTopRatedPlaceReducer } from './reducers/filterReducers';
 import {
   createNotificationReducer,
-  getNotificationsForUserReducer
+  getNotificationsForUserReducer,
+  setNotificationAsReadReducer
 } from './reducers/notificationReducers';
 
 const persistConfig = {
@@ -58,10 +60,15 @@ const reducer = combineReducers({
     getPlacesByCatagoryReducer
   ),
   reviewsByUserData: persistReducer(persistConfig, getReviewsByUserReducer),
+  reviewsByIDData: persistReducer(persistConfig, getReviewsByIDReducer),
   deleteReviewData: persistReducer(persistConfig, deleteReviewReducer),
   createNotificationData: persistReducer(
     persistConfig,
     createNotificationReducer
+  ),
+  setNotificationAsReadData: persistReducer(
+    persistConfig,
+    setNotificationAsReadReducer
   )
 });
 

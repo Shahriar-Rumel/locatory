@@ -11,5 +11,7 @@ export default {
   dark: '#0c0c0c',
   red: '#FF0202',
   danger: '#ff5252',
-  redLight: '#FFE3E3'
+  redLight: '#FFE3E3',
+  green: '#008805',
+  greenLight: '#DEF0DF'
 };
