@@ -75,6 +75,9 @@ const UserSchema = new mongoose.Schema({
       placename: {
         type: String,
       },
+      reviewid: {
+        type: String,
+      },
       createdAt: {
         type: Date,
         default: Date.now,

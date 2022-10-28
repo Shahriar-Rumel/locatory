@@ -29,6 +29,7 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
   reviewcreator.notification.push({
     place: review.place.toString(),
     placename: place_temp.name,
+    reviewid: req.params.id,
     username: req.user.name,
   });
   reviewcreator.save();
