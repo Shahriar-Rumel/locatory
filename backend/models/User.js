@@ -57,13 +57,9 @@ const UserSchema = new mongoose.Schema({
     },
     country: String,
   },
-  preferredCategory: [
-    {
-      Category: {
-        type: String,
-      },
-    },
-  ],
+  preferredCategory: {
+    type: [String],
+  },
   notification: [
     {
       username: String,
