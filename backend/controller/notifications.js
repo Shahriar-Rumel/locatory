@@ -31,6 +31,7 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     placename: place_temp.name,
     reviewid: req.params.id,
     username: req.user.name,
+    username: reviewcreator.photo,
   });
   reviewcreator.save();
   res.status(201).json({

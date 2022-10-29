@@ -63,6 +63,10 @@ const UserSchema = new mongoose.Schema({
   notification: [
     {
       username: String,
+      userphoto: {
+        type: String,
+        default: "no-photo.jpg",
+      },
       place: {
         type: mongoose.Schema.ObjectId,
         ref: "Place",
