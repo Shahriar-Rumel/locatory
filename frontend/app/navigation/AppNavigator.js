@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import ReviewNavigator from './ReviewNavigator';
 import NotificationNavigator from './NotificationNavigator';
 import ProfileNavigator from './ProfileNavigator';
+import { Text, View } from 'react-native';
+import colors from '../config/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,19 +17,11 @@ const AppNavigator = () => (
   <Tab.Navigator
     screenOptions={{
       tabBarStyle: {
-        // backgroundColor: 'green',
         paddingBottom: 5,
         paddingTop: 5,
         height: 50
       },
       headerShown: false
-      //   tabBarBackground: () => (
-      //     <BlurView
-      //       tint="light"
-      //       intensity={100}
-      //       style={StyleSheet.absoluteFill}
-      //     />
-      //   )
     }}
   >
     <Tab.Screen
@@ -62,11 +56,42 @@ const AppNavigator = () => (
       component={NotificationNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <Ionicons
-            name="ios-notifications-outline"
-            size={size}
-            color={color}
-          />
+          <View
+            style={{
+              position: 'relative'
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: colors.red,
+                position: 'absolute',
+                top: -3,
+                right: -3,
+                zIndex: 999,
+                borderRadius: 90,
+                height: 16,
+                width: 16,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 2
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 10,
+                  color: colors.white,
+                  marginTop: -2
+                }}
+              >
+                12
+              </Text>
+            </View>
+            <Ionicons
+              name="ios-notifications-outline"
+              size={size}
+              color={color}
+            />
+          </View>
         )
       }}
     />

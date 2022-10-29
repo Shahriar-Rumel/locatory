@@ -10,6 +10,9 @@ import {
   DELETE_REVIEW_FAIL,
   DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_SUCCESS,
+  GET_FAVORITE_REVIEWS_FAIL,
+  GET_FAVORITE_REVIEWS_REQUEST,
+  GET_FAVORITE_REVIEWS_SUCCESS,
   GET_REVIEWS_BY_PLACE_FAIL,
   GET_REVIEWS_BY_PLACE_REQUEST,
   GET_REVIEWS_BY_PLACE_SUCCESS,
@@ -135,7 +138,6 @@ export const getReviewsByID =
         }
       };
 
-      console.log(`${BASE_URL}/api/reviews/${id}`);
       const { data } = await axios.get(`${BASE_URL}/api/reviews/${id}`, config);
 
       dispatch({
@@ -143,10 +145,50 @@ export const getReviewsByID =
         payload: data
       });
 
-      storeData('reviewsByIDData', data);
+      storeData('reviewsByID', data);
     } catch (error) {
       dispatch({
         type: GET_REVIEW_BY_ID_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+      console.log(error);
+    }
+  };
+export const getFavoritReviews =
+  (pageNo, pageSize) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_FAVORITE_REVIEWS_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      const { data } = await axios.get(
+        `${BASE_URL}/api/likes/user/all`,
+        config
+      );
+
+      dispatch({
+        type: GET_FAVORITE_REVIEWS_SUCCESS,
+        payload: data
+      });
+
+      storeData('favoriteReviews', data);
+    } catch (error) {
+      dispatch({
+        type: GET_FAVORITE_REVIEWS_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

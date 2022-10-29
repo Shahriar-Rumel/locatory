@@ -103,7 +103,7 @@ const ReviewListSection = ({ navigation, route }) => {
           dispatch(setNotificationAsReadAction(item._id));
           dispatch(getNotificationsForUserAction());
           navigation.navigate(routes.REVIEW, {
-            data: item._id
+            data: item.reviewid
           });
         }}
         key={item.name}

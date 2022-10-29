@@ -160,7 +160,7 @@ const ProfileActivity = ({ navigation, dispatch }) => {
     {
       icon: <FontAwesome name="heart" size={16} color="black" />,
       title: 'Favorites',
-      link: routes.USER_REVIEWS
+      link: routes.USER_FAVORITES
     },
     {
       icon: (
@@ -171,7 +171,7 @@ const ProfileActivity = ({ navigation, dispatch }) => {
         />
       ),
       title: 'Places',
-      link: routes.USER_REVIEWS
+      link: routes.USER_PLACES
     },
     {
       icon: <MaterialIcons name="rate-review" size={18} color="black" />,

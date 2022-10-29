@@ -14,7 +14,7 @@ export default function WelcomeScreen({ navigation }) {
         <Image
           style={styles.logo}
           resizeMode={'contain'}
-          source={require('../assets/logo.png')}
+          source={require('../assets/icon.png')}
         />
       </View>
       <View style={styles.headerSection}>
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
   },
   logoContainer: { flexDirection: 'row', justifyContent: 'center' },
   logo: {
-    width: 180,
-    height: 180,
+    width: 240,
+    height: 240,
     marginTop: 60,
     paddingTop: 30
   },

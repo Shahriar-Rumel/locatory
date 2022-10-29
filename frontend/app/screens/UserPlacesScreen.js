@@ -18,9 +18,17 @@ import Screen from '../components/Screen';
 
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import { deleteReview, getReviewsByUser } from '../actions/reviewActions';
+import {
+  deleteReview,
+  getFavoritReviews,
+  getReviewsByUser
+} from '../actions/reviewActions';
+import { AntDesign } from '@expo/vector-icons';
+import routes from '../navigation/routes';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getPlacesByUserAction } from '../actions/placeActions';
 
-const ReviewListSection = ({ navigation, route }) => {
+const PlacesListSection = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     const styles = StyleSheet.create({
       bottomContainer: {
@@ -54,11 +62,14 @@ const ReviewListSection = ({ navigation, route }) => {
         borderBottomWidth: 1,
         borderBottomColor: colors.light
       },
+      content: {
+        width: '80%'
+      },
       header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
         fontSize: 14,
+        width: '100%',
         color: colors.black,
         fontWeight: '400'
       },
@@ -80,6 +91,16 @@ const ReviewListSection = ({ navigation, route }) => {
         fontWeight: '700',
         textTransform: 'uppercase',
         color: colors.white
+      },
+      ratingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        marginTop: 5,
+        right: 20,
+        top: 30,
+        width: 60
       }
     });
 
@@ -109,7 +130,7 @@ const ReviewListSection = ({ navigation, route }) => {
     const getFirstHundredChars = (data) => {
       const array = data?.split('') ? data?.split('') : 'loading';
       let ans = '';
-      for (let i = 0; i <= 40; i++) ans += array[i];
+      for (let i = 0; i <= 45; i++) ans += array[i];
       for (let i = 1; i <= 3; i++) ans += ' .';
 
       return ans;
@@ -118,15 +139,17 @@ const ReviewListSection = ({ navigation, route }) => {
       dispatch(deleteReview(item._id));
       dispatch(getReviewsByUser());
     };
+
+    const list = [1, 2, 3, 4, 5];
     return (
       <Pressable
         style={styles.item}
-        // onPress={() =>
-        //   navigation.navigate(routes.REVIEW, {
-        //     data: item
-        //   })
-        // }
-        key={item.name}
+        onPress={() =>
+          navigation.navigate(routes.REVIEW, {
+            data: item.review
+          })
+        }
+        key={item._id}
       >
         <View style={styles.notificationTop}>
           <ImageBackground
@@ -137,14 +160,30 @@ const ReviewListSection = ({ navigation, route }) => {
             resizeMode="cover"
           />
 
-          <View>
-            <Text style={styles.header}>
-              <Text style={styles.name}>{item.title}</Text>
-            </Text>
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Text style={styles.name}>{item.name}</Text>
+              <View>
+                <Text style={styles.like}>
+                  <View style={styles.ratingContainer}>
+                    {list.map((_item, index) => (
+                      <MaterialCommunityIcons
+                        name={
+                          item.averageRating > index ? 'star' : 'star-outline'
+                        }
+                        size={12}
+                        color={colors.secondary}
+                        key={index}
+                      />
+                    ))}
+                  </View>
+                </Text>
+              </View>
+            </View>
             <Text style={styles.desc}>
-              {item.description.length > 40
-                ? getFirstHundredChars(item.description)
-                : item.description}
+              {item?.reviewdescription?.length > 45
+                ? getFirstHundredChars(item?.country)
+                : item?.location.formattedAddress}
             </Text>
             <View style={styles.bottomContainer}>
               {day ? (
@@ -156,12 +195,6 @@ const ReviewListSection = ({ navigation, route }) => {
               ) : (
                 <Text style={styles.createdAt}>{second} seconds ago </Text>
               )}
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={deleteHandler}
-              >
-                <MaterialIcons name="delete" size={24} color={colors.red} />
-              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -171,21 +204,21 @@ const ReviewListSection = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
 
-  const reviewsByUserData = useSelector((state) => state.reviewsByUserData);
+  const placesbyUserData = useSelector((state) => state.placesbyUserData);
 
-  const { reviewsByUser, loading } = reviewsByUserData;
+  const { placesbyUser, loading } = placesbyUserData;
 
   const FlatListTop = (
     <FlatListHeaders
       route={route}
       navigation={navigation}
       loading={loading}
-      reviewsByUser={reviewsByUser}
+      reviewsByUser={placesbyUser}
     />
   );
 
   useEffect(() => {
-    dispatch(getReviewsByUser());
+    dispatch(getPlacesByUserAction());
   }, []);
 
   const data = [
@@ -222,11 +255,11 @@ const ReviewListSection = ({ navigation, route }) => {
   ];
 
   const onRefresh = useCallback(() => {
-    dispatch(getReviewsByUser());
+    dispatch(getPlacesByUserAction());
   }, []);
   return (
     <FlatList
-      data={reviewsByUser ? reviewsByUser.data : []}
+      data={placesbyUser ? placesbyUser : []}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
@@ -260,11 +293,15 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
   return (
     <>
       <View style={styles.reviewsHeader}>
-        <MaterialIcons name="rate-review" size={18} color={colors.primary} />
-        <Text style={styles.reviews}>Reviews </Text>
+        <MaterialCommunityIcons
+          name="office-building-marker"
+          size={18}
+          color={colors.secondary}
+        />
+        <Text style={styles.reviews}>Places </Text>
       </View>
       {reviewsByUser?.data?.length < 1 && (
-        <Message message={"You haven't created any reviews yet !"} />
+        <Message message={"You haven't created any places yet !"} />
       )}
       {/* {loading && (
         <ActivityIndicator
@@ -276,10 +313,10 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
     </>
   );
 };
-export default function UserReviewScreen({ navigation, route }) {
+export default function UserPlacesScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
-      <ReviewListSection navigation={navigation} route={route} />
+      <PlacesListSection navigation={navigation} route={route} />
     </Screen>
   );
 }

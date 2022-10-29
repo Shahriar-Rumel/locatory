@@ -8,5 +8,7 @@ export default Object.freeze({
   CREATE_REVIEW: 'Create_Review',
   NOTIFICATION: 'notification',
   PROFILE: 'profile',
-  USER_REVIEWS: 'user_reviews'
+  USER_REVIEWS: 'user_reviews',
+  USER_FAVORITES: 'user_favorites',
+  USER_PLACES: 'user_places'
 });

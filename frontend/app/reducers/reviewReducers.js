@@ -7,6 +7,10 @@ import {
   DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_RESET,
   DELETE_REVIEW_SUCCESS,
+  GET_FAVORITE_REVIEWS_FAIL,
+  GET_FAVORITE_REVIEWS_REQUEST,
+  GET_FAVORITE_REVIEWS_RESET,
+  GET_FAVORITE_REVIEWS_SUCCESS,
   GET_REVIEWS_BY_PLACE_FAIL,
   GET_REVIEWS_BY_PLACE_REQUEST,
   GET_REVIEWS_BY_PLACE_RESET,
@@ -68,6 +72,25 @@ export const getReviewsByIDReducer = (state = {}, action) => {
     case GET_REVIEW_BY_ID_FAIL:
       return { loading: false, error: action.payload };
     case GET_REVIEW_BY_ID_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const getFavoriteReviewsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_FAVORITE_REVIEWS_REQUEST:
+      return { loading: true, success: false };
+    case GET_FAVORITE_REVIEWS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        favoriteReviews: action.payload.data
+      };
+    case GET_FAVORITE_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
+    case GET_FAVORITE_REVIEWS_RESET:
       return {};
     default:
       return state;

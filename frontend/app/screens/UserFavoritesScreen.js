@@ -18,9 +18,15 @@ import Screen from '../components/Screen';
 
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import { deleteReview, getReviewsByUser } from '../actions/reviewActions';
+import {
+  deleteReview,
+  getFavoritReviews,
+  getReviewsByUser
+} from '../actions/reviewActions';
+import { AntDesign } from '@expo/vector-icons';
+import routes from '../navigation/routes';
 
-const ReviewListSection = ({ navigation, route }) => {
+const FavoritesListSection = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     const styles = StyleSheet.create({
       bottomContainer: {
@@ -54,11 +60,14 @@ const ReviewListSection = ({ navigation, route }) => {
         borderBottomWidth: 1,
         borderBottomColor: colors.light
       },
+      content: {
+        width: '80%'
+      },
       header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
         fontSize: 14,
+        width: '100%',
         color: colors.black,
         fontWeight: '400'
       },
@@ -109,7 +118,7 @@ const ReviewListSection = ({ navigation, route }) => {
     const getFirstHundredChars = (data) => {
       const array = data?.split('') ? data?.split('') : 'loading';
       let ans = '';
-      for (let i = 0; i <= 40; i++) ans += array[i];
+      for (let i = 0; i <= 45; i++) ans += array[i];
       for (let i = 1; i <= 3; i++) ans += ' .';
 
       return ans;
@@ -118,33 +127,39 @@ const ReviewListSection = ({ navigation, route }) => {
       dispatch(deleteReview(item._id));
       dispatch(getReviewsByUser());
     };
+
     return (
       <Pressable
         style={styles.item}
-        // onPress={() =>
-        //   navigation.navigate(routes.REVIEW, {
-        //     data: item
-        //   })
-        // }
-        key={item.name}
+        onPress={() =>
+          navigation.navigate(routes.REVIEW, {
+            data: item.review
+          })
+        }
+        key={item._id}
       >
         <View style={styles.notificationTop}>
           <ImageBackground
             style={styles.img}
             source={{
-              uri: `${item?.photo}`
+              uri: `${item?.reviewImage}`
             }}
             resizeMode="cover"
           />
 
-          <View>
-            <Text style={styles.header}>
-              <Text style={styles.name}>{item.title}</Text>
-            </Text>
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Text style={styles.name}>{item.reviewtitle}</Text>
+              <View>
+                <Text style={styles.like}>
+                  <AntDesign name="heart" size={16} color={colors.red} />
+                </Text>
+              </View>
+            </View>
             <Text style={styles.desc}>
-              {item.description.length > 40
-                ? getFirstHundredChars(item.description)
-                : item.description}
+              {item?.reviewdescription?.length > 45
+                ? getFirstHundredChars(item?.reviewdescription)
+                : item?.reviewdescription}
             </Text>
             <View style={styles.bottomContainer}>
               {day ? (
@@ -156,12 +171,12 @@ const ReviewListSection = ({ navigation, route }) => {
               ) : (
                 <Text style={styles.createdAt}>{second} seconds ago </Text>
               )}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={deleteHandler}
               >
                 <MaterialIcons name="delete" size={24} color={colors.red} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
@@ -171,21 +186,21 @@ const ReviewListSection = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
 
-  const reviewsByUserData = useSelector((state) => state.reviewsByUserData);
+  const favoriteReviewsData = useSelector((state) => state.favoriteReviewsData);
 
-  const { reviewsByUser, loading } = reviewsByUserData;
+  const { favoriteReviews, loading } = favoriteReviewsData;
 
   const FlatListTop = (
     <FlatListHeaders
       route={route}
       navigation={navigation}
       loading={loading}
-      reviewsByUser={reviewsByUser}
+      reviewsByUser={favoriteReviews}
     />
   );
 
   useEffect(() => {
-    dispatch(getReviewsByUser());
+    dispatch(getFavoritReviews());
   }, []);
 
   const data = [
@@ -222,11 +237,11 @@ const ReviewListSection = ({ navigation, route }) => {
   ];
 
   const onRefresh = useCallback(() => {
-    dispatch(getReviewsByUser());
+    dispatch(getFavoritReviews());
   }, []);
   return (
     <FlatList
-      data={reviewsByUser ? reviewsByUser.data : []}
+      data={favoriteReviews ? favoriteReviews : []}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListHeaderComponent={FlatListTop}
@@ -260,8 +275,8 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
   return (
     <>
       <View style={styles.reviewsHeader}>
-        <MaterialIcons name="rate-review" size={18} color={colors.primary} />
-        <Text style={styles.reviews}>Reviews </Text>
+        <AntDesign name="heart" size={18} color={colors.red} />
+        <Text style={styles.reviews}>Favorites </Text>
       </View>
       {reviewsByUser?.data?.length < 1 && (
         <Message message={"You haven't created any reviews yet !"} />
@@ -276,10 +291,10 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
     </>
   );
 };
-export default function UserReviewScreen({ navigation, route }) {
+export default function UserFavoritesScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
-      <ReviewListSection navigation={navigation} route={route} />
+      <FavoritesListSection navigation={navigation} route={route} />
     </Screen>
   );
 }

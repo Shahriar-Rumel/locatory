@@ -59,11 +59,7 @@ export default function Locatory() {
 
   return (
     <>
-      <StatusBar
-        backgroundColor={colors.primary}
-        barStyle="light"
-        style="light"
-      />
+      <StatusBar backgroundColor={colors.white} barStyle="light" style="dark" />
       <NavigationContainer
         ref={navigationRef}
         theme={navigationTheme}

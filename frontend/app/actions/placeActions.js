@@ -14,7 +14,10 @@ import {
   GET_NEARBY_PLACES_SUCCESS,
   GET_PLACES_BY_CATAGORY_FAIL,
   GET_PLACES_BY_CATAGORY_REQUEST,
-  GET_PLACES_BY_CATAGORY_SUCCESS
+  GET_PLACES_BY_CATAGORY_SUCCESS,
+  GET_PLACES_BY_USER_FAIL,
+  GET_PLACES_BY_USER_REQUEST,
+  GET_PLACES_BY_USER_SUCCESS
 } from '../constants/placeConstants';
 
 const BASE_URL = PRODUCTION_URL;
@@ -125,7 +128,6 @@ export const getPlacesByCatagoryAction =
         }
       };
 
-
       const params = new URLSearchParams({
         category: query
       }).toString();
@@ -144,6 +146,47 @@ export const getPlacesByCatagoryAction =
     } catch (error) {
       dispatch({
         type: GET_PLACES_BY_CATAGORY_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+      console.log(error.response.data.message);
+    }
+  };
+
+export const getPlacesByUserAction =
+  (pageNo, pageSize) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_PLACES_BY_USER_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      const { data } = await axios.get(
+        `${BASE_URL}/api/places/user/all`,
+        config
+      );
+
+      dispatch({
+        type: GET_PLACES_BY_USER_SUCCESS,
+        payload: data
+      });
+
+      storeData('placesbyUserData', data);
+    } catch (error) {
+      dispatch({
+        type: GET_PLACES_BY_USER_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

@@ -14,11 +14,13 @@ import {
   createPlaceReducer,
   getAllPlacesReducer,
   getNearbyPlacesReducer,
-  getPlacesByCatagoryReducer
+  getPlacesByCatagoryReducer,
+  getPlacesByUserReducer
 } from './reducers/placeReducers';
 import {
   createReviewForPlaceReducer,
   deleteReviewReducer,
+  getFavoriteReviewsReducer,
   getReviewsByIDReducer,
   getReviewsByPlaceReducer,
   getReviewsByUserReducer,
@@ -69,7 +71,9 @@ const reducer = combineReducers({
   setNotificationAsReadData: persistReducer(
     persistConfig,
     setNotificationAsReadReducer
-  )
+  ),
+  favoriteReviewsData: persistReducer(persistConfig, getFavoriteReviewsReducer),
+  placesbyUserData: persistReducer(persistConfig, getPlacesByUserReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')
