@@ -10,6 +10,9 @@ import {
   DELETE_REVIEW_FAIL,
   DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_SUCCESS,
+  DISLIKE_FAIL,
+  DISLIKE_REQUEST,
+  DISLIKE_SUCCESS,
   GET_FAVORITE_REVIEWS_FAIL,
   GET_FAVORITE_REVIEWS_REQUEST,
   GET_FAVORITE_REVIEWS_SUCCESS,
@@ -316,6 +319,48 @@ export const likeforReview = (id) => async (dispatch, getState) => {
     console.log(error);
     dispatch({
       type: LIKE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    });
+    // console.log(error);
+  }
+};
+
+export const dislikeforReview = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: DISLIKE_REQUEST
+    });
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    };
+
+    const { data } = await axios.post(
+      `${BASE_URL}/api/reviews/${id}/dislikes`,
+      { withCredentials: true },
+      config
+    );
+
+    dispatch({
+      type: DISLIKE_SUCCESS,
+      payload: data
+    });
+
+    storeData('dislike', data);
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: DISLIKE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

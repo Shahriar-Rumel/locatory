@@ -34,3 +34,8 @@ export const LIKE_REQUEST = 'LIKE_REQUEST';
 export const LIKE_SUCCESS = 'LIKE_SUCCESS';
 export const LIKE_FAIL = 'LIKE_FAIL';
 export const LIKE_RESET = 'LIKE_RESET';
+
+export const DISLIKE_REQUEST = 'DISLIKE_REQUEST';
+export const DISLIKE_SUCCESS = 'DISLIKE_SUCCESS';
+export const DISLIKE_FAIL = 'DISLIKE_FAIL';
+export const DISLIKE_RESET = 'DISLIKE_RESET';

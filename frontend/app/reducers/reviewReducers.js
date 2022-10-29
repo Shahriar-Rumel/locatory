@@ -151,3 +151,22 @@ export const likeReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const dislikeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LIKE_REQUEST:
+      return { loading: true, success: false };
+    case LIKE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        dislike: action.payload
+      };
+    case LIKE_FAIL:
+      return { loading: false, error: action.payload };
+    case LIKE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};

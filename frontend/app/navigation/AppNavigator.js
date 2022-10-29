@@ -33,15 +33,7 @@ const AppNavigator = () => (
         )
       }}
     />
-    {/* <Tab.Screen
-      name="Search"
-      component={FeedNavigator}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome5 name="search" color={color} size={size} />
-        )
-      }}
-    /> */}
+
     <Tab.Screen
       name="New Review"
       component={ReviewNavigator}
@@ -65,18 +57,18 @@ const AppNavigator = () => (
               style={{
                 backgroundColor: colors.red,
                 position: 'absolute',
-                top: -3,
-                right: -3,
+                top: 2,
+                right: 3,
                 zIndex: 999,
                 borderRadius: 90,
-                height: 16,
-                width: 16,
+                height: 8,
+                width: 8,
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingVertical: 2
               }}
             >
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 10,
                   color: colors.white,
@@ -84,7 +76,7 @@ const AppNavigator = () => (
                 }}
               >
                 12
-              </Text>
+              </Text> */}
             </View>
             <Ionicons
               name="ios-notifications-outline"

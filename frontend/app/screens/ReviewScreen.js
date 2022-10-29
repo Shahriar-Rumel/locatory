@@ -16,7 +16,12 @@ import routes from '../navigation/routes';
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { getReviewsByID, likeforReview } from '../actions/reviewActions';
+import {
+  dislikeforReview,
+  getFavoritReviews,
+  getReviewsByID,
+  likeforReview
+} from '../actions/reviewActions';
 import { createNotificationAction } from '../actions/notificationActions';
 import { getCurrentUser } from '../actions/userActions';
 
@@ -139,15 +144,26 @@ const CoverSection = ({ navigation, route, data }) => {
   );
 };
 
-const DetailsSection = ({ data }) => {
-  const [like, setLiked] = useState(false);
+const DetailsSection = ({ data, fav }) => {
   const [likeCounter, setLikeCounter] = useState(data?.totallikes);
-  const [comment, setComment] = useState(false);
+  const [dislikeCounter, setDisikeCounter] = useState(data?.totaldislikes);
   const [dislike, setDislike] = useState(false);
 
   const dispatch = useDispatch();
 
   const likeData = useSelector((state) => state.likeData);
+
+  const isLiked = () => {
+    for (let i = 0; i < fav?.length; i++) {
+      if (fav[i].review === data._id) return true;
+    }
+  };
+
+  const [like, setLiked] = useState(isLiked());
+
+  useEffect(() => {
+    setLiked(isLiked());
+  }, []);
 
   const styles = StyleSheet.create({
     actionContainer: {
@@ -273,7 +289,9 @@ const DetailsSection = ({ data }) => {
           </ImageBackground>
           <View style={styles.nameParentContainer}>
             <View style={styles.nameContainer}>
-              <Text style={styles.title}>Shahriar Rumel</Text>
+              <Text style={styles.title}>
+                {data.username ? username : 'Anonymous'}
+              </Text>
               <Text style={styles.date}>
                 {data.createdAt.split('T')[0] +
                   ' at ' +
@@ -287,13 +305,14 @@ const DetailsSection = ({ data }) => {
       <Text style={styles.description}>{data.description}</Text>
       <View style={styles.actionContainer}>
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.totallikes}</Text>
+          <Text style={styles.statCount}>{likeCounter}</Text>
           <Pressable
             style={styles.iconContainer}
             onPress={() => {
-              // if (like) setLikeCounter((prev) => prev - 1);
-              // else setLikeCounter((prev) => prev + 1);
+              if (like) setLikeCounter((prev) => prev - 1);
+              else setLikeCounter((prev) => prev + 1);
               setLiked((prev) => !prev);
+
               dispatch(createNotificationAction(data._id));
               dispatch(likeforReview(data._id));
             }}
@@ -319,10 +338,15 @@ const DetailsSection = ({ data }) => {
           </Pressable>
         </View> */}
         <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.totaldislikes}</Text>
+          <Text style={styles.statCount}>{dislikeCounter}</Text>
           <Pressable
             style={styles.iconContainer}
-            onPress={() => setDislike((prev) => !prev)}
+            onPress={() => {
+              if (dislike) setDisikeCounter((prev) => prev - 1);
+              else setDisikeCounter((prev) => prev + 1);
+              setDislike((prev) => !prev);
+              dispatch(dislikeforReview(data._id));
+            }}
           >
             <AntDesign
               name={dislike ? 'dislike1' : 'dislike2'}
@@ -520,6 +544,13 @@ export default function ReviewScreen({ navigation, route }) {
     dispatch(getReviewsByID(data));
   }, []);
 
+  const favoriteReviewsData = useSelector((state) => state.favoriteReviewsData);
+
+  const { favoriteReviews } = favoriteReviewsData;
+
+  useEffect(() => {
+    dispatch(getFavoritReviews());
+  }, []);
   return (
     <ScrollView style={styles.container}>
       {loading ? (
@@ -537,7 +568,7 @@ export default function ReviewScreen({ navigation, route }) {
                 route={route}
                 data={reviewsByID}
               />
-              <DetailsSection data={reviewsByID} />
+              <DetailsSection data={reviewsByID} fav={favoriteReviews} />
               <CarouselSection data={reviewsByID} />
               <View style={styles.divider}></View>
               <Banner data={reviewsByID} />

@@ -19,7 +19,7 @@ import { PRODUCTION_URL } from '../config/production';
 
 const BASE_URL = PRODUCTION_URL;
 
-export default function ImageInput({ data, setData }) {
+export default function ImageInput({ data, setData, borderRadius }) {
   // const [image, setImage] = useState();
   const [uploading, setUploading] = useState(false);
 
@@ -71,7 +71,7 @@ export default function ImageInput({ data, setData }) {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.primaryLight,
-      borderRadius: 5,
+      borderRadius: borderRadius ? borderRadius : 5,
       overflow: 'hidden'
     },
     button: {

@@ -6,6 +6,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import UserReviewScreen from '../screens/UserReviewsScreen';
 import UserFavoritesScreen from '../screens/UserFavoritesScreen';
 import UserPlacesScreen from '../screens/UserPlacesScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,10 @@ const ProfileNavigator = () => (
       component={UserFavoritesScreen}
     />
     <Stack.Screen name={routes.USER_PLACES} component={UserPlacesScreen} />
+    <Stack.Screen
+      name={routes.USER_PROFILE_EDIT}
+      component={EditProfileScreen}
+    />
   </Stack.Navigator>
 );
 

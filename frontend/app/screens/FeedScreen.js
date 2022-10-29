@@ -50,7 +50,7 @@ const TopBar = ({ navigation }) => {
   } = userData;
 
   const logoutHandler = () => {
-    dispatch(logOut());
+    // dispatch(logOut());
   };
 
   let partsofDay = '';
@@ -242,7 +242,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
     topRatedPlace: {
       fontSize: 20,
       fontWeight: '700',
-      color: colors.primary
+      color: colors.dark
     }
   });
 
@@ -301,10 +301,11 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                 <Text style={styles.topRatedPlace}>Top Rated Places</Text>
                 <Button
                   text={'Clear Filter'}
-                  height={40}
-                  width={100}
+                  height={30}
+                  width={80}
                   secondary={true}
                   color={colors.primary}
+                  borderRadius={5}
                   onPress={() => setFiltered(false)}
                 />
               </View>

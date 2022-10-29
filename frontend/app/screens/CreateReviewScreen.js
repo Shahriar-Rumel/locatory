@@ -292,16 +292,28 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
       value: 'educational'
     },
     {
-      name: 'Hospital',
-      value: 'hospital'
+      name: 'Restaurant',
+      value: 'restaurant'
     },
     {
-      name: 'Theatre',
-      value: 'theatre'
+      name: 'Hotel',
+      value: 'hotel'
     },
     {
-      name: 'Beach',
-      value: 'beach'
+      name: 'Tourist',
+      value: 'tourist'
+    },
+    {
+      name: 'Theater',
+      value: 'theater'
+    },
+    {
+      name: 'Establishment',
+      value: 'establishment'
+    },
+    {
+      name: 'Other',
+      value: 'other'
     }
   ];
   const dispatch = useDispatch();

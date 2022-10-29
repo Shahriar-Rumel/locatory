@@ -19,7 +19,7 @@ import { getCurrentUser, logOut } from '../actions/userActions';
 import { AntDesign } from '@expo/vector-icons';
 import Screen from '../components/Screen';
 
-const CoverSection = ({ data }) => {
+const CoverSection = ({ data, navigation }) => {
   const styles = StyleSheet.create({
     cover: {
       backgroundColor: colors.primary,
@@ -115,6 +115,7 @@ const CoverSection = ({ data }) => {
           bgColor={colors.secondary}
           secondary={true}
           border={colors.secondary}
+          onPress={() => navigation.navigate(routes.USER_PROFILE_EDIT)}
         />
       </View>
       <View style={styles.coverBottom}>
@@ -251,7 +252,7 @@ const ProfileScreen = ({ navigation }) => {
         />
       ) : (
         <>
-          <CoverSection data={userDetails?.data} />
+          <CoverSection data={userDetails?.data} navigation={navigation} />
           <ProfileActivity navigation={navigation} dispatch={dispatch} />
         </>
       )}

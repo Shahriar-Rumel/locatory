@@ -20,6 +20,7 @@ import {
 import {
   createReviewForPlaceReducer,
   deleteReviewReducer,
+  dislikeReducer,
   getFavoriteReviewsReducer,
   getReviewsByIDReducer,
   getReviewsByPlaceReducer,
@@ -56,6 +57,7 @@ const reducer = combineReducers({
     getNotificationsForUserReducer
   ),
   likeData: persistReducer(persistConfig, likeReducer),
+  dislikeData: persistReducer(persistConfig, dislikeReducer),
   nearbyPlacesData: persistReducer(persistConfig, getNearbyPlacesReducer),
   placesbyCatagoryData: persistReducer(
     persistConfig,
