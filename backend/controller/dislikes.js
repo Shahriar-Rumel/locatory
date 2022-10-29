@@ -69,17 +69,19 @@ exports.addDislike = asyncHandler(async (req, res, next) => {
   }
 });
 
-// // @desc  Get liked reviews by user
-// //@route GET /api/likes/user/all
-// //@access Private
-// exports.getLikeByUser = asyncHandler(async (req, res, next) => {
-//   const likes = await Like.find({
-//     user: req.user.id,
-//   });
+// @desc  Get disliked reviews by user
+//@route GET /api/dislikes/user/all
+//@access Private
+exports.getDisLikeByUser = asyncHandler(async (req, res, next) => {
+  const dislikes = await Dislike.find({
+    user: req.user.id,
+  });
 
-//   if (Object.keys(likes).length == 0) {
-//     return next(new ErrorResponse(`User didn't give a like`, 404));
-//   }
+  if (Object.keys(dislikes).length == 0) {
+    return next(new ErrorResponse(`User didn't give a dislike`, 404));
+  }
 
-//   res.status(200).json({ success: true, count: likes.length, data: likes });
-// });
+  res
+    .status(200)
+    .json({ success: true, count: dislikes.length, data: dislikes });
+});

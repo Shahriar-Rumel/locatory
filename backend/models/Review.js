@@ -77,6 +77,10 @@ const ReviewSchema = new mongoose.Schema({
   username: {
     type: String,
   },
+  userphoto: {
+    type: String,
+    default: "nophoto.jpg",
+  },
   totallikes: {
     type: Number,
     default: 1,

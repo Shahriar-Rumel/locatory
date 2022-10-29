@@ -1,5 +1,9 @@
 const express = require("express");
-const { getDislikes, addDislike } = require("../controller/dislikes");
+const {
+  getDislikes,
+  addDislike,
+  getDisLikeByUser,
+} = require("../controller/dislikes");
 
 const Dislike = require("../models/Dislike");
 
@@ -20,5 +24,7 @@ router
     getDislikes
   )
   .post(protect, addDislike);
+
+router.route("/user/all").get(protect, getDisLikeByUser);
 
 module.exports = router;

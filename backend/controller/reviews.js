@@ -51,6 +51,7 @@ exports.addReview = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
   const user = await User.findById(req.user.id);
   req.body.username = user.name;
+  req.body.userphoto = user.photo;
   const place = await Place.findById(req.params.placeId);
 
   if (!place) {
