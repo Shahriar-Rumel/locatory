@@ -2,6 +2,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Review = require("../models/Review");
 const Place = require("../models/Place");
+const User = require("../models/User");
 
 // @desc      Get reviews
 // @route     GET /api/reviews
@@ -48,7 +49,8 @@ exports.getReview = asyncHandler(async (req, res, next) => {
 exports.addReview = asyncHandler(async (req, res, next) => {
   req.body.place = req.params.placeId;
   req.body.user = req.user.id;
-
+  const user = await User.findById(req.user.id);
+  req.body.username = user.name;
   const place = await Place.findById(req.params.placeId);
 
   if (!place) {
@@ -56,9 +58,7 @@ exports.addReview = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`No place with the id of ${req.params.placeId}`, 404)
     );
   }
-  const a = place.totalreviews;
-  place.totalreviews = a + 1;
-  place.save();
+
   const review = await Review.create(req.body);
 
   res.status(201).json({

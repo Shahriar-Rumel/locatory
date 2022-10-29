@@ -74,6 +74,9 @@ const ReviewSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  username: {
+    type: String,
+  },
   totallikes: {
     type: Number,
     default: 1,
