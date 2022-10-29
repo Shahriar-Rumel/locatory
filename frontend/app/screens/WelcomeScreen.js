@@ -9,7 +9,7 @@ import constants from '../config/constants';
 
 export default function WelcomeScreen({ navigation }) {
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
@@ -26,7 +26,8 @@ export default function WelcomeScreen({ navigation }) {
       <Button
         text={'Sign in with Email'}
         onPress={() => navigation.navigate(routes.LOGIN)}
-        width={'100%'}
+        width={'95%'}
+        bgColor={colors.primary}
       />
       <View style={styles.alreadyHaveAccountSection}>
         <Text style={styles.alreadyHaveAccount}>Don't have an account ?</Text>
@@ -37,7 +38,7 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.secondaryButtonText}>Signin</Text>
         </Pressable>
       </View>
-    </Screen>
+    </View>
   );
 }
 
@@ -45,7 +46,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 50,
-    paddingHorizontal: constants.CONTAINER_PADDING
+    paddingHorizontal: constants.CONTAINER_PADDING,
+    backgroundColor: colors.white,
+    alignItems: 'center'
   },
   logoContainer: { flexDirection: 'row', justifyContent: 'center' },
   logo: {
@@ -61,10 +64,12 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   header: {
-    fontSize: 32,
+    fontSize: 30,
     fontFamily: 'SFPD-bold',
     textAlign: 'center',
-    width: '100%'
+    width: '98%',
+    lineHeight: 32,
+    color: colors.black
   },
   subHeader: {
     fontSize: 14,

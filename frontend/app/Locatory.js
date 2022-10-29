@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationState
+} from '@react-navigation/native';
 
 import { useSelector } from 'react-redux';
 import AppNavigator from './navigation/AppNavigator';
@@ -60,6 +63,7 @@ export default function Locatory() {
   return (
     <>
       <StatusBar backgroundColor={colors.white} barStyle="light" style="dark" />
+
       <NavigationContainer
         ref={navigationRef}
         theme={navigationTheme}

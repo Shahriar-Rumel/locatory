@@ -283,14 +283,14 @@ const DetailsSection = ({ data, fav }) => {
           >
             {!data?.photo && (
               <Text style={[styles.greet, styles.greetName]}>
-                {/* {data?.name?.split(' ')[0]} */}S
+                {data?.username?.split(' ')[0]}
               </Text>
             )}
           </ImageBackground>
           <View style={styles.nameParentContainer}>
             <View style={styles.nameContainer}>
               <Text style={styles.title}>
-                {data.username ? username : 'Anonymous'}
+                {data.username ? data.username : 'Anonymous'}
               </Text>
               <Text style={styles.date}>
                 {data.createdAt.split('T')[0] +
