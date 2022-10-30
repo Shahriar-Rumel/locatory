@@ -9,15 +9,18 @@ const geocoder = require("../utils/geocoder");
 //@access Public
 
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
-
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const address = req.body.address;
   //Create user
-
+  const preferredCategory = req.body.preference;
   const user = await User.create({
     name,
     email,
     password,
-    role,
+    address,
+    preferredCategory,
   });
 
   sendTokenResponse(user, 200, res);
@@ -188,32 +191,32 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// @desc      Provide user location
-// @route     POST /api/auth/addlocation
-// @access    Private
-exports.addLocation = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-  //const loc = await geocoder.geocode(req.body);
-  user.address = req.body.address;
-  const loc = await geocoder.geocode(req.body.address);
-  user.location.formattedAddress = loc[0].formattedAddress;
-  user.location.zipcode = loc[0].zipcode;
-  user.save();
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
+// // @desc      Provide user location
+// // @route     POST /api/auth/addlocation
+// // @access    Private
+// exports.addLocation = asyncHandler(async (req, res, next) => {
+//   const user = await User.findById(req.user.id);
+//   //const loc = await geocoder.geocode(req.body);
+//   user.address = req.body.address;
+//   const loc = await geocoder.geocode(req.body.address);
+//   user.location.formattedAddress = loc[0].formattedAddress;
+//   user.location.zipcode = loc[0].zipcode;
+//   user.save();
+//   res.status(200).json({
+//     success: true,
+//     data: user,
+//   });
+// });
 
-// @desc      Provide user preferences
-// @route     POST /api/auth/addpreference
-// @access    Private
-exports.addPreference = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-  user.preferredCategory = req.body.preference;
-  user.save();
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
+// // @desc      Provide user preferences
+// // @route     POST /api/auth/addpreference
+// // @access    Private
+// exports.addPreference = asyncHandler(async (req, res, next) => {
+//   const user = await User.findById(req.user.id);
+//   user.preferredCategory = req.body.preference;
+//   user.save();
+//   res.status(200).json({
+//     success: true,
+//     data: user,
+//   });
+// });
