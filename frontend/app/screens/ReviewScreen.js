@@ -168,7 +168,6 @@ const DetailsSection = ({ data, fav }) => {
   const styles = StyleSheet.create({
     actionContainer: {
       flexDirection: 'row',
-      // justifyContent: 'space-between',
       alignItems: 'center',
       marginTop: 20
     },

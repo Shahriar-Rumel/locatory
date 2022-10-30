@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 10,
     width: '100%'
   },
   header: {

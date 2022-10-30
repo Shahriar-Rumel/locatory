@@ -8,7 +8,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   userDetailsReducer,
   userLoginReducer,
-  userRegisterReducer
+  userRegisterReducer,
+  userUpdateReducer
 } from './reducers/userReducers';
 import {
   createPlaceReducer,
@@ -75,7 +76,8 @@ const reducer = combineReducers({
     setNotificationAsReadReducer
   ),
   favoriteReviewsData: persistReducer(persistConfig, getFavoriteReviewsReducer),
-  placesbyUserData: persistReducer(persistConfig, getPlacesByUserReducer)
+  placesbyUserData: persistReducer(persistConfig, getPlacesByUserReducer),
+  userUpdateData: persistReducer(persistConfig, userUpdateReducer)
 });
 
 // const userInfoFromStorage = r.getItem('userInfo')

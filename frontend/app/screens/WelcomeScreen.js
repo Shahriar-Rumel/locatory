@@ -1,6 +1,5 @@
 import { StyleSheet, Text, Pressable, Image, View } from 'react-native';
 import React from 'react';
-import Screen from '../components/Screen';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
 
@@ -35,7 +34,7 @@ export default function WelcomeScreen({ navigation }) {
           style={styles.secondaryButton}
           onPress={() => navigation.navigate(routes.REGISTER)}
         >
-          <Text style={styles.secondaryButtonText}>Signin</Text>
+          <Text style={styles.secondaryButtonText}>Signup</Text>
         </Pressable>
       </View>
     </View>

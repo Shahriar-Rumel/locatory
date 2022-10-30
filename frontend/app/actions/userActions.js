@@ -7,7 +7,10 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
   USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS
+  USER_DETAILS_SUCCESS,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL
 } from '../constants/userConstants';
 import axios from 'axios';
 
@@ -139,6 +142,53 @@ export const getCurrentUser = () => async (dispatch, getState) => {
           ? error.response.data
           : error.message
     });
+  }
+};
+
+export const updateUser = (userData) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST
+    });
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    };
+
+    console.log(userData);
+    const { data } = await axios.put(
+      `${BASE_URL}/api/auth/updatedetails`,
+      userData,
+      config
+    );
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data
+    });
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data
+    });
+
+    storeData('userUpdateData', data);
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data
+          : error.message
+    });
+    console.log(error);
   }
 };
 export const logOut = () => (dispatch) => {

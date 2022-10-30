@@ -19,7 +19,7 @@ import { getCurrentUser, logOut } from '../actions/userActions';
 import { AntDesign } from '@expo/vector-icons';
 import Screen from '../components/Screen';
 
-const CoverSection = ({ data, navigation }) => {
+const CoverSection = ({ data, navigation, dispatch }) => {
   const styles = StyleSheet.create({
     cover: {
       backgroundColor: colors.primary,
@@ -71,6 +71,11 @@ const CoverSection = ({ data, navigation }) => {
     bottomleft: {
       flexDirection: 'row',
       alignItems: 'center'
+    },
+    reload: {
+      position: 'absolute',
+      right: 10,
+      top: 10
     }
   });
 
@@ -100,6 +105,13 @@ const CoverSection = ({ data, navigation }) => {
         resizeMode="cover"
         style={styles.dp}
       ></ImageBackground>
+      <MaterialCommunityIcons
+        name="reload"
+        size={24}
+        color={colors.secondary}
+        style={styles.reload}
+        onPress={() => dispatch(getCurrentUser())}
+      />
       <View style={styles.headingcontainer}>
         <View style={styles.detailscontainer}>
           <Text style={styles.username}>{data?.name}</Text>
@@ -228,7 +240,7 @@ const ProfileActivity = ({ navigation, dispatch }) => {
     </View>
   );
 };
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
   const {
@@ -237,11 +249,14 @@ const ProfileScreen = ({ navigation }) => {
     error: userDataError
   } = userData;
 
-  // console.log(userDetails);
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [navigation]);
 
   useEffect(() => {
     dispatch(getCurrentUser());
   }, []);
+
   return (
     <Screen style={styles.container}>
       {userDataLoading ? (
@@ -252,7 +267,11 @@ const ProfileScreen = ({ navigation }) => {
         />
       ) : (
         <>
-          <CoverSection data={userDetails?.data} navigation={navigation} />
+          <CoverSection
+            data={userDetails?.data}
+            navigation={navigation}
+            dispatch={dispatch}
+          />
           <ProfileActivity navigation={navigation} dispatch={dispatch} />
         </>
       )}

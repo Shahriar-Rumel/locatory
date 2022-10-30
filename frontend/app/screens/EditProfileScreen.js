@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
@@ -10,6 +10,10 @@ import ImageInput from '../components/ImageInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { getCurrentUser, updateUser } from '../actions/userActions';
+import routes from '../navigation/routes';
+import { useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -47,7 +51,7 @@ const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   );
 };
 
-const CreateReviewForm = ({ selectedPlace }) => {
+const CreateReviewForm = ({ selectedPlace, navigation }) => {
   const validationSchema = Yup.object().shape({
     // email: Yup.string().required().email().label('Email'),
     // password: Yup.string().required().min(4).label('Password')
@@ -71,33 +75,33 @@ const CreateReviewForm = ({ selectedPlace }) => {
       bottom: 5
     }
   });
-  const items = [
-    { name: '1', value: 1 },
-    { name: '2', value: 2 },
-    { name: '3', value: 3 },
-    { name: '4', value: 4 },
-    { name: '5', value: 5 }
-  ];
 
-  const [name, setName] = useState('');
-  const [accessibility, setAccessibility] = useState(0);
+  const userData = useSelector((state) => state.userData);
+  const {
+    userDetails,
+    loading: userDataLoading,
+    error: userDataError
+  } = userData;
 
-  const [firstImage, setFirstImage] = useState('');
+  const { data } = userDetails;
+
+  const [name, setName] = useState(data?.name);
+
+  const [firstImage, setFirstImage] = useState(data?.photo);
 
   const dispatch = useDispatch();
-  const createReviewForPlaceData = useSelector(
-    (state) => state.createReviewForPlaceData
-  );
 
-  const { createReviewForPlace, loading, error } = createReviewForPlaceData;
+  const userUpdateData = useSelector((state) => state.userUpdateData);
 
-  const handleReviewSubmit = () => {
+  const { userUpdate, loading, success, error } = userUpdateData;
+
+  const handleSubmit = () => {
     const data = {
-      name: name,
-      photo: firstImage
+      name: name
+      // photo: firstImage
     };
 
-    // dispatch(createReviewByPlace(selectedPlace._id, data));
+    dispatch(updateUser(data));
   };
 
   return (
@@ -121,24 +125,18 @@ const CreateReviewForm = ({ selectedPlace }) => {
           autoCorrect={false}
           keyboardType="text"
           name="name"
+          value={name}
           label="Name"
           setData={setName}
           placeholder="Name"
           textContentType="text"
         />
-        <DropDown
-          items={items}
-          height={50}
-          setData={setAccessibility}
-          label={'Accessibility'}
-          placeholder={'Choose Rating'}
-        />
 
         <Button
-          text="Create Review"
+          text="Update Profile"
           width={'100%'}
           borderRadius={8}
-          onPress={handleReviewSubmit}
+          onPress={handleSubmit}
           loading={loading}
         />
       </View>
@@ -146,20 +144,34 @@ const CreateReviewForm = ({ selectedPlace }) => {
   );
 };
 export default function EditProfileScreen({ navigation }) {
-  const [item, setItem] = useState('');
-
   return (
     <View style={styles.container}>
       <View style={styles.reviewsHeader}>
         <Feather name="edit" size={20} color={colors.secondary} />
         <Text style={styles.reviews}>Edit Profile </Text>
+        <Pressable
+          onPress={() => {
+            navigation.navigate(routes.PROFILE, {
+              data: true
+            });
+          }}
+          style={styles.backButton}
+        >
+          <View style={styles.backIcon}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={20}
+              color={colors.secondary}
+            />
+          </View>
+        </Pressable>
       </View>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
       >
-        <CreateReviewForm selectedPlace={item} />
+        <CreateReviewForm navigation={navigation} />
       </ScrollView>
     </View>
   );
@@ -187,5 +199,22 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 20,
     fontWeight: '700'
+  },
+  backButton: {
+    backgroundColor: colors.secondaryLight,
+    opacity: 1,
+    position: 'absolute',
+    right: 15,
+    top: 25,
+    height: 20,
+    width: 20,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    borderRadius: 100
+  },
+  backIcon: {
+    // marginTop: 3
   }
 });

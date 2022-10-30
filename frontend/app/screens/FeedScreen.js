@@ -217,7 +217,10 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginVertical: 10
+      marginTop: 10,
+      marginBottom: 5,
+      marginHorizontal: 5
+      // backgroundColor: colors.green
     },
     filterContainer: {
       flexDirection: 'column',
@@ -246,6 +249,9 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
     }
   });
 
+  const [list, setList] = useState([]);
+  const [title, setTitle] = useState('');
+
   const dispatch = useDispatch();
 
   const topRatedPlaceData = useSelector((state) => state.topRatedPlaceData);
@@ -255,6 +261,18 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
     error: topRatedPlaceError
   } = topRatedPlaceData;
 
+  const placesbyCatagoryData = useSelector(
+    (state) => state.placesbyCatagoryData
+  );
+  const { placesbyCatagory, loading, error } = placesbyCatagoryData;
+
+  const allPlacesData = useSelector((state) => state.allPlacesData);
+  const {
+    allPlaces,
+    loading: allPlacesLoading,
+    error: allPlacesError
+  } = allPlacesData;
+
   const getFirstTenChars = (data) => {
     const array = data?.split('') ? data?.split('') : 'loading';
     let ans = '';
@@ -263,6 +281,29 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
 
     return ans;
   };
+
+  useEffect(() => {
+    setList(placesbyCatagory);
+  }, [loading]);
+
+  useEffect(() => {
+    setList(allPlaces);
+  }, [allPlacesLoading]);
+
+  // name: 'Educational',
+  // value: 'educational'
+
+  // name: 'Restaurant',
+
+  // name: 'Hotel',
+
+  // name: 'Tourist',
+
+  // name: 'Theater',
+
+  // name: 'Establishment'
+
+  // name: 'Other',
 
   return (
     <View style={styles.filterContainer}>
@@ -275,21 +316,75 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
           />
           <Text>Filter</Text>
         </View>
+
+        <FilterTag
+          text={'All'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getAllPlacesAction());
+            setList(allPlaces);
+            setTitle('All Places');
+          }}
+        />
         <FilterTag
           text={'Top Rated'}
           onPress={() => {
             setFiltered(true);
             dispatch(getTopRatedPlaceAction(3));
+            setList(topRatedPlace);
+            setTitle('Top Rated Place');
           }}
         />
-        <FilterTag text={'Indoors'} />
-        <FilterTag text={'Tour'} />
-        <FilterTag text={'Restaurants'} />
+        <FilterTag
+          text={'Restaurant'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getPlacesByCatagoryAction('restaurant'));
+            setList(loading ? [] : placesbyCatagory);
+            setTitle('Restaurant');
+          }}
+        />
+        <FilterTag
+          text={'Educational'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getPlacesByCatagoryAction('educational'));
+            setList(placesbyCatagory);
+            setTitle('Educational');
+          }}
+        />
+        <FilterTag
+          text={'Hotel'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getPlacesByCatagoryAction('hotel'));
+            setList(placesbyCatagory);
+            setTitle('Hotel');
+          }}
+        />
+        <FilterTag
+          text={'Tourist'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getPlacesByCatagoryAction('tourist'));
+            setList(placesbyCatagory);
+            setTitle('Tourist');
+          }}
+        />
+        <FilterTag
+          text={'Theater'}
+          onPress={() => {
+            setFiltered(true);
+            dispatch(getPlacesByCatagoryAction('theater'));
+            setList(placesbyCatagory);
+            setTitle('Theater');
+          }}
+        />
       </ScrollView>
 
       {filtered && (
         <>
-          {topRatedPlaceLoading ? (
+          {topRatedPlaceLoading || loading || allPlacesLoading ? (
             <ActivityIndicator
               size="large"
               color={colors.primary}
@@ -298,7 +393,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
           ) : (
             <>
               <View style={styles.clearFilterContainer}>
-                <Text style={styles.topRatedPlace}>Top Rated Places</Text>
+                <Text style={styles.topRatedPlace}>{title}</Text>
                 <Button
                   text={'Clear Filter'}
                   height={30}
@@ -309,7 +404,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                   onPress={() => setFiltered(false)}
                 />
               </View>
-              {topRatedPlace?.data?.map((item) => (
+              {list?.data?.map((item) => (
                 <Pressable
                   onPress={() =>
                     navigation.navigate(routes.LOCATION_DETAILS, {
@@ -393,7 +488,7 @@ export default function FeedScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    dispatch(getPlacesByCatagoryAction('theatre'));
+    dispatch(getPlacesByCatagoryAction('restaurant'));
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -559,6 +654,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
+    marginTop: 5
   }
 });
