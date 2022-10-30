@@ -107,7 +107,7 @@ ReviewSchema.statics.getAverageRating = async function (placeId) {
 
   try {
     await this.model("Place").findByIdAndUpdate(placeId, {
-      averageRating: obj[0].averageRating,
+      averageRating: obj[0].averageRating.toFixed(2),
     });
   } catch (err) {
     console.error(err);
