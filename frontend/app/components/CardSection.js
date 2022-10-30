@@ -3,6 +3,14 @@ import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from './Card';
 import routes from '../navigation/routes';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import colors from '../config/colors';
+import { useDispatch } from 'react-redux';
+import {
+  getAllPlacesAction,
+  getNearbyPlacesAction,
+  getPlacesByCatagoryAction
+} from '../actions/placeActions';
 
 const CardSection = ({ title, data, navigation }) => {
   const styles = StyleSheet.create({
@@ -26,6 +34,11 @@ const CardSection = ({ title, data, navigation }) => {
       fontWeight: '700',
       fontSize: 18,
       fontFamily: 'SFPD-bold'
+    },
+    reload: {
+      position: 'absolute',
+      right: 5,
+      top: 7
     }
   });
 
@@ -38,9 +51,24 @@ const CardSection = ({ title, data, navigation }) => {
     return ans;
   };
 
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.forYou}>{title}</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.forYou}>{title}</Text>
+        <MaterialCommunityIcons
+          name="reload"
+          size={16}
+          color={colors.gray}
+          style={styles.reload}
+          onPress={() => {
+            dispatch(getNearbyPlacesAction());
+            dispatch(getPlacesByCatagoryAction('restaurant'));
+            dispatch(getAllPlacesAction());
+          }}
+        />
+      </View>
       <View style={styles.cardContainer}>
         <ScrollView
           horizontal={true}

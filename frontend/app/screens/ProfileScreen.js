@@ -100,7 +100,7 @@ const CoverSection = ({ data, navigation, dispatch }) => {
     <View style={styles.cover}>
       <ImageBackground
         source={{
-          uri: `${url}`
+          uri: `${data?.photo ? data?.photo : url}`
         }}
         resizeMode="cover"
         style={styles.dp}

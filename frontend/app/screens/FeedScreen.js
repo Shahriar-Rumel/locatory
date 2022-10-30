@@ -28,6 +28,7 @@ import LargeCard from '../components/LargeCard';
 import { getTopRatedPlaceAction } from '../actions/filterActions';
 import Button from '../components/Button';
 import routes from '../navigation/routes';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TopBar = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -84,11 +85,11 @@ const TopBar = ({ navigation }) => {
         </Text>
       </View>
       <Pressable onPress={logoutHandler}>
-        {userData?.dp ? (
+        {userDetails?.data?.photo ? (
           <ImageBackground
             style={styles.dp}
             source={{
-              uri: 'https://images.unsplash.com/photo-1657214059212-104dac959c56?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
+              uri: userDetails?.data?.photo
             }}
             resizeMode="cover"
           />
@@ -401,7 +402,10 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                   secondary={true}
                   color={colors.primary}
                   borderRadius={5}
-                  onPress={() => setFiltered(false)}
+                  onPress={() => {
+                    dispatch(getPlacesByCatagoryAction('restaurant'));
+                    setFiltered(false);
+                  }}
                 />
               </View>
               {list?.data?.map((item) => (
@@ -411,6 +415,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                       data: item
                     })
                   }
+                  key={item._id}
                 >
                   <LargeCard
                     title={item.name}
@@ -517,6 +522,7 @@ export default function FeedScreen({ navigation }) {
           setFiltered={setFiltered}
           navigation={navigation}
         />
+       
 
         {!filtered && (
           <>
@@ -656,5 +662,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 5
+  },
+  reload: {
+    position: 'absolute',
+    top: 50
   }
 });

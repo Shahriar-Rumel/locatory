@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  ImageBackground,
   Pressable,
   RefreshControl,
   StyleSheet,
@@ -36,12 +37,12 @@ const ReviewListSection = ({ navigation, route }) => {
         borderRadius: 60,
         marginRight: 10,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
       },
       item: {
         backgroundColor: item.read ? colors.white : colors.primaryLight,
         marginVertical: 0.5,
-        // marginHorizontal: 15,
         paddingHorizontal: 18,
         paddingVertical: 20,
         borderBottomWidth: 1,
@@ -109,9 +110,22 @@ const ReviewListSection = ({ navigation, route }) => {
         key={item.name}
       >
         <View style={styles.notificationTop}>
-          <View style={styles.img}>
-            <Text style={styles.dpLetter}>{item?.username?.split('')[0]}</Text>
-          </View>
+          {item?.userphoto ? (
+            <ImageBackground
+              source={{
+                uri: `${item?.userphoto}`
+              }}
+              resizeMode="cover"
+              style={styles.img}
+            ></ImageBackground>
+          ) : (
+            <View style={styles.img}>
+              <Text style={styles.dpLetter}>
+                {item?.username?.split('')[0]}
+              </Text>
+            </View>
+          )}
+
           <View style={styles.itemContainer}>
             <Text style={styles.header}>
               <Text style={styles.name}>{item.username}</Text> liked your review

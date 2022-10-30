@@ -97,8 +97,8 @@ const CreateReviewForm = ({ selectedPlace, navigation }) => {
 
   const handleSubmit = () => {
     const data = {
-      name: name
-      // photo: firstImage
+      name: name,
+      photo: firstImage
     };
 
     dispatch(updateUser(data));

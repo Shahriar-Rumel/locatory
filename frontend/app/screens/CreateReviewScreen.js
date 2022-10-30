@@ -471,9 +471,19 @@ const CreateReviewForm = ({ selectedPlace }) => {
       photo: firstImage
     };
 
-    console.log(data);
-
     dispatch(createReviewByPlace(selectedPlace._id, data));
+
+    setTitle('');
+    setDescription('');
+    setAverageBudget(0);
+    setAccessibility(0);
+    setDecoration(0);
+    setService(0);
+    setFamilyFriendly(0);
+    setTransportation(0);
+    setSetting(0);
+    setOverallRating(0);
+    setFirstImage('');
   };
 
   console.log(createReviewForPlace);

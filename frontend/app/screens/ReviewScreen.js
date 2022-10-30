@@ -276,11 +276,11 @@ const DetailsSection = ({ data, fav }) => {
           <ImageBackground
             style={styles.dp}
             source={{
-              uri: `${data.photo}`
+              uri: `${data.userphoto}`
             }}
             resizeMode="cover"
           >
-            {!data?.photo && (
+            {!data?.userphoto && (
               <Text style={[styles.greet, styles.greetName]}>
                 {data?.username?.split(' ')[0]}
               </Text>
@@ -323,19 +323,7 @@ const DetailsSection = ({ data, fav }) => {
             />
           </Pressable>
         </View>
-        {/* <View style={styles.likeContainer}>
-          <Text style={styles.statCount}>{data.likes}</Text>
-          <Pressable
-            style={styles.iconContainer}
-            onPress={() => setComment((prev) => !prev)}
-          >
-            <MaterialCommunityIcons
-              name={comment ? 'comment' : 'comment-outline'}
-              size={22}
-              color={comment ? colors.secondary : colors.gray}
-            />
-          </Pressable>
-        </View> */}
+
         <View style={styles.likeContainer}>
           <Text style={styles.statCount}>{dislikeCounter}</Text>
           <Pressable
