@@ -539,8 +539,9 @@ export default function FeedScreen({ navigation }) {
               <>
                 <CardSection
                   title={'For you'}
-                  data={nearbyPlaces ? nearbyPlaces.data : data}
+                  data={nearbyPlaces ? nearbyPlaces.data : []}
                   navigation={navigation}
+                  isReady={nearbyPlacesLoading}
                 />
               </>
             )}
@@ -554,8 +555,9 @@ export default function FeedScreen({ navigation }) {
               <>
                 <CardSection
                   title={'Meet with friends'}
-                  data={placesbyCatagory ? placesbyCatagory.data : data}
+                  data={placesbyCatagory ? placesbyCatagory.data : []}
                   navigation={navigation}
+                  isReady={placesbyCatagoryLoading}
                 />
               </>
             )}
@@ -570,8 +572,9 @@ export default function FeedScreen({ navigation }) {
               <>
                 <CardSection
                   title={'Most Reviewed'}
-                  data={allPlaces ? allPlaces.data : data}
+                  data={allPlaces ? allPlaces.data : []}
                   navigation={navigation}
+                  isReady={allPlacesLoading}
                 />
               </>
             )}

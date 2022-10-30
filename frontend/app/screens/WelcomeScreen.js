@@ -10,11 +10,11 @@ export default function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image
+        {/* <Image
           style={styles.logo}
           resizeMode={'contain'}
           source={require('../assets/icon.png')}
-        />
+        /> */}
       </View>
       <View style={styles.headerSection}>
         <Text style={styles.header}>Know more about the place you love</Text>

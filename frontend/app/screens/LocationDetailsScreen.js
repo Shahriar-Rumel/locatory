@@ -78,7 +78,49 @@ const CoverSection = ({ navigation, data }) => {
     }
   });
 
-  // console.log(data);
+  const userData = useSelector((state) => state.userData);
+  const {
+    userDetails,
+    loading: userDataLoading,
+    error: userDataError
+  } = userData;
+
+  const getDistance = (item) => {
+    let lat1 = 0;
+    let lat2 = 0;
+    let lon1 = 0;
+    let lon2 = 0;
+
+    if (item?.location) {
+      lat1 = item?.location?.coordinates[1]
+        ? item?.location?.coordinates[1]
+        : 0;
+      lat2 = userDetails?.data?.location?.coordinates[1]
+        ? userDetails?.data?.location?.coordinates[1]
+        : 0;
+
+      lon1 = item?.location?.coordinates[0];
+      lon2 = userDetails?.data?.location?.coordinates[0]
+        ? userDetails?.data?.location?.coordinates[0]
+        : 0;
+    }
+    const R = 6371e3;
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c;
+
+    const res = d / 1000;
+
+    return res.toFixed(2) + ' Km';
+  };
 
   return (
     <ImageBackground
@@ -100,7 +142,7 @@ const CoverSection = ({ navigation, data }) => {
         <Text style={styles.title}>{data?.name}</Text>
         <View style={styles.locationContainer}>
           <Text style={styles.location}>{data?.location.formattedAddress}</Text>
-          <Text style={styles.distance}>10 Km</Text>
+          <Text style={styles.distance}>{getDistance(data)}</Text>
         </View>
       </View>
     </ImageBackground>
@@ -147,7 +189,7 @@ const OverviewSection = ({ data, tor }) => {
     <View style={styles.overviewContainer}>
       <View style={styles.avgRatingContainer}>
         <Text style={styles.number}>
-          {data?.averageRating ? data?.averageRating : 0}
+          {data?.averageRating ? data?.averageRating.toFixed(2) : 0}
         </Text>
         <Text style={styles.attribute}>Avg. Rating</Text>
       </View>

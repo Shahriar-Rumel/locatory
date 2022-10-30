@@ -5,14 +5,14 @@ import Card from './Card';
 import routes from '../navigation/routes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getAllPlacesAction,
   getNearbyPlacesAction,
   getPlacesByCatagoryAction
 } from '../actions/placeActions';
 
-const CardSection = ({ title, data, navigation }) => {
+const CardSection = ({ title, data, navigation, isReady }) => {
   const styles = StyleSheet.create({
     cardContainer: {
       marginVertical: 0,
@@ -53,24 +53,49 @@ const CardSection = ({ title, data, navigation }) => {
 
   const dispatch = useDispatch();
 
-  const lat1 = 403294.324;
-  const lat2 = 39483.4;
+  const userData = useSelector((state) => state.userData);
+  const {
+    userDetails,
+    loading: userDataLoading,
+    error: userDataError
+  } = userData;
 
-  const lon1 = 403294.324;
-  const lon2 = 39483.4;
+  const getDistance = (item) => {
+    let lat1 = 0;
+    let lat2 = 0;
+    let lon1 = 0;
+    let lon2 = 0;
 
-  const R = 6371e3;
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+    if (item?.location) {
+      lat1 = item?.location?.coordinates[1]
+        ? item?.location?.coordinates[1]
+        : 0;
+      lat2 = userDetails?.data?.location?.coordinates[1]
+        ? userDetails?.data?.location?.coordinates[1]
+        : 0;
 
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      lon1 = item?.location?.coordinates[0];
+      lon2 = userDetails?.data?.location?.coordinates[0]
+        ? userDetails?.data?.location?.coordinates[0]
+        : 0;
+    }
+    const R = 6371e3;
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
 
-  const d = R * c;
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c;
+
+    const res = d / 1000;
+
+    return res.toFixed(2) + ' Km';
+  };
 
   return (
     <View style={styles.container}>
@@ -105,7 +130,7 @@ const CardSection = ({ title, data, navigation }) => {
             >
               <Card
                 title={item.name}
-                distance={'0.2 Km'}
+                distance={!isReady ? getDistance(item) : 0}
                 location={
                   item?.location?.formattedAddress?.length > 20
                     ? getFirstTenChars(item?.location?.formattedAddress)
