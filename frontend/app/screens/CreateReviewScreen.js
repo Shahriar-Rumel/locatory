@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput
+  TextInput,
+  ToastAndroid
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
@@ -21,7 +22,14 @@ import SubmitButton from '../components/forms/SubmitButton';
 import ImageInput from '../components/ImageInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReviewByPlace } from '../actions/reviewActions';
-import { createPlace, createPlaceAction } from '../actions/placeActions';
+import {
+  createPlace,
+  createPlaceAction,
+  getAllPlacesAction,
+  getNearbyPlacesAction,
+  getPlacesByCatagoryAction
+} from '../actions/placeActions';
+import Message from '../components/Message';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -454,7 +462,8 @@ const CreateReviewForm = ({ selectedPlace }) => {
     (state) => state.createReviewForPlaceData
   );
 
-  const { createReviewForPlace, loading, error } = createReviewForPlaceData;
+  const { createReviewForPlace, loading, success, error } =
+    createReviewForPlaceData;
 
   const handleReviewSubmit = () => {
     const data = {
@@ -473,20 +482,29 @@ const CreateReviewForm = ({ selectedPlace }) => {
 
     dispatch(createReviewByPlace(selectedPlace._id, data));
 
-    setTitle('');
-    setDescription('');
-    setAverageBudget(0);
-    setAccessibility(0);
-    setDecoration(0);
-    setService(0);
-    setFamilyFriendly(0);
-    setTransportation(0);
-    setSetting(0);
-    setOverallRating(0);
-    setFirstImage('');
+    // setTitle('');
+    // setDescription('');
+    // setAverageBudget(0);
+    // setAccessibility(0);
+    // setDecoration(0);
+    // setService(0);
+    // setFamilyFriendly(0);
+    // setTransportation(0);
+    // setSetting(0);
+    // setOverallRating(0);
+    // setFirstImage('');
   };
+  useEffect(() => {
+    if (error) {
+      ToastAndroid.show(error, );
+    }
+  }, [error]);
 
-  console.log(createReviewForPlace);
+  useEffect(() => {
+    if (success) {
+      ToastAndroid.show('Review created successfully', ToastAndroid.SHORT);
+    }
+  }, [success]);
 
   return (
     <View style={styles.formContainer}>
@@ -499,6 +517,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="text"
+          value={title}
           name="title"
           label="Title"
           setData={setTitle}
@@ -509,6 +528,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
           autoCapitalize="none"
           autoCorrect={false}
           name="description"
+          value={description}
           label="Description"
           setData={setDescription}
           placeholder="Description"
@@ -518,6 +538,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
           autoCapitalize="none"
           autoCorrect={false}
           name="averageBudget"
+          value={averageBudget}
           setData={setAverageBudget}
           label="Avg. Budget"
           placeholder="avergeBudget"
@@ -527,6 +548,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
         <DropDown
           items={items}
           height={50}
+          value={accessibility}
           setData={setAccessibility}
           label={'Accessibility'}
           placeholder={'Choose Rating'}
@@ -534,6 +556,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
         <DropDown
           items={items}
           height={50}
+          value={decoration}
           setData={setDecoration}
           label={'Decoration'}
           placeholder={'Choose Rating'}
@@ -541,6 +564,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
         <DropDown
           items={items}
           height={50}
+          value={service}
           setData={setService}
           label={'Service'}
           placeholder={'Choose Rating'}
@@ -548,6 +572,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
         <DropDown
           items={items}
           height={50}
+          value={familyFriendly}
           setData={setFamilyFriendly}
           label={'Family Friendly'}
           placeholder={'Choose Rating'}
@@ -555,6 +580,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
         <DropDown
           items={tranportationList}
           height={50}
+          value={transportation}
           setData={setTransportation}
           label={'Transportation'}
           placeholder={'Choose Rating'}
@@ -563,20 +589,20 @@ const CreateReviewForm = ({ selectedPlace }) => {
           items={settingList}
           height={50}
           setData={setSetting}
+          value={setting}
           label={'Setting'}
           placeholder={'Choose Rating'}
         />
         <DropDown
           items={items}
           height={50}
+          value={overallRating}
           setData={setOverallRating}
           label={'Overall Rating'}
           placeholder={'Choose Rating'}
         />
 
         <View style={styles.imageContainer}>
-          {/* <ImageInput data={firstImage} setData={setFirstImage} />
-          <ImageInput data={firstImage} setData={setFirstImage} /> */}
           <ImageInput data={firstImage} setData={setFirstImage} />
         </View>
 

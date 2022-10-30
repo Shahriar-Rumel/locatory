@@ -28,7 +28,14 @@ function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = ({ name, email, password }) => {
-    dispatch(register(name, email, password));
+    // dispatch(register(name, email, password));
+    navigation.navigate(routes.ONBOARDING, {
+      data: {
+        name: name,
+        email: email,
+        password: password
+      }
+    });
   };
 
   return (

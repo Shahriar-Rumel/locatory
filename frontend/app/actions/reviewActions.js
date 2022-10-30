@@ -217,7 +217,9 @@ export const createReviewByPlace =
           Authorization: `Bearer ${userInfo.token}`
         }
       };
-      console.log(id);
+
+      console.log(reviewdata);
+
       const { data } = await axios.post(
         `${BASE_URL}/api/places/${id}/reviews`,
         reviewdata,

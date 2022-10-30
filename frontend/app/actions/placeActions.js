@@ -15,6 +15,9 @@ import {
   GET_PLACES_BY_CATAGORY_FAIL,
   GET_PLACES_BY_CATAGORY_REQUEST,
   GET_PLACES_BY_CATAGORY_SUCCESS,
+  GET_PLACES_BY_ID_FAIL,
+  GET_PLACES_BY_ID_REQUEST,
+  GET_PLACES_BY_ID_SUCCESS,
   GET_PLACES_BY_USER_FAIL,
   GET_PLACES_BY_USER_REQUEST,
   GET_PLACES_BY_USER_SUCCESS
@@ -187,6 +190,44 @@ export const getPlacesByUserAction =
     } catch (error) {
       dispatch({
         type: GET_PLACES_BY_USER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      });
+      console.log(error.response.data.message);
+    }
+  };
+
+export const getPlaceByIDAction =
+  (id, pageNo, pageSize) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_PLACES_BY_ID_REQUEST
+      });
+
+      const {
+        userLogin: { userInfo }
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      };
+
+      const { data } = await axios.get(`${BASE_URL}/api/places/${id}`, config);
+
+      dispatch({
+        type: GET_PLACES_BY_ID_SUCCESS,
+        payload: data
+      });
+
+      storeData('placesbyIDData', data);
+    } catch (error) {
+      dispatch({
+        type: GET_PLACES_BY_ID_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

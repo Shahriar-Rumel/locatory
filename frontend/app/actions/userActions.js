@@ -72,7 +72,7 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (bodyData) => async (dispatch) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST
@@ -84,11 +84,14 @@ export const register = (name, email, password) => async (dispatch) => {
       }
     };
 
+    console.log(bodyData);
     const { data } = await axios.post(
       `${BASE_URL}/api/auth/register`,
-      { name, email, password },
+      bodyData,
       config
     );
+
+    console.log(data);
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
@@ -106,6 +109,8 @@ export const register = (name, email, password) => async (dispatch) => {
           ? error.response.data
           : error.message
     });
+
+    console.log(error);
   }
 };
 
@@ -162,7 +167,6 @@ export const updateUser = (userData) => async (dispatch, getState) => {
       }
     };
 
-    console.log(userData);
     const { data } = await axios.put(
       `${BASE_URL}/api/auth/updatedetails`,
       userData,

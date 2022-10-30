@@ -20,8 +20,9 @@ import { Octicons } from '@expo/vector-icons';
 import routes from '../navigation/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReviewsByPlace } from '../actions/reviewActions';
+import { getPlaceByIDAction } from '../actions/placeActions';
 
-const CoverSection = ({ navigation, route }) => {
+const CoverSection = ({ navigation, data }) => {
   const styles = StyleSheet.create({
     img: {
       width: '100%',
@@ -77,8 +78,6 @@ const CoverSection = ({ navigation, route }) => {
     }
   });
 
-  const { data } = route.params;
-
   // console.log(data);
 
   return (
@@ -107,7 +106,7 @@ const CoverSection = ({ navigation, route }) => {
     </ImageBackground>
   );
 };
-const OverviewSection = ({ route, tor }) => {
+const OverviewSection = ({ data, tor }) => {
   const styles = StyleSheet.create({
     overviewContainer: {
       width: '100%',
@@ -143,7 +142,7 @@ const OverviewSection = ({ route, tor }) => {
       width: '33%'
     }
   });
-  const { data } = route.params;
+
   return (
     <View style={styles.overviewContainer}>
       <View style={styles.avgRatingContainer}>
@@ -166,15 +165,13 @@ const OverviewSection = ({ route, tor }) => {
     </View>
   );
 };
-const MapSection = ({ route }) => {
+const MapSection = ({ data }) => {
   const styles = StyleSheet.create({
     map: {
       width: '100%',
       height: 200
     }
   });
-
-  const { data } = route.params;
 
   // console.log(data?.location.coordinates);
   return (
@@ -331,20 +328,28 @@ const ReviewListSection = ({ navigation, route }) => {
 
   const { reviewsByPlace, loading } = reviewsByPlaceData;
 
+  const placesbyIDData = useSelector((state) => state.placesbyIDData);
+
+  const { placesbyID, loading: placeLoading } = placesbyIDData;
+
   const { data } = route.params;
 
   const FlatListTop = (
     <FlatListHeaders
-      route={route}
       navigation={navigation}
       loading={loading}
+      placeLoading={placeLoading}
       reviewsByPlace={reviewsByPlace}
+      placesbyID={placesbyID}
     />
   );
+  useEffect(() => {
+    dispatch(getPlaceByIDAction(data));
+  }, [data]);
 
   useEffect(() => {
-    dispatch(getReviewsByPlace(data?._id));
-  }, [data?._id]);
+    dispatch(getReviewsByPlace(data));
+  }, [data]);
 
   return (
     <FlatList
@@ -355,14 +360,34 @@ const ReviewListSection = ({ navigation, route }) => {
     />
   );
 };
-const FlatListHeaders = ({ navigation, route, loading, reviewsByPlace }) => {
+const FlatListHeaders = ({
+  navigation,
+  loading,
+  reviewsByPlace,
+  placeLoading,
+  placesbyID
+}) => {
   return (
     <>
-      <CoverSection navigation={navigation} route={route} />
-      <OverviewSection route={route} tor={reviewsByPlace?.data?.length} />
-      <MapSection route={route} />
-      <Text style={styles.reviews}> Reviews </Text>
-      {loading && (
+      {placeLoading ? (
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={styles.loader}
+        />
+      ) : (
+        <>
+          <CoverSection navigation={navigation} data={placesbyID} />
+          <OverviewSection
+            data={placesbyID}
+            tor={reviewsByPlace?.data?.length}
+          />
+          <MapSection data={placesbyID} />
+          <Text style={styles.reviews}> Reviews </Text>
+        </>
+      )}
+
+      {!placeLoading && loading && (
         <ActivityIndicator
           size="large"
           color={colors.primary}

@@ -15,6 +15,10 @@ import {
   GET_PLACES_BY_CATAGORY_REQUEST,
   GET_PLACES_BY_CATAGORY_RESET,
   GET_PLACES_BY_CATAGORY_SUCCESS,
+  GET_PLACES_BY_ID_FAIL,
+  GET_PLACES_BY_ID_REQUEST,
+  GET_PLACES_BY_ID_RESET,
+  GET_PLACES_BY_ID_SUCCESS,
   GET_PLACES_BY_USER_FAIL,
   GET_PLACES_BY_USER_REQUEST,
   GET_PLACES_BY_USER_RESET,
@@ -83,6 +87,25 @@ export const getPlacesByUserReducer = (state = {}, action) => {
     case GET_PLACES_BY_USER_FAIL:
       return { loading: false, error: action.payload };
     case GET_PLACES_BY_USER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const getPlacesByIDReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_PLACES_BY_ID_REQUEST:
+      return { loading: true, success: false };
+    case GET_PLACES_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        placesbyID: action.payload.data
+      };
+    case GET_PLACES_BY_ID_FAIL:
+      return { loading: false, error: action.payload };
+    case GET_PLACES_BY_ID_RESET:
       return {};
     default:
       return state;

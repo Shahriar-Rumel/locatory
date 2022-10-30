@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.redLight,
     color: colors.red,
     paddingHorizontal: 25,
-    paddingVertical: 20
+    paddingVertical: 20,
+    zIndex: 999,
+    flex: 1
   },
   message: {
     color: colors.red

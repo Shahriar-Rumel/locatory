@@ -94,6 +94,8 @@ const CoverSection = ({ data, navigation, dispatch }) => {
     'December'
   ];
 
+  console.log(data);
+
   const url =
     'https://images.unsplash.com/photo-1531343983535-681659059ec1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80';
   return (
@@ -137,7 +139,7 @@ const CoverSection = ({ data, navigation, dispatch }) => {
             size={24}
             color={colors.secondary}
           />
-          <Text style={styles.coverBottomText}>Dhaka,Bangladesh</Text>
+          <Text style={styles.coverBottomText}>{data.address}</Text>
         </View>
         <Text style={styles.coverBottomText}>
           Joined at {data.createdAt.split('-')[2].split('T')[0]}{' '}

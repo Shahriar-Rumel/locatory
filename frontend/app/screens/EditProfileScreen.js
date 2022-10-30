@@ -111,7 +111,9 @@ const CreateReviewForm = ({ selectedPlace, navigation }) => {
           <ImageInput
             data={firstImage}
             setData={setFirstImage}
-            borderRadius={90}
+            borderRadius={200}
+            height={200}
+            width={200}
           />
           <Feather
             name="edit"
@@ -160,7 +162,7 @@ export default function EditProfileScreen({ navigation }) {
           <View style={styles.backIcon}>
             <Ionicons
               name="chevron-back-outline"
-              size={20}
+              size={25}
               color={colors.secondary}
             />
           </View>
@@ -206,8 +208,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     top: 25,
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -215,6 +217,6 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   backIcon: {
-    // marginTop: 3
+    marginTop: -1
   }
 });

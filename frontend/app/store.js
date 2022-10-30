@@ -16,6 +16,7 @@ import {
   getAllPlacesReducer,
   getNearbyPlacesReducer,
   getPlacesByCatagoryReducer,
+  getPlacesByIDReducer,
   getPlacesByUserReducer
 } from './reducers/placeReducers';
 import {
@@ -77,6 +78,7 @@ const reducer = combineReducers({
   ),
   favoriteReviewsData: persistReducer(persistConfig, getFavoriteReviewsReducer),
   placesbyUserData: persistReducer(persistConfig, getPlacesByUserReducer),
+  placesbyIDData: persistReducer(persistConfig, getPlacesByIDReducer),
   userUpdateData: persistReducer(persistConfig, userUpdateReducer)
 });
 

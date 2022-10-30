@@ -11,5 +11,7 @@ export default Object.freeze({
   USER_REVIEWS: 'user_reviews',
   USER_FAVORITES: 'user_favorites',
   USER_PLACES: 'user_places',
-  USER_PROFILE_EDIT: 'user_profile_edit'
+  USER_PROFILE_EDIT: 'user_profile_edit',
+  ONBOARDING: 'Onboarding',
+  SETUP: 'Setup'
 });

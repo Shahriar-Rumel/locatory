@@ -288,6 +288,10 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
   }, [loading]);
 
   useEffect(() => {
+    setList(topRatedPlace);
+  }, [topRatedPlaceLoading]);
+
+  useEffect(() => {
     setList(allPlaces);
   }, [allPlacesLoading]);
 
@@ -412,7 +416,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                 <Pressable
                   onPress={() =>
                     navigation.navigate(routes.LOCATION_DETAILS, {
-                      data: item
+                      data: item._id
                     })
                   }
                   key={item._id}
@@ -522,7 +526,6 @@ export default function FeedScreen({ navigation }) {
           setFiltered={setFiltered}
           navigation={navigation}
         />
-       
 
         {!filtered && (
           <>

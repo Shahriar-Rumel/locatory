@@ -19,7 +19,13 @@ import { PRODUCTION_URL } from '../config/production';
 
 const BASE_URL = PRODUCTION_URL;
 
-export default function ImageInput({ data, setData, borderRadius }) {
+export default function ImageInput({
+  data,
+  setData,
+  borderRadius,
+  width,
+  height
+}) {
   // const [image, setImage] = useState();
   const [uploading, setUploading] = useState(false);
 
@@ -55,6 +61,8 @@ export default function ImageInput({ data, setData, borderRadius }) {
 
       setData(data.data);
 
+      console.log(data.data);
+
       setUploading(false);
     } catch (error) {
       console.log(error);
@@ -62,12 +70,10 @@ export default function ImageInput({ data, setData, borderRadius }) {
     }
   };
 
-  const width = 120;
-  const height = 120;
   const styles = StyleSheet.create({
     container: {
-      width: width,
-      height: height,
+      width: width ? width : 120,
+      height: height ? height : 120,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.primaryLight,
@@ -139,7 +145,10 @@ export default function ImageInput({ data, setData, borderRadius }) {
         {data && (
           <Image
             source={{ uri: data }}
-            style={{ width: width, height: height }}
+            style={{
+              width: width ? width : 120,
+              height: height ? height : 120
+            }}
           />
         )}
         {!data && !uploading && (

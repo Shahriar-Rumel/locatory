@@ -538,6 +538,8 @@ export default function ReviewScreen({ navigation, route }) {
   useEffect(() => {
     dispatch(getFavoritReviews());
   }, []);
+
+  
   return (
     <ScrollView style={styles.container}>
       {loading ? (
