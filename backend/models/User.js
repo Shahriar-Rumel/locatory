@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
+    default: null,
   },
   address: {
     type: String,
