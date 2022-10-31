@@ -23,7 +23,6 @@ import {
   likeforReview
 } from '../actions/reviewActions';
 import { createNotificationAction } from '../actions/notificationActions';
-import { getCurrentUser } from '../actions/userActions';
 
 const CoverSection = ({ navigation, route, data }) => {
   const styles = StyleSheet.create({

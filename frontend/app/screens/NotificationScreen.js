@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
-  ActivityIndicator,
   ImageBackground,
   Pressable,
   RefreshControl,
   StyleSheet,
   Text,
-  View
+  View,
+  FlatList
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../config/colors';

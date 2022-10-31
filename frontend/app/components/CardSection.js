@@ -97,6 +97,8 @@ const CardSection = ({ title, data, navigation, isReady }) => {
     return res.toFixed(2) + ' Km';
   };
 
+  console.log(userDetails?.data?.location);
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -130,7 +132,7 @@ const CardSection = ({ title, data, navigation, isReady }) => {
             >
               <Card
                 title={item.name}
-                distance={!isReady ? getDistance(item) : 0}
+                distance={!isReady && !userDataLoading ? getDistance(item) : 0}
                 location={
                   item?.location?.formattedAddress?.length > 20
                     ? getFirstTenChars(item?.location?.formattedAddress)

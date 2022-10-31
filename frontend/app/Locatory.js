@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  NavigationContainer,
-  useNavigationState
-} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { useSelector } from 'react-redux';
 import AppNavigator from './navigation/AppNavigator';
@@ -10,10 +7,10 @@ import AuthNavigator from './navigation/AuthNavigator';
 
 import { navigationRef } from './navigation/rootNavigation';
 import navigationTheme from './navigation/navigationTheme';
-import AppLoading from 'expo-app-loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import colors from './config/colors';
+import logger from './utility/logger';
 
 export default function Locatory() {
   const [isReady, setIsReady] = useState(false);
@@ -59,6 +56,8 @@ export default function Locatory() {
   if (!isReady) {
     return null;
   }
+
+  logger.log(new Error('Splash Screen'));
 
   return (
     <>

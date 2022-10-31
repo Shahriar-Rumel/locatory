@@ -1,29 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
   View,
-  Image,
   ImageBackground,
-  TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  FlatList
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 import Screen from '../components/Screen';
 
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import {
-  deleteReview,
-  getFavoritReviews,
-  getReviewsByUser
-} from '../actions/reviewActions';
-import { AntDesign } from '@expo/vector-icons';
+import { deleteReview, getReviewsByUser } from '../actions/reviewActions';
 import routes from '../navigation/routes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getPlacesByUserAction } from '../actions/placeActions';

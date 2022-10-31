@@ -6,9 +6,9 @@ import {
   Text,
   View,
   TextInput,
-  ToastAndroid
+  ToastAndroid,
+  ScrollView
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
 import colors from '../config/colors';
@@ -16,20 +16,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
-import AppFormField from '../components/forms/FormField';
-import Form from '../components/forms/Form';
-import SubmitButton from '../components/forms/SubmitButton';
 import ImageInput from '../components/ImageInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReviewByPlace } from '../actions/reviewActions';
-import {
-  createPlace,
-  createPlaceAction,
-  getAllPlacesAction,
-  getNearbyPlacesAction,
-  getPlacesByCatagoryAction
-} from '../actions/placeActions';
-import Message from '../components/Message';
+import { createPlaceAction } from '../actions/placeActions';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -496,7 +486,7 @@ const CreateReviewForm = ({ selectedPlace }) => {
   };
   useEffect(() => {
     if (error) {
-      ToastAndroid.show(error, );
+      ToastAndroid.show(error);
     }
   }, [error]);
 

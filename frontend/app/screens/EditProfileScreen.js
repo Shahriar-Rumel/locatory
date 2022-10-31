@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  ScrollView
+} from 'react-native';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../config/colors';
 import Button from '../components/Button';
-import DropDown from '../components/DropDown';
 import ImageInput from '../components/ImageInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { getCurrentUser, updateUser } from '../actions/userActions';
+import { updateUser } from '../actions/userActions';
 import routes from '../navigation/routes';
-import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {

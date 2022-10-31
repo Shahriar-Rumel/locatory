@@ -1,20 +1,22 @@
-import { StyleSheet, Text, Pressable, Image, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, Pressable, Image, View } from 'react-native';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
 
 import Button from '../components/Button';
 import constants from '../config/constants';
+import logger from '../utility/logger';
 
 export default function WelcomeScreen({ navigation }) {
+  logger.log(new Error('Welcome Screen'));
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        {/* <Image
+        <Image
           style={styles.logo}
           resizeMode={'contain'}
           source={require('../assets/icon.png')}
-        /> */}
+        />
       </View>
       <View style={styles.headerSection}>
         <Text style={styles.header}>Know more about the place you love</Text>

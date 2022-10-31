@@ -1,17 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
   View,
-  Image,
   ImageBackground,
-  TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  FlatList
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 import Screen from '../components/Screen';

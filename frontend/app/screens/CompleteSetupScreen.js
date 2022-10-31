@@ -1,23 +1,19 @@
 import {
   StyleSheet,
   Text,
-  Pressable,
   Image,
   View,
   TextInput,
   ToastAndroid
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import colors from '../config/colors';
-import routes from '../navigation/routes';
 
 import Button from '../components/Button';
 import constants from '../config/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { register } from '../actions/userActions';
-import { useEffect } from 'react';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({

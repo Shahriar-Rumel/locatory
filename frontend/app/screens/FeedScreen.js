@@ -5,20 +5,20 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  ScrollView,
+  TextInput
 } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../config/colors';
 import constants from '../config/constants';
 import Screen from '../components/Screen';
 import CardSection from '../components/CardSection';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUser, logOut } from '../actions/userActions';
+import { getCurrentUser } from '../actions/userActions';
 import {
   getAllPlacesAction,
   getNearbyPlacesAction,
@@ -28,7 +28,6 @@ import LargeCard from '../components/LargeCard';
 import { getTopRatedPlaceAction } from '../actions/filterActions';
 import Button from '../components/Button';
 import routes from '../navigation/routes';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TopBar = ({ navigation }) => {
   const dispatch = useDispatch();

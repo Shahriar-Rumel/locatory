@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +7,6 @@ import {
   ActivityIndicator,
   ImageBackground
 } from 'react-native';
-import React, { useEffect } from 'react';
 import colors from '../config/colors';
 import Button from '../components/Button';
 import { Ionicons } from '@expo/vector-icons';
@@ -242,14 +242,10 @@ const ProfileActivity = ({ navigation, dispatch }) => {
     </View>
   );
 };
-const ProfileScreen = ({ navigation, route }) => {
+const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
-  const {
-    userDetails,
-    loading: userDataLoading,
-    error: userDataError
-  } = userData;
+  const { userDetails, loading: userDataLoading } = userData;
 
   useEffect(() => {
     dispatch(getCurrentUser());

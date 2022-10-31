@@ -5,10 +5,11 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
+  FlatList
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../config/colors';
 import Screen from '../components/Screen';
@@ -16,9 +17,7 @@ import Screen from '../components/Screen';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
 import routes from '../navigation/routes';
-import { useDispatch, useSelector } from 'react-redux';
 import { getReviewsByPlace } from '../actions/reviewActions';
 import { getPlaceByIDAction } from '../actions/placeActions';
 

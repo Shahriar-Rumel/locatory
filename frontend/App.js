@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 
-import { navigationRef } from './app/navigation/rootNavigation';
-import navigationTheme from './app/navigation/navigationTheme';
-import AppNavigator from './app/navigation/AppNavigator';
-import AuthNavigator from './app/navigation/AuthNavigator';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { store, persistor } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Locatory from './app/Locatory';
+import logger from './app/utility/logger';
+
+logger.start();
 
 export default function App() {
   const [user, setUser] = useState(false);
@@ -23,6 +21,8 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  logger.log(new Error('Font Loaded'));
 
   return (
     <Provider store={store}>

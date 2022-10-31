@@ -16,9 +16,7 @@ import constants from '../config/constants';
 import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
 import SubmitButton from '../components/forms/SubmitButton';
-import { setStatusBarBackgroundColor } from 'expo-status-bar';
 import { useDispatch } from 'react-redux';
-import { register } from '../actions/userActions';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),

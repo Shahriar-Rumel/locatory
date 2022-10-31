@@ -1,23 +1,18 @@
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
-  Pressable,
   Image,
   View,
   TextInput,
-  ToastAndroid,
-  KeyboardAvoidingView
+  ToastAndroid
 } from 'react-native';
-import React from 'react';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
 
 import Button from '../components/Button';
 import constants from '../config/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import Screen from '../components/Screen';
+import { useDispatch } from 'react-redux';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({

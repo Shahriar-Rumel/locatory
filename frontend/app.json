@@ -37,7 +37,8 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      ["@bugsnag/plugin-expo-eas-sourcemaps"]
     ],
     "web": {
       "favicon": "./app/assets/favicon.png"
@@ -46,6 +47,9 @@
     "extra": {
       "eas": {
         "projectId": "a3c945b5-ddd5-43b0-a9f2-48428843b6c6"
+      },
+      "bugsnag": {
+        "apiKey": ""
       }
     }
   }
