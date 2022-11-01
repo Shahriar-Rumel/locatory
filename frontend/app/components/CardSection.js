@@ -97,8 +97,6 @@ const CardSection = ({ title, data, navigation, isReady }) => {
     return res.toFixed(2) + ' Km';
   };
 
-  console.log(userDetails?.data?.location);
-
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>

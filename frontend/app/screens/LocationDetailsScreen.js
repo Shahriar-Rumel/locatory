@@ -282,14 +282,12 @@ const ReviewListSection = ({ navigation, route }) => {
       title: {
         fontSize: 14,
         fontWeight: '600',
-        width: '100%'
+        width: '90%'
       },
       date: {
         fontSize: 10,
         fontWeight: '600',
-        color: colors.gray,
-        position: 'absolute',
-        right: -55
+        color: colors.gray
       },
       desc: {
         fontSize: 12,

@@ -22,7 +22,7 @@ export default function App() {
     return null;
   }
 
-  logger.log(new Error('Font Loaded'));
+  logger.log(new Error('App Started'));
 
   return (
     <Provider store={store}>

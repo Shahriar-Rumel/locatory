@@ -5,10 +5,8 @@ import routes from '../navigation/routes';
 
 import Button from '../components/Button';
 import constants from '../config/constants';
-import logger from '../utility/logger';
 
 export default function WelcomeScreen({ navigation }) {
-  logger.log(new Error('Welcome Screen'));
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>

@@ -70,7 +70,8 @@ const CoverSection = ({ data, navigation, dispatch }) => {
     },
     bottomleft: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: '40%'
     },
     reload: {
       position: 'absolute',
@@ -93,8 +94,6 @@ const CoverSection = ({ data, navigation, dispatch }) => {
     'November',
     'December'
   ];
-
-  console.log(data);
 
   const url =
     'https://images.unsplash.com/photo-1531343983535-681659059ec1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80';

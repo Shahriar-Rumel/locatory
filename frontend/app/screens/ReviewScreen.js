@@ -133,7 +133,7 @@ const CoverSection = ({ navigation, route, data }) => {
             <MaterialCommunityIcons
               name={data.rating > index ? 'star' : 'star-outline'}
               size={20}
-              color={colors.primaryLight}
+              color={colors.secondary}
               key={index}
             />
           ))}
@@ -538,7 +538,6 @@ export default function ReviewScreen({ navigation, route }) {
     dispatch(getFavoritReviews());
   }, []);
 
-  
   return (
     <ScrollView style={styles.container}>
       {loading ? (
