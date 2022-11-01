@@ -178,7 +178,7 @@ const SearchBar = ({ allPlaces, navigation }) => {
                 // console.log(item.name);
 
                 navigation.navigate(routes.LOCATION_DETAILS, {
-                  data: item
+                  data: item._id
                 });
               }}
             >

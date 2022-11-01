@@ -24,26 +24,17 @@ Locatory is an android app developed using React Native where people can share t
 
 ## **Tech Stack**
 
-**Client:**
-
-- React
-- React Native
-- Expo
-- Redux
-- TailwindCSS
-- Axios
-- Bugsnag
-
-**Server:**
-
-- Nodejs
-- Express
-- Morgan
-- Bcrysptjs
-- JWT
-- Mongoose
-- NodeMailer
-- Nodegeocoder
+| **Frontend** |     | **Backend**  |
+| ------------ | --- | ------------ |
+| React        |     | Nodejs       |
+| React Native |     | Express      |
+| Expo         |     | Morgan       |
+| Redux        |     | Bcrysptjs    |
+| TailwindCSS  |     | JWT          |
+| Axios        |     | Mongoose     |
+| Bugsnag      |     | NodeMailer   |
+|              |     | Nodegeocoder |
+|              |     |              |
 
 **Data Base:**
 
