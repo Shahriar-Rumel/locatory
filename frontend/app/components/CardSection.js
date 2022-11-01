@@ -1,6 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import Card from './Card';
 import routes from '../navigation/routes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -108,7 +107,7 @@ const CardSection = ({ title, data, navigation, isReady }) => {
           style={styles.reload}
           onPress={() => {
             dispatch(getNearbyPlacesAction());
-            dispatch(getPlacesByCatagoryAction('restaurant'));
+            dispatch(getPlacesByCatagoryAction('tourist'));
             dispatch(getAllPlacesAction());
           }}
         />

@@ -132,12 +132,13 @@ const PlacesListSection = ({ navigation, route }) => {
     };
 
     const list = [1, 2, 3, 4, 5];
+
     return (
       <Pressable
         style={styles.item}
         onPress={() =>
-          navigation.navigate(routes.REVIEW, {
-            data: item.review
+          navigation.navigate(routes.LOCATION_DETAILS, {
+            data: item._id
           })
         }
         key={item._id}

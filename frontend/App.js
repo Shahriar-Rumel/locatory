@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import { useFonts } from 'expo-font';
 
 import { Provider } from 'react-redux';
@@ -10,7 +10,6 @@ import logger from './app/utility/logger';
 logger.start();
 
 export default function App() {
-  const [user, setUser] = useState(false);
 
   const [fontsLoaded] = useFonts({
     'SFPD-bold': require('./app/assets/fonts/SFPD-Bold.otf'),
