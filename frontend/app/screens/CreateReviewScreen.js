@@ -6,9 +6,9 @@ import {
   Text,
   View,
   TextInput,
-  ToastAndroid,
-  ScrollView
+  ToastAndroid
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
 import colors from '../config/colors';
@@ -144,7 +144,8 @@ const SearchSection = ({ setItem }) => {
       backgroundColor: colors.input,
       borderRadius: 5,
       height: 300,
-      paddingBottom: 20
+      paddingBottom: 20,
+      overflow: 'scroll'
     },
     item: {
       paddingVertical: 15,
@@ -204,7 +205,11 @@ const SearchSection = ({ setItem }) => {
         />
       </Pressable>
       {open && allPlaces && (
-        <ScrollView style={styles.itemContainer}>
+        <ScrollView
+          style={styles.itemContainer}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        >
           {allPlaces.data?.map((item) => (
             <Text
               style={styles.item}
@@ -628,12 +633,127 @@ const CreateReviewForm = ({ selectedPlace }) => {
     </View>
   );
 };
+
+const SearchSectionNested = ({ allPlaces, setItem }) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [filteredPlaces, setFilteredPlaces] = useState(
+    allPlaces ? allPlaces?.data : []
+  );
+  const styles = StyleSheet.create({
+    container: {
+      paddingHorizontal: 15,
+      marginVertical: 20
+    },
+    input: {
+      backgroundColor: colors.input,
+      height: 50,
+      borderRadius: 14,
+      width: '100%',
+      paddingLeft: 50,
+      marginTop: 10,
+      fontSize: 14,
+      color: value === '' ? colors.input : colors.black,
+      fontWeight: '400'
+    },
+    itemContainer: {
+      paddingVertical: 10,
+      elevation: 5,
+      marginVertical: 5,
+      backgroundColor: colors.input,
+      borderRadius: 5,
+      height: 300,
+      paddingBottom: 20
+    },
+    item: {
+      paddingVertical: 15,
+      paddingHorizontal: 20,
+      // backgroundColor: colors.primaryLight,
+      borderBottomColor: colors.primary,
+      borderBottomWidth: 0.5,
+      fontSize: 12,
+      fontWeight: '400',
+      color: colors.dark
+    },
+    smallTitle: {
+      fontWeight: '600'
+    },
+    searchContainer: {
+      position: 'relative'
+    },
+    searchIcon: {
+      position: 'absolute',
+      zIndex: 8,
+      marginTop: 23,
+      marginLeft: 15,
+      color: colors.gray
+    }
+  });
+
+  const searchList = (allPlaces, property, value) => {
+    let name = property;
+    return allPlaces.data.filter((Object) =>
+      Object.name.toString().toLowerCase().includes(value.toLowerCase())
+    );
+  };
+
+  const handleSearch = (text) => {
+    setValue(text);
+
+    setFilteredPlaces(searchList(allPlaces, 'name', text));
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.smallTitle}>Search the place you want to review</Text>
+
+      <View
+        style={styles.searchContainer}
+        // onPress={() => {
+        //   setOpen((prev) => !prev);
+        // }}
+      >
+        <FontAwesome5
+          name="search"
+          size={22}
+          color="black"
+          style={styles.searchIcon}
+        />
+        <TextInput
+          style={styles.input}
+          value={value}
+          placeholder={'Search Location'}
+          onChangeText={(text) => {
+            handleSearch(text);
+          }}
+          onPressIn={() => {
+            setOpen((prev) => !prev);
+          }}
+        />
+      </View>
+      {open && filteredPlaces && (
+        <ScrollView style={styles.itemContainer}>
+          {filteredPlaces?.map((item) => (
+            <Text
+              style={styles.item}
+              key={item._id}
+              onPress={() => {
+                setValue(item.name);
+                setItem(item);
+                setOpen(false);
+              }}
+            >
+              {item.name}
+            </Text>
+          ))}
+        </ScrollView>
+      )}
+    </View>
+  );
+};
 export default function CreateReviewScreen({ navigation }) {
   const [createPlace, setCreatePlace] = useState(false);
   const [item, setItem] = useState('');
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
 
   const handleSubmit = ({ email, password }) => {
     navigation.navigate(routes.FEED);
@@ -646,107 +766,6 @@ export default function CreateReviewScreen({ navigation }) {
     error: allPlacesError
   } = allPlacesData;
 
-  const SearchSectionNested = () => {
-    // const [open, setOpen] = useState(false);
-    // const [value, setValue] = useState('');
-    const styles = StyleSheet.create({
-      container: {
-        paddingHorizontal: 15,
-        marginVertical: 20
-      },
-      input: {
-        backgroundColor: colors.input,
-        height: 50,
-        borderRadius: 14,
-        width: '100%',
-        paddingLeft: 50,
-        marginTop: 10,
-        fontSize: 14,
-        color: value === '' ? colors.input : colors.black,
-        fontWeight: '400'
-      },
-      itemContainer: {
-        paddingVertical: 10,
-        elevation: 5,
-        marginVertical: 5,
-        backgroundColor: colors.input,
-        borderRadius: 5,
-        height: 300,
-        paddingBottom: 20
-      },
-      item: {
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        // backgroundColor: colors.primaryLight,
-        borderBottomColor: colors.primary,
-        borderBottomWidth: 0.5,
-        fontSize: 12,
-        fontWeight: '400',
-        color: colors.dark
-      },
-      smallTitle: {
-        fontWeight: '600'
-      },
-      searchContainer: {
-        position: 'relative'
-      },
-      searchIcon: {
-        position: 'absolute',
-        zIndex: 8,
-        marginTop: 23,
-        marginLeft: 15,
-        color: colors.gray
-      }
-    });
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.smallTitle}>
-          Search the place you want to review
-        </Text>
-
-        <Pressable
-          style={styles.searchContainer}
-          onPress={() => {
-            setOpen((prev) => !prev);
-          }}
-        >
-          <FontAwesome5
-            name="search"
-            size={22}
-            color="black"
-            style={styles.searchIcon}
-          />
-          <TextInput
-            style={styles.input}
-            value={value}
-            placeholder={'Search Location'}
-            onPressIn={() => {
-              setOpen((prev) => !prev);
-            }}
-          />
-        </Pressable>
-        {open && allPlaces && (
-          <ScrollView style={styles.itemContainer}>
-            {allPlaces.data?.map((item) => (
-              <Text
-                style={styles.item}
-                key={item._id}
-                onPress={() => {
-                  setValue(item.name);
-                  setItem(item);
-                  setOpen(false);
-                }}
-              >
-                {item.name}
-              </Text>
-            ))}
-          </ScrollView>
-        )}
-      </View>
-    );
-  };
-
   return (
     <ScrollView
       style={styles.scrollContainer}
@@ -754,7 +773,7 @@ export default function CreateReviewScreen({ navigation }) {
       contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
     >
       <Cover />
-      <SearchSectionNested />
+      <SearchSectionNested allPlaces={allPlaces} setItem={setItem} />
       <BannerSection setCreatePlace={setCreatePlace} />
       {createPlace && <CreatePlaceSection setCreatePlace={setCreatePlace} />}
       <CreateReviewForm selectedPlace={item} />

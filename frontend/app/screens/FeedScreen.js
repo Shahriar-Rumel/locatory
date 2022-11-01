@@ -9,9 +9,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
   TextInput
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../config/colors';
@@ -63,8 +63,7 @@ const TopBar = ({ navigation }) => {
   ];
   const getPartsofTheDay = () => {
     let localTime = new Date().toLocaleString();
-
-    const time = localTime.split(' ')[3].split(':')[0];
+    const time = localTime.split(' ')[4].split(':')[0];
 
     if (time < 11) return partsofDayList[0];
     if (time < 14) return partsofDayList[1];
@@ -391,7 +390,7 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
                   color={colors.primary}
                   borderRadius={5}
                   onPress={() => {
-                    dispatch(getPlacesByCatagoryAction('restaurant'));
+                    dispatch(getPlacesByCatagoryAction('tourist'));
                     setFiltered(false);
                   }}
                 />
@@ -481,7 +480,7 @@ export default function FeedScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    dispatch(getPlacesByCatagoryAction('restaurant'));
+    dispatch(getPlacesByCatagoryAction('tourist'));
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -538,7 +537,7 @@ export default function FeedScreen({ navigation }) {
             ) : (
               <>
                 <CardSection
-                  title={'Meet with friends'}
+                  title={'Tourist destinations'}
                   data={placesbyCatagory ? placesbyCatagory.data : []}
                   navigation={navigation}
                   isReady={placesbyCatagoryLoading}

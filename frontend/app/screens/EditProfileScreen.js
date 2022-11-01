@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  ScrollView
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 

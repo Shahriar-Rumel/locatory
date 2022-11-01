@@ -5,12 +5,12 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
   View
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import colors from '../config/colors';
 import routes from '../navigation/routes';

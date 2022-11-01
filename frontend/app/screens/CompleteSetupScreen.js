@@ -4,7 +4,8 @@ import {
   Image,
   View,
   TextInput,
-  ToastAndroid
+  ToastAndroid,
+  TouchableOpacity
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import colors from '../config/colors';
@@ -12,7 +13,6 @@ import colors from '../config/colors';
 import Button from '../components/Button';
 import constants from '../config/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { register } from '../actions/userActions';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
