@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,8 @@ import { Feather } from '@expo/vector-icons';
 import { updateUser } from '../actions/userActions';
 import routes from '../navigation/routes';
 import { Ionicons } from '@expo/vector-icons';
+import Message from '../components/Message';
+import { USER_UPDATE_RESET } from '../constants/userConstants';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -107,8 +109,35 @@ const CreateReviewForm = ({ selectedPlace, navigation }) => {
     dispatch(updateUser(data));
   };
 
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        dispatch({
+          type: USER_UPDATE_RESET
+        });
+      }, 3000);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        dispatch({
+          type: USER_UPDATE_RESET
+        });
+      }, 3000);
+    }
+  }, [error]);
   return (
     <View style={styles.formContainer}>
+      {error && <Message message={'Please try again !'} />}
+      {success && (
+        <Message
+          message={'Profile updated successfully !'}
+          bgcolor={colors.greenLight}
+          textcolor={colors.green}
+        />
+      )}
       <View style={styles.form}>
         <View style={styles.imageContainer}>
           <ImageInput

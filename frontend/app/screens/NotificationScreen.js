@@ -274,13 +274,6 @@ const FlatListHeaders = ({
       {notificationsForUser?.data?.length < 1 && (
         <Message message={'No notifications yet !'} />
       )}
-      {/* {loading && (
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={styles.loader}
-        />
-      )} */}
     </>
   );
 };

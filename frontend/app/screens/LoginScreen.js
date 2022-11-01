@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   View,
   Pressable,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ToastAndroid
 } from 'react-native';
 import * as Yup from 'yup';
 
@@ -19,29 +20,27 @@ import Form from '../components/forms/Form';
 import FormField from '../components/forms/FormField';
 import SubmitButton from '../components/forms/SubmitButton';
 import { login } from '../actions/userActions';
+import Message from '../components/Message';
 
 const validationSchema = Yup.object().shape({
-  // email: Yup.string().required().email().label('Email'),
-  // password: Yup.string().required().min(4).label('Password')
+  email: Yup.string().required().email().label('Email'),
+  password: Yup.string().required().min(8).label('Password')
 });
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, loading, error } = userLogin;
+  const { userInfo, loading, success, error } = userLogin;
 
   const handleSubmit = ({ email, password }) => {
-    // navigation.navigate(routes.FEED);
-    // console.log(email, password);
     dispatch(login(email, password));
   };
 
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     navigation.navigate('Login');
-  //     console.log(userInfo);
-  //   }
-  // }, [userInfo]);
+  useEffect(() => {
+    if (success)
+      ToastAndroid.show('Logged in Successfully', ToastAndroid.SHORT);
+  }, [success]);
+
   return (
     <Screen style={styles.container}>
       <KeyboardAvoidingView
@@ -56,6 +55,7 @@ export default function LoginScreen({ navigation }) {
             source={require('../assets/primary-pigeon.png')}
           />
         </View>
+        {error && <Message message={error.error} />}
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Welcome back !</Text>
           <Text style={styles.subHeader}>Sign in to your account</Text>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SFPD-semiBold'
   },
   headerContainer: {
-    marginTop: 30,
+    marginTop: 0,
     marginBottom: 10,
     width: '100%'
   },
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     marginTop: 40,
+    marginBottom: 30,
     paddingTop: 30
   },
   subHeader: {

@@ -68,7 +68,7 @@ export const login = (email, password) => async (dispatch) => {
           ? error.response.data
           : error.message
     });
-    console.log(error);
+    console.log(error.response.data);
   }
 };
 
@@ -84,14 +84,11 @@ export const register = (bodyData) => async (dispatch) => {
       }
     };
 
-    console.log(bodyData);
     const { data } = await axios.post(
       `${BASE_URL}/api/auth/register`,
       bodyData,
       config
     );
-
-    console.log(data);
 
     dispatch({
       type: USER_REGISTER_SUCCESS,

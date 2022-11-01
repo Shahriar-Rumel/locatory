@@ -294,21 +294,6 @@ const FilterBar = ({ filtered, setFiltered, navigation }) => {
     setList(allPlaces);
   }, [allPlacesLoading]);
 
-  // name: 'Educational',
-  // value: 'educational'
-
-  // name: 'Restaurant',
-
-  // name: 'Hotel',
-
-  // name: 'Tourist',
-
-  // name: 'Theater',
-
-  // name: 'Establishment'
-
-  // name: 'Other',
-
   return (
     <View style={styles.filterContainer}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -537,7 +522,7 @@ export default function FeedScreen({ navigation }) {
             ) : (
               <>
                 <CardSection
-                  title={'For you'}
+                  title={'Near you'}
                   data={nearbyPlaces ? nearbyPlaces.data : []}
                   navigation={navigation}
                   isReady={nearbyPlacesLoading}
@@ -570,7 +555,7 @@ export default function FeedScreen({ navigation }) {
             ) : (
               <>
                 <CardSection
-                  title={'Most Reviewed'}
+                  title={'All places'}
                   data={allPlaces ? allPlaces.data : []}
                   navigation={navigation}
                   isReady={allPlacesLoading}

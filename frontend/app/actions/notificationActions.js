@@ -83,7 +83,6 @@ export const createNotificationAction = (id) => async (dispatch, getState) => {
       }
     };
 
-    console.log(`${BASE_URL}/api/reviews/${id}/notification`);
     const { data } = await axios.post(
       `${BASE_URL}/api/reviews/${id}/notifications`,
       { withCredentials: true },

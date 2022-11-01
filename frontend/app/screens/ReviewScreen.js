@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   View
 } from 'react-native';
 
@@ -307,8 +308,13 @@ const DetailsSection = ({ data, fav }) => {
           <Pressable
             style={styles.iconContainer}
             onPress={() => {
-              if (like) setLikeCounter((prev) => prev - 1);
-              else setLikeCounter((prev) => prev + 1);
+              if (like) {
+                ToastAndroid.show('Removed from favorites', ToastAndroid.SHORT);
+                setLikeCounter((prev) => prev - 1);
+              } else {
+                ToastAndroid.show('Added to favorites', ToastAndroid.SHORT);
+                setLikeCounter((prev) => prev + 1);
+              }
               setLiked((prev) => !prev);
 
               dispatch(createNotificationAction(data._id));
@@ -328,8 +334,17 @@ const DetailsSection = ({ data, fav }) => {
           <Pressable
             style={styles.iconContainer}
             onPress={() => {
-              if (dislike) setDisikeCounter((prev) => prev - 1);
-              else setDisikeCounter((prev) => prev + 1);
+              if (dislike) {
+                setDisikeCounter((prev) => prev - 1);
+                ToastAndroid.show('Removed dislike', ToastAndroid.SHORT);
+              } else {
+                setDisikeCounter((prev) => prev + 1);
+                ToastAndroid.show(
+                  'You disliked this review',
+                  ToastAndroid.SHORT
+                );
+              }
+
               setDislike((prev) => !prev);
               dispatch(dislikeforReview(data._id));
             }}

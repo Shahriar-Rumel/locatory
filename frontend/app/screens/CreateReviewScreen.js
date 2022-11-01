@@ -20,6 +20,8 @@ import ImageInput from '../components/ImageInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReviewByPlace } from '../actions/reviewActions';
 import { createPlaceAction } from '../actions/placeActions';
+import Message from '../components/Message';
+import { CREATE_PLACE_RESET } from '../constants/placeConstants';
 
 const TextInputReview = ({ label, placeholder, setData, ...otherProps }) => {
   const styles = StyleSheet.create({
@@ -147,7 +149,6 @@ const SearchSection = ({ setItem }) => {
     item: {
       paddingVertical: 15,
       paddingHorizontal: 20,
-      // backgroundColor: colors.primaryLight,
       borderBottomColor: colors.primary,
       borderBottomWidth: 0.5,
       fontSize: 12,
@@ -250,7 +251,6 @@ const BannerSection = ({ setCreatePlace }) => {
         height={35}
         onPress={() => setCreatePlace(true)}
       />
-      {/* <Button text={'ok'} /> */}
     </View>
   );
 };
@@ -318,8 +318,7 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
 
   const createPlaceData = useSelector((state) => state.createPlaceData);
 
-  const { createPlace, loading, error } = createPlaceData;
-
+  const { createPlace, loading, success, error } = createPlaceData;
   const createPlaceHandler = () => {
     const data = {
       name: name,
@@ -330,10 +329,37 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
 
     dispatch(createPlaceAction(data));
   };
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        dispatch({
+          type: CREATE_PLACE_RESET
+        });
+      }, 3000);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        dispatch({
+          type: CREATE_PLACE_RESET
+        });
+      }, 3000);
+    }
+  }, [error]);
 
   return (
     <View style={styles.createPlaceContainer}>
       <Text style={styles.title}>Create a new place</Text>
+      {error && <Message message={'Place already exist !'} />}
+      {success && (
+        <Message
+          message={'Place created successfully !'}
+          bgcolor={colors.greenLight}
+          textcolor={colors.green}
+        />
+      )}
       <Pressable
         style={styles.searchIcon}
         onPress={() => setCreatePlace(false)}
@@ -381,11 +407,6 @@ const CreatePlaceSection = ({ setCreatePlace }) => {
 };
 
 const CreateReviewForm = ({ selectedPlace }) => {
-  const validationSchema = Yup.object().shape({
-    // email: Yup.string().required().email().label('Email'),
-    // password: Yup.string().required().min(4).label('Password')
-  });
-
   const styles = StyleSheet.create({
     formContainer: {
       marginHorizontal: 15
@@ -678,13 +699,6 @@ export default function CreateReviewScreen({ navigation }) {
       }
     });
 
-    // const allPlacesData = useSelector((state) => state.allPlacesData);
-    // const {
-    //   allPlaces,
-    //   loading: allPlacesLoading,
-    //   error: allPlacesError
-    // } = allPlacesData;
-
     return (
       <View style={styles.container}>
         <Text style={styles.smallTitle}>
@@ -694,7 +708,6 @@ export default function CreateReviewScreen({ navigation }) {
         <Pressable
           style={styles.searchContainer}
           onPress={() => {
-            console.log('clicked');
             setOpen((prev) => !prev);
           }}
         >
