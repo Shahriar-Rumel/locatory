@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const geocoder = require("../utils/geocoder");
 
 const UserSchema = new mongoose.Schema({
+
+
   name: {
     type: String,
     required: [true, "Please add a name"],
@@ -38,6 +40,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add an address"],
   },
+
+  
   location: {
     // GeoJSON Point
     type: {
