@@ -214,7 +214,6 @@ const MapSection = ({ data }) => {
     }
   });
 
-  // console.log(data?.location.coordinates);
   return (
     <MapView
       style={styles.map}
@@ -229,7 +228,6 @@ const MapSection = ({ data }) => {
         longitudeDelta: 0.0041
       }}
       provider="google"
-      //   scrollEnabled={false}
     >
       <Marker
         coordinate={{
@@ -345,10 +343,6 @@ const ReviewListSection = ({ navigation, route }) => {
               </Text>
               <FontAwesome5 name="heart" size={18} color={colors.primary} />
             </View>
-            {/* <View style={styles.likeContainer}>
-              <Text style={styles.statCount}>12k</Text>
-              <Octicons name="comment" size={18} color={colors.secondary} />
-            </View> */}
             <View style={styles.likeContainer}>
               <Text style={styles.statCount}>
                 {item.totaldislikes} {item.totaldislikes >= 1000 && k}

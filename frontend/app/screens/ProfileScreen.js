@@ -149,7 +149,7 @@ const CoverSection = ({ data, navigation, dispatch }) => {
     </View>
   );
 };
-// 2022-10-03T18:30:24.223Z
+
 const ProfileActivity = ({ navigation, dispatch }) => {
   const styles = StyleSheet.create({
     item: {
@@ -227,8 +227,6 @@ const ProfileActivity = ({ navigation, dispatch }) => {
               {item.title}
             </Text>
           </View>
-          {/* <Ionicons name="arrow-forward-circle-sharp" size={24} color="black" /> */}
-          {/* <MaterialCommunityIcons name="greater-than" size={18} color="black" /> */}
           {index < activityList.length - 1 && (
             <Ionicons
               name="arrow-forward-circle-outline"

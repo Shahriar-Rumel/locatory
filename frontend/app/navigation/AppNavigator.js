@@ -67,17 +67,7 @@ const AppNavigator = () => (
                 alignItems: 'center',
                 paddingVertical: 2
               }}
-            >
-              {/* <Text
-                style={{
-                  fontSize: 10,
-                  color: colors.white,
-                  marginTop: -2
-                }}
-              >
-                12
-              </Text> */}
-            </View>
+            ></View>
             <Ionicons
               name="ios-notifications-outline"
               size={size}

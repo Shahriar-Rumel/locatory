@@ -26,7 +26,6 @@ function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = ({ name, email, password }) => {
-    // dispatch(register(name, email, password));
     navigation.navigate(routes.ONBOARDING, {
       data: {
         name: name,
@@ -80,15 +79,7 @@ function RegisterScreen({ navigation }) {
             placeholder="Email"
             textContentType="emailAddress"
           />
-          {/* <FormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="text"
-            name="location"
-            label="Location"
-            placeholder="Dhaka,Bangladesh"
-            textContentType="Location"
-          /> */}
+        
           <FormField
             autoCapitalize="none"
             autoCorrect={false}
