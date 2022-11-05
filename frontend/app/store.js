@@ -82,15 +82,12 @@ const reducer = combineReducers({
   userUpdateData: persistReducer(persistConfig, userUpdateReducer)
 });
 
-// const userInfoFromStorage = r.getItem('userInfo')
-//   ? JSON.parse(sessionStorage.getItem('userInfo'))
-//   : null;
+
 
 const getData = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
-      // console.log(value);
       return value;
     }
   } catch (e) {
@@ -98,11 +95,7 @@ const getData = async (key) => {
   }
 };
 
-// console.log(getData('userLogin'));
 
-// const userInfoFromStorage = AsyncStorage.getItem('userLogin')
-//   ? AsyncStorage.getItem('userLogin')
-//   : null;
 
 let userInfoFromStorage;
 
@@ -117,7 +110,6 @@ const initialState = {
     userInfo: userInfoFromStorage
   }
 };
-// console.log(userLogin);
 
 const middleware = [thunk];
 const store = createStore(

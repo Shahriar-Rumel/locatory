@@ -1,106 +1,103 @@
-const mongoose = require("mongoose");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const geocoder = require("../utils/geocoder");
+const mongoose = require('mongoose');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const geocoder = require('../utils/geocoder');
 
 const UserSchema = new mongoose.Schema({
-
-
   name: {
     type: String,
-    required: [true, "Please add a name"],
+    required: [true, 'Please add a name']
   },
   email: {
     type: String,
-    required: [true, "Please add an email"],
+    required: [true, 'Please add an email'],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email",
-    ],
+      'Please add a valid email'
+    ]
   },
 
   role: {
     type: String,
-    enum: ["user", "owner"],
-    default: "user",
+    enum: ['user', 'owner'],
+    default: 'user'
   },
   password: {
     type: String,
-    required: [true, "Please add a password"],
+    required: [true, 'Please add a password'],
     minlength: 6,
-    select: false,
+    select: false
   },
   photo: {
     type: String,
-    default: null,
+    default: null
   },
   address: {
     type: String,
-    required: [true, "Please add an address"],
+    required: [true, 'Please add an address']
   },
 
-  
   location: {
     // GeoJSON Point
     type: {
       type: String,
-      enum: ["Point"],
+      enum: ['Point']
     },
     coordinates: {
       type: [Number],
-      index: "2dsphere",
+      index: '2dsphere'
     },
     formattedAddress: String,
     street: String,
     city: String,
     state: String,
     zipcode: String,
-    country: String,
+    country: String
   },
   preferredCategory: {
-    type: [String],
+    type: [String]
   },
   notification: [
     {
       username: String,
       userphoto: {
         type: String,
-        default: "no-photo.jpg",
+        default: 'no-photo.jpg'
       },
       place: {
         type: mongoose.Schema.ObjectId,
-        ref: "Place",
-        required: true,
+        ref: 'Place',
+        required: true
       },
       placename: {
-        type: String,
+        type: String
       },
       reviewid: {
-        type: String,
+        type: String
       },
       createdAt: {
         type: Date,
-        default: Date.now,
+        default: Date.now
       },
       read: {
         type: Boolean,
-        default: false,
-      },
-    },
+        default: false
+      }
+    }
   ],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
 //Encrypt password using bcrypt
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -110,7 +107,7 @@ UserSchema.pre("save", async function (next) {
 //Token generator
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+    expiresIn: process.env.JWT_EXPIRE
   });
 };
 
@@ -122,13 +119,13 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 
 //Generate and hash password token
 UserSchema.methods.getResetPasswordToken = function () {
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const resetToken = crypto.randomBytes(20).toString('hex');
 
   //Hash token and set to resetPasswordToken field
   this.resetPasswordToken = crypto
-    .createHash("sha256")
+    .createHash('sha256')
     .update(resetToken)
-    .digest("hex");
+    .digest('hex');
 
   //Set expire
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
@@ -137,19 +134,19 @@ UserSchema.methods.getResetPasswordToken = function () {
 };
 
 // Geocode & create location field
-UserSchema.pre("save", async function (next) {
+UserSchema.pre('save', async function (next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
-    type: "Point",
+    type: 'Point',
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress,
     street: loc[0].streetName,
     city: loc[0].city,
     state: loc[0].stateCode,
     zipcode: loc[0].zipcode,
-    country: loc[0].countryCode,
+    country: loc[0].countryCode
   };
 
   next();
 });
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);

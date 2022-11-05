@@ -20,6 +20,8 @@ Locatory is an android app developed using React Native where people can share t
 
 ## **APK URL**
 
+https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40shahriar-rumel/locatory-bcafff829fc149d8866bb4cfb50450fb-signed.apk
+
 ## **Project Demonstration**
 
 https://www.youtube.com/watch?v=h9EoFNyy_zM

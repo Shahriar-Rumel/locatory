@@ -14,7 +14,6 @@ const FeedNavigator = () => (
     <Stack.Screen name="Feed" component={FeedScreen} />
     <Stack.Screen name="Location" component={LocationScreen} />
     <Stack.Screen name="Location_Details" component={LocationDetailsScreen} />
-    {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
     <Stack.Screen name="Review" component={ReviewScreen} />
   </Stack.Navigator>
 );

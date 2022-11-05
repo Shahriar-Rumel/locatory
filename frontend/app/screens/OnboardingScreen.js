@@ -144,12 +144,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     alignItems: 'center',
     width: '95%'
-    // backgroundColor: 'red'
   },
   header: {
     fontSize: 16,
     fontFamily: 'SFPD-bold',
-    // textAlign: 'center',
     width: '100%',
     lineHeight: 18,
     color: colors.black

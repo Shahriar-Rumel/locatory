@@ -23,15 +23,6 @@ export default function Locatory() {
     setUser(user);
   };
 
-  // if (!isReady)
-  //   return (
-  //     <AppLoading
-  //       startAsync={getUser}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={() => console.log('Could not load')}
-  //     />
-  //   );
-
   useEffect(() => {
     async function prepare() {
       try {

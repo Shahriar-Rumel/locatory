@@ -167,12 +167,7 @@ const FavoritesListSection = ({ navigation, route }) => {
               ) : (
                 <Text style={styles.createdAt}>{second} seconds ago </Text>
               )}
-              {/* <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={deleteHandler}
-              >
-                <MaterialIcons name="delete" size={24} color={colors.red} />
-              </TouchableOpacity> */}
+             
             </View>
           </View>
         </View>
@@ -277,13 +272,6 @@ const FlatListHeaders = ({ navigation, route, loading, reviewsByUser }) => {
       {reviewsByUser?.data?.length < 1 && (
         <Message message={"You haven't created any reviews yet !"} />
       )}
-      {/* {loading && (
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={styles.loader}
-        />
-      )} */}
     </>
   );
 };

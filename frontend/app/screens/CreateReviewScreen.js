@@ -497,18 +497,6 @@ const CreateReviewForm = ({ selectedPlace }) => {
     };
 
     dispatch(createReviewByPlace(selectedPlace._id, data));
-
-    // setTitle('');
-    // setDescription('');
-    // setAverageBudget(0);
-    // setAccessibility(0);
-    // setDecoration(0);
-    // setService(0);
-    // setFamilyFriendly(0);
-    // setTransportation(0);
-    // setSetting(0);
-    // setOverallRating(0);
-    // setFirstImage('');
   };
   useEffect(() => {
     if (error) {
@@ -709,9 +697,6 @@ const SearchSectionNested = ({ allPlaces, setItem }) => {
 
       <View
         style={styles.searchContainer}
-        // onPress={() => {
-        //   setOpen((prev) => !prev);
-        // }}
       >
         <FontAwesome5
           name="search"

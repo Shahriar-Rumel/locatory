@@ -1,28 +1,28 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const LikeSchema = new mongoose.Schema({
   likecount: {
     type: Number,
-    default: 1,
+    default: 1
   },
 
   review: {
     type: mongoose.Schema.ObjectId,
-    ref: "Review",
-    required: true,
+    ref: 'Review',
+    required: true
   },
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: true,
+    ref: 'User',
+    required: true
   },
   reviewtitle: String,
   reviewdescription: String,
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
-  reviewImage: String,
+  reviewImage: String
 });
 
 // // Static method to get avg rating and save
@@ -58,4 +58,4 @@ const LikeSchema = new mongoose.Schema({
 //   this.constructor.getTotalLikes(this.review);
 // });
 
-module.exports = mongoose.model("Like", LikeSchema);
+module.exports = mongoose.model('Like', LikeSchema);

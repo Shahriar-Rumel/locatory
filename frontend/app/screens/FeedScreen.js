@@ -493,14 +493,6 @@ export default function FeedScreen({ navigation }) {
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-        // refreshControl={
-        //   <RefreshControl
-        //     refreshing={nearbyPlacesLoading}
-        //     onRefresh={onRefresh}
-        //     colors={[colors.primary]}
-        //     progressViewOffset={60}
-        //   />
-        // }
       >
         <TopBar navigation={navigation} />
         <SearchBar allPlaces={allPlaces} navigation={navigation} />
@@ -571,8 +563,6 @@ export default function FeedScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 60,
-    // paddingHorizontal: constants.CONTAINER_PADDING,
     backgroundColor: colors.white
   },
   dp: {
